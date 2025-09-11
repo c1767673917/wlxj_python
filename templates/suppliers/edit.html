@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}编辑供应商 - {{ supplier.name }} - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-edit me-2"></i>编辑供应商
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('supplier.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>返回列表
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-info-circle me-2"></i>供应商信息
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">供应商名称 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" required
+                               value="{{ supplier.name }}" placeholder="请输入供应商名称">
+                        <div class="form-text">请输入完整的供应商公司名称</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="webhook_url" class="form-label">企业微信Webhook地址</label>
+                        <input type="url" class="form-control" id="webhook_url" name="webhook_url"
+                               value="{{ supplier.webhook_url or '' }}"
+                               placeholder="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=...">
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            可选。配置后系统将通过企业微信自动通知该供应商新的询价订单。
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('supplier.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i>取消
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>保存更改
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-key me-2"></i>访问信息
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">访问码</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="{{ supplier.access_code }}" readonly>
+                        <button class="btn btn-outline-secondary" type="button" 
+                                onclick="copyToClipboard('{{ supplier.access_code }}')" title="复制访问码">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">专属访问链接</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" 
+                               value="{{ url_for('supplier_portal', access_code=supplier.access_code, _external=True) }}" readonly>
+                        <button class="btn btn-outline-secondary" type="button" 
+                                onclick="copyToClipboard('{{ url_for('supplier_portal', access_code=supplier.access_code, _external=True) }}')" 
+                                title="复制链接">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="button" class="btn btn-warning" onclick="regenerateCode()">
+                        <i class="fas fa-refresh me-1"></i>重新生成访问码
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>统计信息
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="d-flex justify-content-between">
+                        <span>总报价数：</span>
+                        <strong>{{ supplier.quotes|length }}</strong>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        <span>创建时间：</span>
+                        <small>{{ supplier.created_at.strftime('%Y-%m-%d') }}</small>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        <span>微信通知：</span>
+                        {% if supplier.webhook_url %}
+                            <span class="badge bg-success">已配置</span>
+                        {% else %}
+                            <span class="badge bg-secondary">未配置</span>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // 显示复制成功提示
+        const toast = document.createElement('div');
+        toast.className = 'toast-container position-fixed top-0 end-0 p-3';
+        toast.innerHTML = `
+            <div class="toast show" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas fa-check-circle text-success me-2"></i>内容已复制到剪贴板
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        
+        // 3秒后自动移除
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 3000);
+    });
+}
+
+function regenerateCode() {
+    if (confirm('确定要重新生成访问码吗？原访问码将失效，需要重新发送给供应商。')) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ url_for("supplier.regenerate_access_code", supplier_id=supplier.id) }}';
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+{% endblock %}

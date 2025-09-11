@@ -1,0 +1,242 @@
+{% extends "portal/base.html" %}
+
+{% block title %}{{ order.order_no }} - 订单详情 - 供应商门户{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+        <i class="fas fa-clipboard-list me-2"></i>{{ order.order_no }}
+        <span class="badge bg-success ms-2">{{ order.status }}</span>
+    </h2>
+    <div>
+        <a href="{{ url_for('portal.supplier_portal', access_code=session.get('access_code', '')) }}" 
+           class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>返回首页
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- 订单详细信息 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-info-circle me-2"></i>订单详细信息
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>订单号：</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        {{ order.order_no }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>创建时间：</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        {{ order.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>起始仓库：</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        {{ order.warehouse }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>收货地址：</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        {{ order.delivery_address }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>货物信息：</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="border rounded p-3 bg-light">
+                            {{ order.goods|nl2br }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 我的报价 -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-dollar-sign me-2"></i>我的报价
+                </h5>
+                {% if quote %}
+                    <a href="{{ url_for('portal.submit_quote', order_id=order.id) }}" 
+                       class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit me-1"></i>修改报价
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('portal.submit_quote', order_id=order.id) }}" 
+                       class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus me-1"></i>提交报价
+                    </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if quote %}
+                <div class="alert alert-success">
+                    <h5 class="alert-heading">
+                        <i class="fas fa-check-circle me-2"></i>您已提交报价
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>报价金额：</strong>
+                            <div class="fs-4 text-primary fw-bold">¥{{ quote.price }}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>承诺交期：</strong>
+                            <div class="fs-6">{{ quote.delivery_time or '未填写' }}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>提交时间：</strong>
+                            <div class="fs-6">{{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                        </div>
+                    </div>
+                    {% if quote.remarks %}
+                    <hr>
+                    <strong>备注说明：</strong>
+                    <p class="mb-0">{{ quote.remarks }}</p>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="alert alert-warning">
+                    <h5 class="alert-heading">
+                        <i class="fas fa-exclamation-triangle me-2"></i>尚未提交报价
+                    </h5>
+                    <p class="mb-2">请仔细阅读订单需求，然后提交您的最优报价。</p>
+                    <a href="{{ url_for('portal.submit_quote', order_id=order.id) }}" 
+                       class="btn btn-primary">
+                        <i class="fas fa-dollar-sign me-1"></i>立即报价
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- 竞争状况 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>竞争状况
+                </h5>
+            </div>
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-users fa-3x text-muted"></i>
+                </div>
+                <h3 class="text-primary">{{ total_quotes }}</h3>
+                <p class="text-muted mb-0">个供应商已报价</p>
+                
+                {% if quote %}
+                <hr>
+                <div class="text-center">
+                    {% if order.selected_supplier_id == supplier.id %}
+                        <div class="alert alert-success mb-0">
+                            <i class="fas fa-trophy fa-2x mb-2"></i>
+                            <h5>恭喜中标！</h5>
+                            <p class="mb-0">您的报价已被选中</p>
+                        </div>
+                    {% elif order.status == 'completed' %}
+                        <div class="alert alert-secondary mb-0">
+                            <i class="fas fa-info-circle fa-2x mb-2"></i>
+                            <h5>订单已完成</h5>
+                            <p class="mb-0">很遗憾，您未中标</p>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info mb-0">
+                            <i class="fas fa-clock fa-2x mb-2"></i>
+                            <h5>等待结果</h5>
+                            <p class="mb-0">采购方正在评估报价</p>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-bolt me-2"></i>快速操作
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    {% if quote %}
+                        <a href="{{ url_for('portal.submit_quote', order_id=order.id) }}" 
+                           class="btn btn-warning">
+                            <i class="fas fa-edit me-1"></i>修改报价
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('portal.submit_quote', order_id=order.id) }}" 
+                           class="btn btn-primary">
+                            <i class="fas fa-dollar-sign me-1"></i>提交报价
+                        </a>
+                    {% endif %}
+                    
+                    <a href="{{ url_for('portal.my_quotes') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-list me-1"></i>我的所有报价
+                    </a>
+                    
+                    <button type="button" class="btn btn-outline-info" onclick="window.print()">
+                        <i class="fas fa-print me-1"></i>打印订单
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 报价提醒 -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>报价提醒
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>仔细阅读货物要求和配送地址</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>考虑运输成本和时间要求</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>提供合理的交期承诺</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>报价后可以修改，但要及时</small>
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>有疑问请联系采购方</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

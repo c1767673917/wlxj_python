@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}备份管理 - 系统管理 - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-database me-2"></i>备份管理
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('admin.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>返回管理首页
+        </a>
+    </div>
+</div>
+
+<!-- 备份统计 -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center border-primary">
+            <div class="card-body">
+                <i class="fas fa-archive fa-2x text-primary mb-2"></i>
+                <h4 class="card-title text-primary">{{ stats.total_backups }}</h4>
+                <p class="card-text text-muted">总备份数</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-success">
+            <div class="card-body">
+                <i class="fas fa-compress fa-2x text-success mb-2"></i>
+                <h4 class="card-title text-success">{{ stats.compressed_count }}</h4>
+                <p class="card-text text-muted">压缩备份</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-info">
+            <div class="card-body">
+                <i class="fas fa-hdd fa-2x text-info mb-2"></i>
+                <h4 class="card-title text-info">{{ "%.1f"|format(stats.total_size / 1024 / 1024) }}MB</h4>
+                <p class="card-text text-muted">总大小</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-warning">
+            <div class="card-body">
+                <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                <h4 class="card-title text-warning">
+                    {% if stats.newest_backup %}
+                        {{ stats.newest_backup.created_at.strftime('%m-%d') }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </h4>
+                <p class="card-text text-muted">最新备份</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 备份操作 -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-cog me-2"></i>备份操作
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6>创建新备份</h6>
+                <form method="POST" action="{{ url_for('admin.create_backup') }}">
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="true" id="compress" name="compress" checked>
+                            <label class="form-check-label" for="compress">
+                                启用压缩（推荐）
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>创建备份
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h6>清理旧备份</h6>
+                <form method="POST" action="{{ url_for('admin.cleanup_backups') }}">
+                    <div class="mb-3">
+                        <label for="keep_days" class="form-label">保留天数</label>
+                        <input type="number" class="form-control" id="keep_days" name="keep_days" value="7" min="1" max="365">
+                    </div>
+                    <button type="submit" class="btn btn-warning" onclick="return confirm('确定要清理旧备份吗？')">
+                        <i class="fas fa-trash me-1"></i>清理旧备份
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 备份文件列表 -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-list me-2"></i>备份文件列表
+        </h5>
+    </div>
+    <div class="card-body">
+        {% if backups %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>类型</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for backup in backups %}
+                    <tr>
+                        <td>
+                            <i class="fas fa-file-archive me-1"></i>
+                            {{ backup.filename }}
+                        </td>
+                        <td>{{ "%.2f"|format(backup.size / 1024 / 1024) }} MB</td>
+                        <td>
+                            {% if backup.is_compressed %}
+                                <span class="badge bg-success">压缩</span>
+                            {% else %}
+                                <span class="badge bg-secondary">普通</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ backup.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{{ url_for('admin.download_backup', filename=backup.filename) }}" 
+                                   class="btn btn-outline-primary" title="下载">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                                <button type="button" class="btn btn-outline-info" 
+                                        onclick="verifyBackup('{{ backup.filename }}')" title="验证">
+                                    <i class="fas fa-check-circle"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-warning" 
+                                        onclick="restoreBackup('{{ backup.filename }}')" title="恢复">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+            <i class="fas fa-archive fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">暂无备份文件</h5>
+            <p class="text-muted">点击上方"创建备份"按钮来创建第一个备份</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 恢复确认模态框 -->
+<div class="modal fade" id="restoreModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认恢复备份</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="restoreForm" method="POST">
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>警告：</strong>恢复备份将覆盖当前数据库，此操作不可撤销！
+                    </div>
+                    <p>您确定要恢复备份文件 <strong id="restoreFilename"></strong> 吗？</p>
+                    <p class="text-muted small">当前数据库将被自动备份，然后替换为选择的备份文件。</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="true" id="confirmRestore" name="confirm" required>
+                        <label class="form-check-label" for="confirmRestore">
+                            我了解风险并确认执行恢复操作
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-danger">确认恢复</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function verifyBackup(filename) {
+    // 显示加载状态
+    const btn = event.target.closest('button');
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    btn.disabled = true;
+    
+    fetch(`{{ url_for('admin.verify_backup', filename='FILENAME') }}`.replace('FILENAME', filename))
+        .then(response => response.json())
+        .then(data => {
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+            
+            if (data.success) {
+                alert(`验证成功: ${data.message}`);
+            } else {
+                alert(`验证失败: ${data.message}`);
+            }
+        })
+        .catch(error => {
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+            alert('验证请求失败');
+        });
+}
+
+function restoreBackup(filename) {
+    document.getElementById('restoreFilename').textContent = filename;
+    document.getElementById('restoreForm').action = `{{ url_for('admin.restore_backup', filename='FILENAME') }}`.replace('FILENAME', filename);
+    document.getElementById('confirmRestore').checked = false;
+    new bootstrap.Modal(document.getElementById('restoreModal')).show();
+}
+</script>
+{% endblock %}

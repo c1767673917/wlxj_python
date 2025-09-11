@@ -1,0 +1,210 @@
+{% extends "portal/base.html" %}
+
+{% block title %}
+    {% if quote %}修改报价{% else %}提交报价{% endif %} - {{ order.order_no }} - 供应商门户
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+        <i class="fas fa-dollar-sign me-2"></i>
+        {% if quote %}修改报价{% else %}提交报价{% endif %} - {{ order.order_no }}
+    </h2>
+    <div>
+        <a href="{{ url_for('portal.order_detail', order_id=order.id) }}" 
+           class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>返回订单详情
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- 报价表单 -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-edit me-2"></i>报价信息
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-4">
+                        <label for="price" class="form-label">
+                            <strong>报价金额 <span class="text-danger">*</span></strong>
+                        </label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">¥</span>
+                            <input type="number" class="form-control" id="price" name="price" 
+                                   value="{{ quote.price if quote else '' }}" 
+                                   step="0.01" min="0.01" required
+                                   placeholder="请输入报价金额">
+                            <span class="input-group-text">元</span>
+                        </div>
+                        <div class="form-text">请输入您的最优报价，包含所有费用</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="delivery_time" class="form-label">
+                            <strong>承诺交期</strong>
+                        </label>
+                        <input type="text" class="form-control" id="delivery_time" name="delivery_time" 
+                               value="{{ quote.delivery_time if quote else '' }}"
+                               placeholder="例如：收到订单后3-5个工作日">
+                        <div class="form-text">请提供您能承诺的交货时间</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="remarks" class="form-label">
+                            <strong>备注说明</strong>
+                        </label>
+                        <textarea class="form-control" id="remarks" name="remarks" rows="4"
+                                  placeholder="可以补充说明服务内容、运输方式、付款条件等">{{ quote.remarks if quote else '' }}</textarea>
+                        <div class="form-text">可选：提供额外的说明信息有助于提高中标率</div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('portal.order_detail', order_id=order.id) }}" 
+                           class="btn btn-secondary btn-lg">
+                            <i class="fas fa-times me-1"></i>取消
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-paper-plane me-1"></i>
+                            {% if quote %}更新报价{% else %}提交报价{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- 订单摘要 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-clipboard-list me-2"></i>订单摘要
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>订单号：</strong>
+                    <br>{{ order.order_no }}
+                </div>
+                <div class="mb-3">
+                    <strong>起始仓库：</strong>
+                    <br>{{ order.warehouse }}
+                </div>
+                <div class="mb-3">
+                    <strong>收货地址：</strong>
+                    <br>{{ order.delivery_address }}
+                </div>
+                <div class="mb-3">
+                    <strong>货物信息：</strong>
+                    <div class="border rounded p-2 bg-light small">
+                        {{ order.goods|truncate(100) }}
+                    </div>
+                </div>
+                <div class="mb-0">
+                    <strong>发布时间：</strong>
+                    <br>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}
+                </div>
+            </div>
+        </div>
+
+        <!-- 当前报价状态 -->
+        {% if quote %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-history me-2"></i>当前报价
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <div class="mb-2">
+                        <strong>当前报价：</strong>
+                        <span class="fs-5 text-primary fw-bold">¥{{ quote.price }}</span>
+                    </div>
+                    <div class="mb-2">
+                        <strong>交期：</strong>
+                        {{ quote.delivery_time or '未填写' }}
+                    </div>
+                    <div class="mb-0">
+                        <strong>提交时间：</strong>
+                        {{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}
+                    </div>
+                </div>
+                <p class="small text-muted mb-0">
+                    <i class="fas fa-info-circle me-1"></i>
+                    修改报价后，提交时间将更新
+                </p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 报价建议 -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>报价建议
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>充分考虑运输距离和成本</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>评估货物特殊要求（如温控等）</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>合理的交期有助于提高竞争力</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>详细的备注说明展现专业性</small>
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <small>报价应包含所有相关费用</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 表单验证
+document.querySelector('form').addEventListener('submit', function(e) {
+    const price = parseFloat(document.getElementById('price').value);
+    
+    if (!price || price <= 0) {
+        e.preventDefault();
+        alert('请输入有效的报价金额');
+        return false;
+    }
+    
+    // 确认提交
+    const action = {{ 'true' if quote else 'false' }};
+    const message = action ? '确定要更新报价吗？' : '确定要提交报价吗？';
+    
+    if (!confirm(message)) {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// 金额格式化
+document.getElementById('price').addEventListener('blur', function() {
+    const value = parseFloat(this.value);
+    if (value) {
+        this.value = value.toFixed(2);
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,247 @@
+{% extends "portal/base.html" %}
+
+{% block title %}我的报价 - {{ supplier.name }} - 供应商门户{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+        <i class="fas fa-chart-line me-2"></i>我的报价
+    </h2>
+    <div>
+        <a href="{{ url_for('portal.supplier_portal', access_code=session.get('access_code', '')) }}" 
+           class="btn btn-outline-secondary">
+            <i class="fas fa-home me-1"></i>返回首页
+        </a>
+    </div>
+</div>
+
+<!-- 统计概览 -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center border-primary">
+            <div class="card-body">
+                <i class="fas fa-list fa-2x text-primary mb-2"></i>
+                <h4 class="card-title text-primary">{{ quotes|length }}</h4>
+                <p class="card-text text-muted">总报价数</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-success">
+            <div class="card-body">
+                <i class="fas fa-trophy fa-2x text-success mb-2"></i>
+                <h4 class="card-title text-success">
+                    {{ quotes|selectattr('order.selected_supplier_id', 'equalto', supplier.id)|list|length }}
+                </h4>
+                <p class="card-text text-muted">中标数量</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-warning">
+            <div class="card-body">
+                <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                <h4 class="card-title text-warning">
+                    {{ quotes|selectattr('order.status', 'equalto', 'active')|list|length }}
+                </h4>
+                <p class="card-text text-muted">待定订单</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-info">
+            <div class="card-body">
+                <i class="fas fa-percentage fa-2x text-info mb-2"></i>
+                <h4 class="card-title text-info">
+                    {% if quotes|length > 0 %}
+                        {{ "%.1f"|format((quotes|selectattr('order.selected_supplier_id', 'equalto', supplier.id)|list|length / quotes|length * 100)) }}%
+                    {% else %}
+                        0%
+                    {% endif %}
+                </h4>
+                <p class="card-text text-muted">中标率</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 报价列表 -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-list me-2"></i>报价历史
+        </h5>
+    </div>
+    <div class="card-body">
+        {% if quotes %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>订单号</th>
+                        <th>货物信息</th>
+                        <th>报价金额</th>
+                        <th>交期</th>
+                        <th>订单状态</th>
+                        <th>报价状态</th>
+                        <th>报价时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for quote in quotes %}
+                    <tr {% if quote.order.selected_supplier_id == supplier.id %}class="table-success"{% endif %}>
+                        <td>
+                            <a href="{{ url_for('portal.order_detail', order_id=quote.order.id) }}" 
+                               class="text-decoration-none fw-bold">
+                                {{ quote.order.order_no }}
+                            </a>
+                        </td>
+                        <td>
+                            <div class="text-truncate" style="max-width: 200px;" title="{{ quote.order.goods }}">
+                                {{ quote.order.goods }}
+                            </div>
+                        </td>
+                        <td>
+                            <strong class="text-primary fs-6">{{ quote.price|format_price }}</strong>
+                        </td>
+                        <td>
+                            <small>{{ quote.delivery_time or '-' }}</small>
+                        </td>
+                        <td>
+                            {% if quote.order.status == 'active' %}
+                                <span class="badge bg-success">进行中</span>
+                            {% elif quote.order.status == 'completed' %}
+                                <span class="badge bg-primary">已完成</span>
+                            {% elif quote.order.status == 'cancelled' %}
+                                <span class="badge bg-secondary">已取消</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if quote.order.selected_supplier_id == supplier.id %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-trophy me-1"></i>已中标
+                                </span>
+                            {% elif quote.order.status == 'completed' %}
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-times me-1"></i>未中标
+                                </span>
+                            {% elif quote.order.status == 'cancelled' %}
+                                <span class="badge bg-warning">
+                                    <i class="fas fa-ban me-1"></i>订单取消
+                                </span>
+                            {% else %}
+                                <span class="badge bg-warning">
+                                    <i class="fas fa-clock me-1"></i>待定
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <small class="text-muted">
+                                {{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}
+                            </small>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{{ url_for('portal.order_detail', order_id=quote.order.id) }}" 
+                                   class="btn btn-outline-info" title="查看订单">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                {% if quote.order.status == 'active' %}
+                                <a href="{{ url_for('portal.submit_quote', order_id=quote.order.id) }}" 
+                                   class="btn btn-outline-warning" title="修改报价">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-chart-line fa-5x text-muted mb-3"></i>
+            <h4 class="text-muted">还没有报价记录</h4>
+            <p class="text-muted mb-4">当您提交第一个报价后，记录将显示在这里</p>
+            <a href="{{ url_for('portal.supplier_portal', access_code=session.get('access_code', '')) }}" 
+               class="btn btn-primary">
+                <i class="fas fa-home me-2"></i>返回首页查看待报价订单
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 业绩分析 -->
+{% if quotes %}
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>月度报价趋势
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center py-3">
+                    <i class="fas fa-chart-line fa-3x text-muted mb-2"></i>
+                    <p class="text-muted">图表功能开发中...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-calculator me-2"></i>报价统计
+                </h5>
+            </div>
+            <div class="card-body">
+                {% set prices = quotes|map(attribute='price')|map('safe_number', 0)|list %}
+                {% if prices and prices|length > 0 %}
+                <div class="row text-center">
+                    <div class="col-4">
+                        <h5 class="text-success">{{ (prices|min)|format_price }}</h5>
+                        <small class="text-muted">最低报价</small>
+                    </div>
+                    <div class="col-4">
+                        <h5 class="text-danger">{{ (prices|max)|format_price }}</h5>
+                        <small class="text-muted">最高报价</small>
+                    </div>
+                    <div class="col-4">
+                        {% if prices|length > 0 %}
+                        {% set avg_price = prices|sum / prices|length %}
+                        <h5 class="text-primary">{{ avg_price|format_price }}</h5>
+                        {% else %}
+                        <h5 class="text-primary">¥0.00</h5>
+                        {% endif %}
+                        <small class="text-muted">平均报价</small>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center py-3">
+                    <p class="text-muted">暂无价格数据</p>
+                </div>
+                {% endif %}
+                
+                <hr>
+                
+                <div class="row text-center">
+                    <div class="col-6">
+                        <h5 class="text-info">{{ quotes|selectattr('order.status', 'equalto', 'active')|list|length }}</h5>
+                        <small class="text-muted">进行中订单</small>
+                    </div>
+                    <div class="col-6">
+                        <h5 class="text-warning">{{ quotes|selectattr('order.status', 'equalto', 'completed')|list|length }}</h5>
+                        <small class="text-muted">已完成订单</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

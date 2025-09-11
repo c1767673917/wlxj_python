@@ -1,0 +1,510 @@
+2025-09-11 11:03:02,580 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-11 11:03:02,580 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-11 11:03:02,581 - INFO -  * Restarting with stat
+2025-09-11 11:03:02,969 - WARNING -  * Debugger is active!
+2025-09-11 11:03:02,977 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:03:16,523 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:16] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-11 11:03:16,540 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:16] "GET /login HTTP/1.1" 200 -
+2025-09-11 11:03:17,084 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-11 11:03:20,008 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:20] "GET /register HTTP/1.1" 200 -
+2025-09-11 11:03:27,070 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:27] "[32mPOST /register HTTP/1.1[0m" 302 -
+2025-09-11 11:03:27,075 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:27] "GET /login HTTP/1.1" 200 -
+2025-09-11 11:03:31,260 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:31] "POST /login HTTP/1.1" 200 -
+2025-09-11 11:03:35,863 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:35] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-09-11 11:03:35,883 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:35] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:03:41,558 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:41] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 11:03:42,391 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:42] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:03:43,134 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:43] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:03:43,829 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:43] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:03:44,327 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:44] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:03:44,778 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:44] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:03:50,135 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:50] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:03:50,578 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:50] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:03:51,963 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:51] "GET /suppliers/add HTTP/1.1" 200 -
+2025-09-11 11:03:58,489 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:58] "[32mPOST /suppliers/add HTTP/1.1[0m" 302 -
+2025-09-11 11:03:58,498 - INFO - 127.0.0.1 - - [11/Sep/2025 11:03:58] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:04:05,732 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:05] "GET /suppliers/1/details HTTP/1.1" 200 -
+2025-09-11 11:04:10,410 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:10] "GET /supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 11:04:15,703 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:15] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 11:04:16,478 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:16] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:04:16,985 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:16] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:04:18,021 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:18] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:04:18,912 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:18] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:04:19,538 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:19] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 11:04:20,103 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:20] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:04:22,562 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:22] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 11:04:23,153 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:23] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:04:23,886 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:23] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:04:25,303 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:25] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 11:04:26,326 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:26] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 11:04:27,100 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:27] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:04:55,582 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:55] "[35m[1mPOST /orders/new HTTP/1.1[0m" 500 -
+2025-09-11 11:04:55,667 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:55] "GET /orders/new?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-09-11 11:04:55,667 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:55] "GET /orders/new?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-09-11 11:04:55,680 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:55] "GET /orders/new?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-09-11 11:04:55,740 - INFO - 127.0.0.1 - - [11/Sep/2025 11:04:55] "[36mGET /orders/new?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 11:06:40,731 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:06:40,783 - INFO -  * Restarting with stat
+2025-09-11 11:06:41,163 - WARNING -  * Debugger is active!
+2025-09-11 11:06:41,170 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:06:47,133 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:06:47,182 - INFO -  * Restarting with stat
+2025-09-11 11:06:47,584 - WARNING -  * Debugger is active!
+2025-09-11 11:06:47,591 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:06:53,506 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:06:53,561 - INFO -  * Restarting with stat
+2025-09-11 11:06:53,956 - WARNING -  * Debugger is active!
+2025-09-11 11:06:53,964 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:07:02,369 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:07:02,421 - INFO -  * Restarting with stat
+2025-09-11 11:07:02,806 - WARNING -  * Debugger is active!
+2025-09-11 11:07:02,814 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:07:36,545 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/test_order_fix.py', reloading
+2025-09-11 11:07:36,597 - INFO -  * Restarting with stat
+2025-09-11 11:07:36,979 - WARNING -  * Debugger is active!
+2025-09-11 11:07:36,987 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:10:36,225 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:10:36,274 - INFO -  * Restarting with stat
+2025-09-11 11:10:36,662 - WARNING -  * Debugger is active!
+2025-09-11 11:10:36,669 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:10:42,745 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:10:42,793 - INFO -  * Restarting with stat
+2025-09-11 11:10:43,179 - WARNING -  * Debugger is active!
+2025-09-11 11:10:43,186 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:10:49,045 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:10:49,102 - INFO -  * Restarting with stat
+2025-09-11 11:10:49,488 - WARNING -  * Debugger is active!
+2025-09-11 11:10:49,495 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:11:00,646 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:11:00,700 - INFO -  * Restarting with stat
+2025-09-11 11:11:01,092 - WARNING -  * Debugger is active!
+2025-09-11 11:11:01,100 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:11:32,954 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:11:33,008 - INFO -  * Restarting with stat
+2025-09-11 11:11:33,397 - WARNING -  * Debugger is active!
+2025-09-11 11:11:33,404 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:11:49,600 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:11:49,651 - INFO -  * Restarting with stat
+2025-09-11 11:11:50,046 - WARNING -  * Debugger is active!
+2025-09-11 11:11:50,056 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:12:09,785 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:12:09,833 - INFO -  * Restarting with stat
+2025-09-11 11:12:10,221 - WARNING -  * Debugger is active!
+2025-09-11 11:12:10,231 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:12:17,543 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:12:17,591 - INFO -  * Restarting with stat
+2025-09-11 11:12:17,975 - WARNING -  * Debugger is active!
+2025-09-11 11:12:17,982 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:12:22,875 - INFO - 订单创建成功: ORD20250911111222000003, 用户: 3, 供应商数量: 1
+2025-09-11 11:12:22,876 - INFO - 供应商 sf 未配置webhook，跳过通知
+2025-09-11 11:12:22,876 - INFO - 供应商通知完成 - 成功: 0, 失败: 0
+2025-09-11 11:12:22,877 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:22] "[32mPOST /orders/new HTTP/1.1[0m" 302 -
+2025-09-11 11:12:22,913 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:22] "GET /orders/3 HTTP/1.1" 200 -
+2025-09-11 11:12:30,935 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:30] "GET /orders/3 HTTP/1.1" 200 -
+2025-09-11 11:12:31,770 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:12:31,827 - INFO -  * Restarting with stat
+2025-09-11 11:12:32,208 - WARNING -  * Debugger is active!
+2025-09-11 11:12:32,217 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:12:32,577 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:32] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:12:32,810 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:32] "[35m[1mGET /orders/ HTTP/1.1[0m" 500 -
+2025-09-11 11:12:32,842 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:32] "GET /orders/?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-09-11 11:12:32,842 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:32] "GET /orders/?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-09-11 11:12:32,848 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:32] "GET /orders/?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-09-11 11:12:32,901 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:32] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 11:12:36,870 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:12:36,984 - INFO -  * Restarting with stat
+2025-09-11 11:12:37,391 - WARNING -  * Debugger is active!
+2025-09-11 11:12:37,399 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:12:39,767 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:39] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:12:40,634 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:40] "[35m[1mGET /orders/ HTTP/1.1[0m" 500 -
+2025-09-11 11:12:40,669 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:40] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-11 11:12:40,672 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:40] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-11 11:12:40,677 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:40] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 11:12:42,134 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:42] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:12:43,242 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:43] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:12:43,973 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:43] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:12:46,023 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:46] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:12:47,975 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:47] "[35m[1mGET /orders/ HTTP/1.1[0m" 500 -
+2025-09-11 11:12:48,005 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:48] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-11 11:12:48,008 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:48] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-11 11:12:48,013 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:48] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 11:12:50,789 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:50] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:12:53,890 - INFO - 127.0.0.1 - - [11/Sep/2025 11:12:53] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:13:10,701 - INFO - 127.0.0.1 - - [11/Sep/2025 11:13:10] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:13:13,208 - INFO - 127.0.0.1 - - [11/Sep/2025 11:13:13] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:30:55,074 - INFO - 127.0.0.1 - - [11/Sep/2025 11:30:55] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:30:57,147 - INFO - 127.0.0.1 - - [11/Sep/2025 11:30:57] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:30:57,977 - INFO - 127.0.0.1 - - [11/Sep/2025 11:30:57] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:30:58,765 - INFO - 127.0.0.1 - - [11/Sep/2025 11:30:58] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:30:59,654 - INFO - 127.0.0.1 - - [11/Sep/2025 11:30:59] "[35m[1mGET /orders/ HTTP/1.1[0m" 500 -
+2025-09-11 11:30:59,681 - INFO - 127.0.0.1 - - [11/Sep/2025 11:30:59] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-11 11:30:59,683 - INFO - 127.0.0.1 - - [11/Sep/2025 11:30:59] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-11 11:30:59,692 - INFO - 127.0.0.1 - - [11/Sep/2025 11:30:59] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 11:31:02,219 - INFO - 127.0.0.1 - - [11/Sep/2025 11:31:02] "[35m[1mGET /orders/ HTTP/1.1[0m" 500 -
+2025-09-11 11:31:02,239 - INFO - 127.0.0.1 - - [11/Sep/2025 11:31:02] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-11 11:31:02,239 - INFO - 127.0.0.1 - - [11/Sep/2025 11:31:02] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-11 11:31:02,246 - INFO - 127.0.0.1 - - [11/Sep/2025 11:31:02] "[36mGET /orders/?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 11:32:03,454 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:32:03,513 - INFO -  * Restarting with stat
+2025-09-11 11:32:03,967 - WARNING -  * Debugger is active!
+2025-09-11 11:32:03,975 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:35:13,807 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:35:13,857 - INFO -  * Restarting with stat
+2025-09-11 11:35:14,318 - WARNING -  * Debugger is active!
+2025-09-11 11:35:14,329 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:35:22,101 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:35:22,153 - INFO -  * Restarting with stat
+2025-09-11 11:35:22,544 - WARNING -  * Debugger is active!
+2025-09-11 11:35:22,553 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:35:32,993 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:35:33,063 - INFO -  * Restarting with stat
+2025-09-11 11:35:33,444 - WARNING -  * Debugger is active!
+2025-09-11 11:35:33,452 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:35:40,790 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:35:40,845 - INFO -  * Restarting with stat
+2025-09-11 11:35:41,233 - WARNING -  * Debugger is active!
+2025-09-11 11:35:41,242 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:39:26,681 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:39:26,732 - INFO -  * Restarting with stat
+2025-09-11 11:39:27,205 - WARNING -  * Debugger is active!
+2025-09-11 11:39:27,215 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:39:33,395 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:39:33,446 - INFO -  * Restarting with stat
+2025-09-11 11:39:33,915 - WARNING -  * Debugger is active!
+2025-09-11 11:39:33,924 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:39:38,576 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:39:38,624 - INFO -  * Restarting with stat
+2025-09-11 11:39:39,022 - WARNING -  * Debugger is active!
+2025-09-11 11:39:39,031 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:39:44,852 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:39:44,906 - INFO -  * Restarting with stat
+2025-09-11 11:39:45,303 - WARNING -  * Debugger is active!
+2025-09-11 11:39:45,312 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:39:56,335 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:39:56,388 - INFO -  * Restarting with stat
+2025-09-11 11:39:56,784 - WARNING -  * Debugger is active!
+2025-09-11 11:39:56,792 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:40:04,275 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-11 11:40:04,322 - INFO -  * Restarting with stat
+2025-09-11 11:40:04,713 - WARNING -  * Debugger is active!
+2025-09-11 11:40:04,723 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:40:13,578 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:40:13,631 - INFO -  * Restarting with stat
+2025-09-11 11:40:14,028 - WARNING -  * Debugger is active!
+2025-09-11 11:40:14,037 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:40:26,967 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-11 11:40:27,024 - INFO -  * Restarting with stat
+2025-09-11 11:40:27,405 - WARNING -  * Debugger is active!
+2025-09-11 11:40:27,415 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:41:20,222 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/test_cache_mechanism.py', reloading
+2025-09-11 11:41:20,278 - INFO -  * Restarting with stat
+2025-09-11 11:41:20,660 - WARNING -  * Debugger is active!
+2025-09-11 11:41:20,667 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:41:34,653 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/test_cache_mechanism.py', reloading
+2025-09-11 11:41:34,704 - INFO -  * Restarting with stat
+2025-09-11 11:41:35,095 - WARNING -  * Debugger is active!
+2025-09-11 11:41:35,103 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:43:53,664 - INFO - 127.0.0.1 - - [11/Sep/2025 11:43:53] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 11:43:55,054 - INFO - 127.0.0.1 - - [11/Sep/2025 11:43:55] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 11:43:55,776 - INFO - 127.0.0.1 - - [11/Sep/2025 11:43:55] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:43:56,425 - INFO - 127.0.0.1 - - [11/Sep/2025 11:43:56] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:43:57,077 - INFO - 127.0.0.1 - - [11/Sep/2025 11:43:57] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:43:58,087 - INFO - 127.0.0.1 - - [11/Sep/2025 11:43:58] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:44:00,480 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:00] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:44:02,755 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:02] "GET /suppliers/1/details HTTP/1.1" 200 -
+2025-09-11 11:44:07,767 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:07] "GET /supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 11:44:10,939 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:10] "GET /portal/order/3 HTTP/1.1" 200 -
+2025-09-11 11:44:13,513 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:13] "GET /portal/order/3/quote HTTP/1.1" 200 -
+2025-09-11 11:44:21,204 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:21] "[32mPOST /portal/order/3/quote HTTP/1.1[0m" 302 -
+2025-09-11 11:44:21,214 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:21] "GET /portal/order/3 HTTP/1.1" 200 -
+2025-09-11 11:44:30,360 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:30] "GET /suppliers/1/details HTTP/1.1" 200 -
+2025-09-11 11:44:31,616 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:31] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:44:32,878 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:32] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:44:33,405 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:33] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:44:33,887 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:33] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 11:44:37,396 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:37] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:44:38,614 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:38] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 11:44:39,847 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:39] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:44:41,683 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:41] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:44:42,213 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:42] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:44:43,615 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:43] "[35m[1mGET /quotes/order/3 HTTP/1.1[0m" 500 -
+2025-09-11 11:44:43,648 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:43] "GET /quotes/order/3?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-09-11 11:44:43,649 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:43] "GET /quotes/order/3?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-09-11 11:44:43,654 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:43] "GET /quotes/order/3?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-09-11 11:44:43,663 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:43] "[36mGET /quotes/order/3?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 11:44:50,071 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:50] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:44:51,931 - INFO - 127.0.0.1 - - [11/Sep/2025 11:44:51] "GET /suppliers/add HTTP/1.1" 200 -
+2025-09-11 11:45:00,324 - INFO - 127.0.0.1 - - [11/Sep/2025 11:45:00] "[32mPOST /suppliers/add HTTP/1.1[0m" 302 -
+2025-09-11 11:45:00,328 - INFO - 127.0.0.1 - - [11/Sep/2025 11:45:00] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:45:02,123 - INFO - 127.0.0.1 - - [11/Sep/2025 11:45:02] "GET /suppliers/4/details HTTP/1.1" 200 -
+2025-09-11 11:45:07,713 - INFO - 127.0.0.1 - - [11/Sep/2025 11:45:07] "GET /supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 11:45:18,082 - INFO - 127.0.0.1 - - [11/Sep/2025 11:45:18] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 11:45:37,898 - INFO - 订单创建成功: ORD20250911114537000004, 用户: 3, 供应商数量: 2
+2025-09-11 11:45:37,899 - INFO - 供应商 sf 未配置webhook，跳过通知
+2025-09-11 11:45:37,899 - INFO - 供应商 新天地 未配置webhook，跳过通知
+2025-09-11 11:45:37,899 - INFO - 供应商通知完成 - 成功: 0, 失败: 0
+2025-09-11 11:45:37,900 - INFO - 127.0.0.1 - - [11/Sep/2025 11:45:37] "[32mPOST /orders/new HTTP/1.1[0m" 302 -
+2025-09-11 11:45:37,904 - INFO - Quote模型已成功导入并缓存，耗时: 0.0000秒
+2025-09-11 11:45:37,925 - INFO - 127.0.0.1 - - [11/Sep/2025 11:45:37] "GET /orders/4 HTTP/1.1" 200 -
+2025-09-11 11:45:40,468 - INFO - 127.0.0.1 - - [11/Sep/2025 11:45:40] "GET /supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 11:45:41,967 - INFO - 127.0.0.1 - - [11/Sep/2025 11:45:41] "GET /portal/order/4/quote HTTP/1.1" 200 -
+2025-09-11 11:45:49,204 - INFO - 127.0.0.1 - - [11/Sep/2025 11:45:49] "[32mPOST /portal/order/4/quote HTTP/1.1[0m" 302 -
+2025-09-11 11:45:49,214 - INFO - 127.0.0.1 - - [11/Sep/2025 11:45:49] "GET /portal/order/4 HTTP/1.1" 200 -
+2025-09-11 11:49:55,202 - INFO - 127.0.0.1 - - [11/Sep/2025 11:49:55] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 11:49:59,106 - INFO - 127.0.0.1 - - [11/Sep/2025 11:49:59] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 11:50:03,727 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:03] "GET /portal/order/4/quote HTTP/1.1" 200 -
+2025-09-11 11:50:14,905 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:14] "[32mPOST /portal/order/4/quote HTTP/1.1[0m" 302 -
+2025-09-11 11:50:14,919 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:14] "GET /portal/order/4 HTTP/1.1" 200 -
+2025-09-11 11:50:19,033 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:19] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 11:50:24,488 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:24] "GET /portal/order/4 HTTP/1.1" 200 -
+2025-09-11 11:50:29,398 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:29] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:50:30,728 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:30] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 11:50:31,351 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:31] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 11:50:32,463 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:32] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:50:36,825 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:36] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 11:50:37,236 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:37] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:50:47,244 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:47] "[35m[1mGET /quotes/order/4 HTTP/1.1[0m" 500 -
+2025-09-11 11:50:47,269 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:47] "GET /quotes/order/4?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-09-11 11:50:47,271 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:47] "GET /quotes/order/4?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-09-11 11:50:47,280 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:47] "GET /quotes/order/4?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-09-11 11:50:47,322 - INFO - 127.0.0.1 - - [11/Sep/2025 11:50:47] "[36mGET /quotes/order/4?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 11:51:44,272 - INFO - 127.0.0.1 - - [11/Sep/2025 11:51:44] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 11:51:45,627 - INFO - 127.0.0.1 - - [11/Sep/2025 11:51:45] "[35m[1mGET /quotes/order/4 HTTP/1.1[0m" 500 -
+2025-09-11 11:51:45,648 - INFO - 127.0.0.1 - - [11/Sep/2025 11:51:45] "[36mGET /quotes/order/4?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-11 11:51:45,649 - INFO - 127.0.0.1 - - [11/Sep/2025 11:51:45] "[36mGET /quotes/order/4?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-11 11:51:45,658 - INFO - 127.0.0.1 - - [11/Sep/2025 11:51:45] "[36mGET /quotes/order/4?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 11:52:43,918 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/quote.py', reloading
+2025-09-11 11:52:43,982 - INFO -  * Restarting with stat
+2025-09-11 11:52:44,447 - WARNING -  * Debugger is active!
+2025-09-11 11:52:44,457 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:52:49,233 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/quote.py', reloading
+2025-09-11 11:52:49,283 - INFO -  * Restarting with stat
+2025-09-11 11:52:49,671 - WARNING -  * Debugger is active!
+2025-09-11 11:52:49,679 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:52:55,585 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/quote.py', reloading
+2025-09-11 11:52:55,637 - INFO -  * Restarting with stat
+2025-09-11 11:52:56,025 - WARNING -  * Debugger is active!
+2025-09-11 11:52:56,035 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:53:00,545 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/quote.py', reloading
+2025-09-11 11:53:00,605 - INFO -  * Restarting with stat
+2025-09-11 11:53:00,997 - WARNING -  * Debugger is active!
+2025-09-11 11:53:01,004 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:53:05,493 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/quote.py', reloading
+2025-09-11 11:53:05,546 - INFO -  * Restarting with stat
+2025-09-11 11:53:05,949 - WARNING -  * Debugger is active!
+2025-09-11 11:53:05,957 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:53:17,110 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-11 11:53:17,160 - INFO -  * Restarting with stat
+2025-09-11 11:53:17,540 - WARNING -  * Debugger is active!
+2025-09-11 11:53:17,548 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:59:12,471 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-11 11:59:12,526 - INFO -  * Restarting with stat
+2025-09-11 11:59:13,001 - WARNING -  * Debugger is active!
+2025-09-11 11:59:13,010 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 11:59:37,208 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-11 11:59:37,256 - INFO -  * Restarting with stat
+2025-09-11 12:02:59,836 - WARNING - Decimal value is not finite: Infinity
+2025-09-11 12:02:59,836 - WARNING - Decimal value is not finite: -Infinity
+2025-09-11 12:02:59,837 - WARNING - Decimal value is not finite: NaN
+2025-09-11 12:02:59,837 - WARNING - Invalid numeric value: inf
+2025-09-11 12:02:59,837 - WARNING - Invalid numeric value: -inf
+2025-09-11 12:02:59,837 - WARNING - Invalid numeric value: nan
+2025-09-11 12:02:59,837 - WARNING - Failed to convert string to Decimal: invalid, error: [<class 'decimal.ConversionSyntax'>]
+2025-09-11 12:02:59,837 - WARNING - String converted Decimal is not finite: inf
+2025-09-11 12:02:59,837 - WARNING - String converted Decimal is not finite: -inf
+2025-09-11 12:02:59,837 - WARNING - String converted Decimal is not finite: nan
+2025-09-11 12:02:59,837 - WARNING - Unsupported type for decimal_to_float: <class 'list'>, value: []
+2025-09-11 12:02:59,837 - WARNING - Unsupported type for decimal_to_float: <class 'dict'>, value: {}
+2025-09-11 12:02:59,837 - WARNING - Unsupported type for decimal_to_float: <class 'object'>, value: <object object at 0x104430ec0>
+2025-09-11 12:02:59,838 - WARNING - Failed to convert string to Decimal: invalid, error: [<class 'decimal.ConversionSyntax'>]
+2025-09-11 12:02:59,838 - WARNING - Unsupported type for decimal_to_float: <class 'list'>, value: []
+2025-09-11 12:02:59,838 - WARNING - Unsupported type for decimal_to_float: <class 'dict'>, value: {}
+2025-09-11 12:02:59,848 - ERROR - Quote 1 has non-finite Decimal price: Infinity
+2025-09-11 12:02:59,848 - WARNING - Quote 1 has None price
+2025-09-11 12:04:32,766 - WARNING - Decimal value is not finite: Infinity
+2025-09-11 12:04:32,767 - WARNING - Decimal value is not finite: -Infinity
+2025-09-11 12:04:32,767 - WARNING - Decimal value is not finite: NaN
+2025-09-11 12:04:32,767 - WARNING - Invalid numeric value: inf
+2025-09-11 12:04:32,767 - WARNING - Invalid numeric value: -inf
+2025-09-11 12:04:32,767 - WARNING - Invalid numeric value: nan
+2025-09-11 12:04:32,767 - WARNING - Failed to convert string to Decimal: invalid, error: [<class 'decimal.ConversionSyntax'>]
+2025-09-11 12:04:32,767 - WARNING - String converted Decimal is not finite: inf
+2025-09-11 12:04:32,767 - WARNING - String converted Decimal is not finite: -inf
+2025-09-11 12:04:32,768 - WARNING - String converted Decimal is not finite: nan
+2025-09-11 12:04:32,768 - WARNING - Unsupported type for decimal_to_float: <class 'list'>, value: []
+2025-09-11 12:04:32,768 - WARNING - Unsupported type for decimal_to_float: <class 'dict'>, value: {}
+2025-09-11 12:04:32,768 - WARNING - Unsupported type for decimal_to_float: <class 'object'>, value: <object object at 0x10681cec0>
+2025-09-11 12:04:32,768 - WARNING - Failed to convert string to Decimal: invalid, error: [<class 'decimal.ConversionSyntax'>]
+2025-09-11 12:04:32,768 - WARNING - Unsupported type for decimal_to_float: <class 'list'>, value: []
+2025-09-11 12:04:32,768 - WARNING - Unsupported type for decimal_to_float: <class 'dict'>, value: {}
+2025-09-11 12:04:32,779 - ERROR - Quote 1 has non-finite Decimal price: Infinity
+2025-09-11 12:04:32,779 - WARNING - Quote 1 has None price
+2025-09-11 13:40:43,415 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-11 13:40:43,416 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-11 13:40:43,417 - INFO -  * Restarting with stat
+2025-09-11 13:40:43,819 - WARNING -  * Debugger is active!
+2025-09-11 13:40:43,829 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 13:40:46,855 - INFO - 127.0.0.1 - - [11/Sep/2025 13:40:46] "GET /portal/order/4 HTTP/1.1" 200 -
+2025-09-11 13:40:58,543 - INFO - 127.0.0.1 - - [11/Sep/2025 13:40:58] "GET /portal/order/4 HTTP/1.1" 200 -
+2025-09-11 13:41:00,171 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:00] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 13:41:01,924 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:01] "[35m[1mGET /quotes/order/4 HTTP/1.1[0m" 500 -
+2025-09-11 13:41:01,957 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:01] "[36mGET /quotes/order/4?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-11 13:41:01,959 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:01] "[36mGET /quotes/order/4?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-11 13:41:01,977 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:01] "[36mGET /quotes/order/4?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 13:41:04,095 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:04] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:41:05,683 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:05] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:41:06,368 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:06] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:41:07,929 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:07] "[35m[1mGET /quotes/order/4 HTTP/1.1[0m" 500 -
+2025-09-11 13:41:07,955 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:07] "[36mGET /quotes/order/4?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-11 13:41:07,956 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:07] "[36mGET /quotes/order/4?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-11 13:41:07,962 - INFO - 127.0.0.1 - - [11/Sep/2025 13:41:07] "[36mGET /quotes/order/4?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 13:42:30,989 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-11 13:42:31,122 - INFO -  * Restarting with stat
+2025-09-11 13:42:31,634 - WARNING -  * Debugger is active!
+2025-09-11 13:42:31,646 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 13:47:10,581 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-11 13:47:10,582 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-11 13:47:10,582 - INFO -  * Restarting with stat
+2025-09-11 13:47:10,966 - WARNING -  * Debugger is active!
+2025-09-11 13:47:10,977 - INFO -  * Debugger PIN: 190-428-606
+2025-09-11 13:47:14,243 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:14] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-11 13:47:14,283 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:14] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:47:19,784 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:19] "GET /quotes/order/4 HTTP/1.1" 200 -
+2025-09-11 13:47:24,816 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:24] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:47:26,462 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:26] "GET /quotes/order/4 HTTP/1.1" 200 -
+2025-09-11 13:47:28,517 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:28] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:47:29,573 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:29] "GET /quotes/order/4 HTTP/1.1" 200 -
+2025-09-11 13:47:40,440 - INFO - Quote模型已成功导入并缓存，耗时: 0.0000秒
+2025-09-11 13:47:40,449 - INFO - 订单 ORD20250911114537000004 已完成，选择供应商ID: 4，缓存命中率: 0.0%
+2025-09-11 13:47:40,450 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:40] "[32mPOST /orders/4/select-supplier HTTP/1.1[0m" 302 -
+2025-09-11 13:47:40,482 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:40] "GET /orders/4 HTTP/1.1" 200 -
+2025-09-11 13:47:45,405 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:45] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:47:47,719 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:47] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:47:48,262 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:48] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 13:47:48,846 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:48] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:47:49,790 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:49] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 13:47:50,274 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:50] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:47:50,870 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:50] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:47:58,829 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:58] "[35m[1mGET /quotes/analysis HTTP/1.1[0m" 500 -
+2025-09-11 13:47:58,862 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:58] "GET /quotes/analysis?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-09-11 13:47:58,862 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:58] "GET /quotes/analysis?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-09-11 13:47:58,867 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:58] "GET /quotes/analysis?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-09-11 13:47:58,915 - INFO - 127.0.0.1 - - [11/Sep/2025 13:47:58] "[36mGET /quotes/analysis?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-11 13:48:04,288 - INFO - 127.0.0.1 - - [11/Sep/2025 13:48:04] "GET /quotes/order/4 HTTP/1.1" 200 -
+2025-09-11 13:48:18,714 - INFO - 127.0.0.1 - - [11/Sep/2025 13:48:18] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:48:20,430 - INFO - 127.0.0.1 - - [11/Sep/2025 13:48:20] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 13:48:29,754 - INFO - 127.0.0.1 - - [11/Sep/2025 13:48:29] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-11 13:48:40,202 - INFO - 127.0.0.1 - - [11/Sep/2025 13:48:40] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-11 13:48:45,143 - INFO - 127.0.0.1 - - [11/Sep/2025 13:48:45] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 13:48:54,619 - INFO - 127.0.0.1 - - [11/Sep/2025 13:48:54] "GET /portal/order/4 HTTP/1.1" 200 -
+2025-09-11 13:49:00,510 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:00] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 13:49:06,763 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:06] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:49:07,281 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:07] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:49:18,325 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:18] "GET /suppliers/1/details HTTP/1.1" 200 -
+2025-09-11 13:49:19,763 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:19] "GET /supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 13:49:51,879 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:51] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:49:52,456 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:52] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 13:49:53,263 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:53] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:49:55,622 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:55] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:49:56,196 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:56] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:49:56,984 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:56] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:49:57,731 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:57] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:49:58,319 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:58] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:49:59,890 - INFO - 127.0.0.1 - - [11/Sep/2025 13:49:59] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:50:00,362 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:00] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:50:01,205 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:01] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:50:01,873 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:01] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:50:08,437 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:08] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:50:12,711 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:12] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:50:13,417 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:13] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 13:50:14,954 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:14] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:50:15,528 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:15] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:50:16,200 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:16] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:50:17,889 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:17] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 13:50:19,218 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:19] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:50:22,946 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:22] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 13:50:23,454 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:23] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:50:25,757 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:25] "GET /orders/4 HTTP/1.1" 200 -
+2025-09-11 13:50:34,675 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:34] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:50:37,298 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:37] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:50:39,278 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:39] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 13:50:50,170 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:50] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:50:53,187 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:53] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:50:53,882 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:53] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:50:55,743 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:55] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:50:56,135 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:56] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:50:56,570 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:56] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:50:57,030 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:57] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:50:57,511 - INFO - 127.0.0.1 - - [11/Sep/2025 13:50:57] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:57:20,436 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:20] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:57:23,794 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:23] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:57:24,584 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:24] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:57:25,156 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:25] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:57:25,718 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:25] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 13:57:26,545 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:26] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:57:32,568 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:32] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:57:33,568 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:33] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:57:34,084 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:34] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:57:37,258 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:37] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:57:38,100 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:38] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:57:39,517 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:39] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:57:40,358 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:40] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:57:44,085 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:44] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:57:45,950 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:45] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:57:53,910 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:53] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-09-11 13:57:57,746 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:57] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:57:57,761 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:57] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-09-11 13:57:59,407 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:59] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:57:59,422 - INFO - 127.0.0.1 - - [11/Sep/2025 13:57:59] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-09-11 13:58:03,637 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:03] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:58:04,256 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:04] "GET /orders/new HTTP/1.1" 200 -
+2025-09-11 13:58:05,492 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:05] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:58:05,972 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:05] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-11 13:58:07,661 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:07] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:58:08,401 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:08] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:58:09,055 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:09] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:58:09,730 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:09] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:58:10,341 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:10] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:58:11,133 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:11] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:58:16,044 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:16] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:58:16,522 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:16] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:58:17,116 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:17] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:58:17,791 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:17] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:58:18,962 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:18] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:58:21,562 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:21] "GET /dashboard HTTP/1.1" 200 -
+2025-09-11 13:58:35,256 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:35] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:58:35,890 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:35] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-11 13:58:36,760 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:36] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 13:58:45,313 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:45] "GET /supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 13:58:47,095 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:47] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-11 13:58:48,050 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:48] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 13:58:48,924 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:48] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-11 13:58:49,414 - INFO - 127.0.0.1 - - [11/Sep/2025 13:58:49] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 13:59:10,131 - INFO - 127.0.0.1 - - [11/Sep/2025 13:59:10] "GET /orders/4 HTTP/1.1" 200 -
+2025-09-11 13:59:15,500 - INFO - 127.0.0.1 - - [11/Sep/2025 13:59:15] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 16:46:18,588 - INFO - 127.0.0.1 - - [11/Sep/2025 16:46:18] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 16:46:21,510 - INFO - 127.0.0.1 - - [11/Sep/2025 16:46:21] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 16:46:24,372 - INFO - 127.0.0.1 - - [11/Sep/2025 16:46:24] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 16:46:33,169 - INFO - 127.0.0.1 - - [11/Sep/2025 16:46:33] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 16:46:36,854 - INFO - 127.0.0.1 - - [11/Sep/2025 16:46:36] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 16:46:43,260 - INFO - 127.0.0.1 - - [11/Sep/2025 16:46:43] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 16:46:46,456 - INFO - 127.0.0.1 - - [11/Sep/2025 16:46:46] "GET /orders/ HTTP/1.1" 200 -
+2025-09-11 16:46:55,680 - INFO - 127.0.0.1 - - [11/Sep/2025 16:46:55] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 16:46:57,300 - INFO - 127.0.0.1 - - [11/Sep/2025 16:46:57] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 16:48:15,940 - INFO - 127.0.0.1 - - [11/Sep/2025 16:48:15] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 16:48:17,611 - INFO - 127.0.0.1 - - [11/Sep/2025 16:48:17] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 16:48:40,515 - INFO - 127.0.0.1 - - [11/Sep/2025 16:48:40] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 16:48:52,669 - INFO - 127.0.0.1 - - [11/Sep/2025 16:48:52] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 16:49:02,444 - INFO - 127.0.0.1 - - [11/Sep/2025 16:49:02] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-11 16:49:04,459 - INFO - 127.0.0.1 - - [11/Sep/2025 16:49:04] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 16:49:34,238 - INFO - 127.0.0.1 - - [11/Sep/2025 16:49:34] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
+2025-09-11 16:49:36,612 - INFO - 127.0.0.1 - - [11/Sep/2025 16:49:36] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -

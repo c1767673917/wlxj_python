@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}创建订单 - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-plus-circle me-2"></i>创建订单
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('order.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>返回列表
+        </a>
+    </div>
+</div>
+
+<form method="POST">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- 订单信息 -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>订单信息
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="warehouse" class="form-label">起始仓库 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="warehouse" name="warehouse" required
+                               placeholder="请输入起始仓库地址">
+                        <div class="form-text">货物所在的仓库或发货地址</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="goods" class="form-label">货物信息 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="goods" name="goods" rows="4" required
+                                  placeholder="请详细描述货物信息，包括名称、规格、数量、重量等"></textarea>
+                        <div class="form-text">请尽可能详细描述货物信息，便于供应商准确报价</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="delivery_address" class="form-label">收货地址 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="delivery_address" name="delivery_address" rows="3" required
+                                  placeholder="请输入详细的收货地址"></textarea>
+                        <div class="form-text">包括收货人、电话、详细地址等信息</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 供应商选择 -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-users me-2"></i>选择供应商 <span class="text-danger">*</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if suppliers %}
+                    <div class="row">
+                        {% for supplier in suppliers %}
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" 
+                                       value="{{ supplier.id }}" id="supplier_{{ supplier.id }}" 
+                                       name="supplier_ids">
+                                <label class="form-check-label" for="supplier_{{ supplier.id }}">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>{{ supplier.name }}</strong>
+                                            <br>
+                                            <small class="text-muted">
+                                                <i class="fas fa-chart-line me-1"></i>
+                                                {{ supplier.quotes|length }} 次报价
+                                            </small>
+                                            {% if supplier.webhook_url %}
+                                                <span class="badge bg-success ms-2">
+                                                    <i class="fas fa-bell"></i>
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mt-3">
+                        <button type="button" class="btn btn-sm btn-outline-primary me-2" onclick="selectAll()">
+                            <i class="fas fa-check-square me-1"></i>全选
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="selectNone()">
+                            <i class="fas fa-square me-1"></i>清除
+                        </button>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">还没有供应商</h5>
+                        <p class="text-muted mb-3">您需要先添加供应商才能创建订单</p>
+                        <a href="{{ url_for('supplier.add') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i>添加供应商
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- 操作面板 -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-cog me-2"></i>操作
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if suppliers %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-paper-plane me-2"></i>创建订单并发送询价
+                        </button>
+                        <a href="{{ url_for('order.index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i>取消
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-secondary btn-lg" disabled>
+                            <i class="fas fa-exclamation-triangle me-2"></i>需要先添加供应商
+                        </button>
+                        <a href="{{ url_for('order.index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>返回列表
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 提示信息 -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-lightbulb me-2"></i>使用提示
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <small>订单创建后系统会自动生成订单号</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <small>已配置微信通知的供应商将收到自动通知</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <small>供应商可通过专属链接查看并报价</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <small>您可以随时为订单添加更多供应商</small>
+                        </li>
+                        <li class="mb-0">
+                            <i class="fas fa-check text-success me-2"></i>
+                            <small>订单创建后可以编辑基本信息</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+function selectAll() {
+    const checkboxes = document.querySelectorAll('input[name="supplier_ids"]');
+    checkboxes.forEach(checkbox => checkbox.checked = true);
+}
+
+function selectNone() {
+    const checkboxes = document.querySelectorAll('input[name="supplier_ids"]');
+    checkboxes.forEach(checkbox => checkbox.checked = false);
+}
+
+// 表单验证
+document.querySelector('form').addEventListener('submit', function(e) {
+    const selectedSuppliers = document.querySelectorAll('input[name="supplier_ids"]:checked');
+    
+    if (selectedSuppliers.length === 0) {
+        e.preventDefault();
+        alert('请至少选择一个供应商');
+        return false;
+    }
+    
+    // 确认提交
+    const count = selectedSuppliers.length;
+    if (!confirm(`您选择了 ${count} 个供应商，确定要创建订单并发送询价吗？`)) {
+        e.preventDefault();
+        return false;
+    }
+});
+</script>
+{% endblock %}

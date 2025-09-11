@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}报价对比 - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-chart-line me-2"></i>报价对比
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('quote.analysis') }}" class="btn btn-outline-primary">
+            <i class="fas fa-analytics me-1"></i>报价分析
+        </a>
+    </div>
+</div>
+
+{% if orders %}
+<div class="row">
+    {% for order in orders %}
+    <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">{{ order.order_no }}</h5>
+                <div>
+                    {% if order.status == 'active' %}
+                        <span class="badge bg-success">进行中</span>
+                    {% elif order.status == 'completed' %}
+                        <span class="badge bg-primary">已完成</span>
+                    {% elif order.status == 'cancelled' %}
+                        <span class="badge bg-secondary">已取消</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong class="text-muted">货物信息：</strong>
+                    <p class="mb-1">{{ order.goods|truncate(80) }}</p>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-6">
+                            <small class="text-muted">起始仓库：</small>
+                            <br>{{ order.warehouse|truncate(30) }}
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted">创建时间：</small>
+                            <br>{{ order.created_at.strftime('%Y-%m-%d') }}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 报价统计 -->
+                <div class="mb-3">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <div class="border-end">
+                                <h5 class="text-primary mb-0">{{ order.get_quote_count() }}</h5>
+                                <small class="text-muted">报价数</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="border-end">
+                                {% if order.quotes %}
+                                    {% set min_price = order.quotes|map(attribute='price')|min %}
+                                    <h5 class="text-success mb-0">{{ min_price|format_price }}</h5>
+                                    <small class="text-muted">最低价</small>
+                                {% else %}
+                                    <h5 class="text-muted mb-0">-</h5>
+                                    <small class="text-muted">最低价</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            {% if order.selected_supplier_id %}
+                                <h5 class="text-warning mb-0">¥{{ order.selected_price }}</h5>
+                                <small class="text-muted">中标价</small>
+                            {% else %}
+                                <h5 class="text-muted mb-0">待定</h5>
+                                <small class="text-muted">中标价</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        {% if order.selected_supplier_id %}
+                            <small class="text-success">
+                                <i class="fas fa-check-circle me-1"></i>
+                                已选择：{{ order.selected_supplier.name }}
+                            </small>
+                        {% else %}
+                            <small class="text-warning">
+                                <i class="fas fa-clock me-1"></i>
+                                待选择供应商
+                            </small>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <a href="{{ url_for('quote.compare', order_id=order.id) }}" 
+                           class="btn btn-primary btn-sm">
+                            <i class="fas fa-balance-scale me-1"></i>对比报价
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- 分页可以在这里添加 -->
+{% else %}
+<div class="text-center py-5">
+    <i class="fas fa-chart-line fa-5x text-muted mb-3"></i>
+    <h4 class="text-muted">还没有收到报价</h4>
+    <p class="text-muted mb-4">当您的订单收到供应商报价后，可以在这里进行对比分析</p>
+    <div class="d-flex justify-content-center gap-2">
+        <a href="{{ url_for('order.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>创建订单
+        </a>
+        <a href="{{ url_for('order.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-list me-2"></i>查看订单
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}编辑订单 - {{ order.order_no }} - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-edit me-2"></i>编辑订单 - {{ order.order_no }}
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('order.detail', order_id=order.id) }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>返回详情
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-info-circle me-2"></i>订单信息
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="warehouse" class="form-label">起始仓库 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="warehouse" name="warehouse" 
+                               value="{{ order.warehouse }}" required>
+                        <div class="form-text">货物所在的仓库或发货地址</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="goods" class="form-label">货物信息 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="goods" name="goods" rows="4" required>{{ order.goods }}</textarea>
+                        <div class="form-text">请尽可能详细描述货物信息，便于供应商准确报价</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="delivery_address" class="form-label">收货地址 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="delivery_address" name="delivery_address" rows="3" required>{{ order.delivery_address }}</textarea>
+                        <div class="form-text">包括收货人、电话、详细地址等信息</div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('order.detail', order_id=order.id) }}" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i>取消
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>保存更改
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-info-circle me-2"></i>订单状态
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">订单号</label>
+                    <input type="text" class="form-control" value="{{ order.order_no }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">创建时间</label>
+                    <input type="text" class="form-control" value="{{ order.created_at.strftime('%Y-%m-%d %H:%M:%S') }}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">当前状态</label>
+                    <div>
+                        <span class="badge bg-success">{{ order.status }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i>注意事项
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-info-circle text-info me-2"></i>
+                        <small>修改订单信息不会重新通知供应商</small>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-info-circle text-info me-2"></i>
+                        <small>如需要供应商重新报价，请联系供应商</small>
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-info-circle text-info me-2"></i>
+                        <small>已提交的报价不会因此失效</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}供应商管理 - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-users me-2"></i>供应商管理
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('supplier.add') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>添加供应商
+        </a>
+    </div>
+</div>
+
+{% if suppliers %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-list me-2"></i>供应商列表 ({{ suppliers|length }})
+        </h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>供应商名称</th>
+                        <th>访问码</th>
+                        <th>微信通知</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for supplier in suppliers %}
+                    <tr>
+                        <td>
+                            <strong>{{ supplier.name }}</strong>
+                        </td>
+                        <td>
+                            <code class="text-muted">{{ supplier.access_code[:8] }}...</code>
+                            <button class="btn btn-sm btn-outline-secondary ms-1" 
+                                    onclick="copyToClipboard('{{ supplier.access_code }}')"
+                                    title="复制完整访问码">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </td>
+                        <td>
+                            {% if supplier.webhook_url %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check me-1"></i>已配置
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-times me-1"></i>未配置
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <small class="text-muted">
+                                {{ supplier.created_at.strftime('%Y-%m-%d %H:%M') }}
+                            </small>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{{ url_for('supplier.details', supplier_id=supplier.id) }}" 
+                                   class="btn btn-outline-info" title="查看详情">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ url_for('supplier.edit', supplier_id=supplier.id) }}" 
+                                   class="btn btn-outline-primary" title="编辑">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" class="btn btn-outline-warning" 
+                                        onclick="regenerateCode({{ supplier.id }})" title="重新生成访问码">
+                                    <i class="fas fa-refresh"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-danger" 
+                                        onclick="deleteSupplier({{ supplier.id }}, '{{ supplier.name }}')" title="删除">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="fas fa-users fa-5x text-muted mb-3"></i>
+    <h4 class="text-muted">还没有供应商</h4>
+    <p class="text-muted mb-4">添加您的第一个供应商开始管理询价流程</p>
+    <a href="{{ url_for('supplier.add') }}" class="btn btn-primary btn-lg">
+        <i class="fas fa-plus me-2"></i>添加供应商
+    </a>
+</div>
+{% endif %}
+
+<!-- 删除确认模态框 -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认删除</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>您确定要删除供应商 <strong id="supplierName"></strong> 吗？</p>
+                <p class="text-muted small">此操作不可撤销，请谨慎操作。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <form id="deleteForm" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">确认删除</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // 显示复制成功提示
+        const toast = document.createElement('div');
+        toast.className = 'toast-container position-fixed top-0 end-0 p-3';
+        toast.innerHTML = `
+            <div class="toast show" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas fa-check-circle text-success me-2"></i>访问码已复制到剪贴板
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        
+        // 3秒后自动移除
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 3000);
+    });
+}
+
+function deleteSupplier(supplierId, supplierName) {
+    document.getElementById('supplierName').textContent = supplierName;
+    document.getElementById('deleteForm').action = `{{ url_for('supplier.delete', supplier_id=0) }}`.replace('0', supplierId);
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+
+function regenerateCode(supplierId) {
+    if (confirm('确定要重新生成访问码吗？原访问码将失效。')) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `{{ url_for('supplier.regenerate_access_code', supplier_id=0) }}`.replace('0', supplierId);
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{% block title %}报价分析 - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-analytics me-2"></i>报价分析
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('quote.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>返回对比
+        </a>
+    </div>
+</div>
+
+<!-- 总体统计 -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-primary">
+            <div class="card-body text-center">
+                <i class="fas fa-clipboard-list fa-2x text-primary mb-2"></i>
+                <h4 class="card-title text-primary">{{ total_orders }}</h4>
+                <p class="card-text text-muted">总订单数</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-success">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-line fa-2x text-success mb-2"></i>
+                <h4 class="card-title text-success">{{ orders_with_quotes }}</h4>
+                <p class="card-text text-muted">有报价订单</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-info">
+            <div class="card-body text-center">
+                <i class="fas fa-list fa-2x text-info mb-2"></i>
+                <h4 class="card-title text-info">{{ total_quotes }}</h4>
+                <p class="card-text text-muted">总报价数</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-warning">
+            <div class="card-body text-center">
+                <i class="fas fa-check-circle fa-2x text-warning mb-2"></i>
+                <h4 class="card-title text-warning">{{ completed_orders }}</h4>
+                <p class="card-text text-muted">已完成订单</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- 供应商表现统计 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-users me-2"></i>供应商表现统计
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if supplier_stats %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>供应商</th>
+                                <th>报价次数</th>
+                                <th>平均报价</th>
+                                <th>价格区间</th>
+                                <th>中标次数</th>
+                                <th>中标率</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stat in supplier_stats %}
+                            <tr>
+                                <td><strong>{{ stat.name }}</strong></td>
+                                <td>
+                                    <span class="badge bg-primary">{{ stat.quote_count }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-primary fw-bold">{{ (stat.avg_price or 0)|format_price }}</span>
+                                </td>
+                                <td>
+                                    <small class="text-muted">
+                                        {{ (stat.min_price or 0)|format_price }} - {{ (stat.max_price or 0)|format_price }}
+                                    </small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">{{ stat.win_count }}</span>
+                                </td>
+                                <td>
+                                    {% set win_rate = (stat.win_count / stat.quote_count * 100) if stat.quote_count > 0 else 0 %}
+                                    <span class="fw-bold {% if win_rate >= 50 %}text-success{% elif win_rate >= 20 %}text-warning{% else %}text-danger{% endif %}">
+                                        {{ "%.1f"|format(win_rate) }}%
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-chart-line me-1"></i>详情
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">暂无统计数据</h5>
+                    <p class="text-muted">需要有供应商报价后才能显示统计分析</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 报价趋势图表 -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-area me-2"></i>报价趋势分析
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center py-5">
+                    <i class="fas fa-chart-line fa-4x text-muted mb-3"></i>
+                    <h5 class="text-muted">图表功能开发中</h5>
+                    <p class="text-muted">可集成 Chart.js 显示：</p>
+                    <ul class="list-unstyled text-muted">
+                        <li>• 月度报价数量趋势</li>
+                        <li>• 平均价格变化趋势</li>
+                        <li>• 供应商活跃度分析</li>
+                        <li>• 中标率变化曲线</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- 关键指标 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-key me-2"></i>关键指标
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6 mb-3">
+                        <div class="border-end">
+                            <h4 class="text-success">
+                                {% if total_orders > 0 %}
+                                    {{ "%.1f"|format(orders_with_quotes / total_orders * 100) }}%
+                                {% else %}
+                                    0%
+                                {% endif %}
+                            </h4>
+                            <small class="text-muted">报价覆盖率</small>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h4 class="text-primary">
+                            {% if orders_with_quotes > 0 %}
+                                {{ "%.1f"|format(total_quotes / orders_with_quotes) }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </h4>
+                        <small class="text-muted">平均报价数/订单</small>
+                    </div>
+                    <div class="col-6">
+                        <div class="border-end">
+                            <h4 class="text-warning">
+                                {% if total_orders > 0 %}
+                                    {{ "%.1f"|format(completed_orders / total_orders * 100) }}%
+                                {% else %}
+                                    0%
+                                {% endif %}
+                            </h4>
+                            <small class="text-muted">订单完成率</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h4 class="text-info">
+                            {% if supplier_stats %}
+                                {{ supplier_stats|length }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </h4>
+                        <small class="text-muted">活跃供应商数</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最近报价活动 -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-clock me-2"></i>最近报价活动
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if recent_quotes %}
+                <div class="timeline">
+                    {% for quote in recent_quotes %}
+                    <div class="timeline-item mb-3">
+                        <div class="timeline-marker bg-primary"></div>
+                        <div class="timeline-content">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">{{ quote.supplier.name }}</h6>
+                                    <p class="mb-1 small">
+                                        {{ quote.order.order_no }} - 
+                                        <strong class="text-primary">¥{{ quote.price }}</strong>
+                                    </p>
+                                    <small class="text-muted">
+                                        {{ quote.created_at.strftime('%m-%d %H:%M') }}
+                                    </small>
+                                </div>
+                                {% if quote.order.selected_supplier_id == quote.supplier_id %}
+                                    <span class="badge bg-success">中标</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-3">
+                    <i class="fas fa-clock fa-2x text-muted mb-2"></i>
+                    <p class="text-muted mb-0">暂无报价活动</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline:before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #dee2e6;
+}
+
+.timeline-item {
+    position: relative;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -23px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.timeline-content {
+    padding-left: 0;
+}
+</style>
+{% endblock %}

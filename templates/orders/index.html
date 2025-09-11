@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}订单管理 - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-clipboard-list me-2"></i>订单管理
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('order.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>创建订单
+        </a>
+    </div>
+</div>
+
+<!-- 筛选栏 -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-4">
+                <label for="status" class="form-label">订单状态</label>
+                <select class="form-select" id="status" name="status">
+                    <option value="">全部状态</option>
+                    <option value="active" {{ 'selected' if status == 'active' }}>进行中</option>
+                    <option value="completed" {{ 'selected' if status == 'completed' }}>已完成</option>
+                    <option value="cancelled" {{ 'selected' if status == 'cancelled' }}>已取消</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">&nbsp;</label>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="fas fa-search me-1"></i>筛选
+                    </button>
+                    <a href="{{ url_for('order.index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-1"></i>清除
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if orders.items %}
+<!-- 订单列表 -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-list me-2"></i>订单列表 ({{ orders.total }})
+        </h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>订单号</th>
+                        <th>货物信息</th>
+                        <th>仓库</th>
+                        <th>状态</th>
+                        <th>报价数</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders.items %}
+                    <tr>
+                        <td>
+                            <strong class="text-primary">{{ order.order_no }}</strong>
+                        </td>
+                        <td>
+                            <div class="text-truncate" style="max-width: 200px;" title="{{ order.goods }}">
+                                {{ order.goods }}
+                            </div>
+                        </td>
+                        <td>
+                            <small class="text-muted">{{ order.warehouse }}</small>
+                        </td>
+                        <td>
+                            {% if order.status == 'active' %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-clock me-1"></i>进行中
+                                </span>
+                            {% elif order.status == 'completed' %}
+                                <span class="badge bg-primary">
+                                    <i class="fas fa-check me-1"></i>已完成
+                                </span>
+                            {% elif order.status == 'cancelled' %}
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-times me-1"></i>已取消
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="badge bg-info">{{ order.get_quote_count() }}</span>
+                            {% if order.get_quote_count() > 0 %}
+                                <small class="text-muted">个报价</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <small class="text-muted">
+                                {{ order.created_at.strftime('%Y-%m-%d %H:%M') }}
+                            </small>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{{ url_for('order.detail', order_id=order.id) }}" 
+                                   class="btn btn-outline-info" title="查看详情">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                {% if order.status == 'active' %}
+                                <a href="{{ url_for('order.edit', order_id=order.id) }}" 
+                                   class="btn btn-outline-primary" title="编辑">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" class="btn btn-outline-danger" 
+                                        onclick="cancelOrder({{ order.id }}, '{{ order.order_no }}')" title="取消订单">
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- 分页 -->
+    {% if orders.pages > 1 %}
+    <div class="card-footer">
+        <nav>
+            <ul class="pagination justify-content-center mb-0">
+                {% if orders.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('order.index', page=orders.prev_num, status=status) }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                
+                {% for page_num in orders.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num != orders.page %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('order.index', page=page_num, status=status) }}">
+                                    {{ page_num }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if orders.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('order.index', page=orders.next_num, status=status) }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="fas fa-clipboard-list fa-5x text-muted mb-3"></i>
+    <h4 class="text-muted">
+        {% if status %}
+            没有找到 "{{ {'active': '进行中', 'completed': '已完成', 'cancelled': '已取消'}[status] }}" 状态的订单
+        {% else %}
+            还没有订单
+        {% endif %}
+    </h4>
+    <p class="text-muted mb-4">
+        {% if status %}
+            尝试更改筛选条件或创建新订单
+        {% else %}
+            创建您的第一个询价订单开始使用系统
+        {% endif %}
+    </p>
+    <div class="d-flex justify-content-center gap-2">
+        {% if status %}
+            <a href="{{ url_for('order.index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-list me-1"></i>查看全部订单
+            </a>
+        {% endif %}
+        <a href="{{ url_for('order.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>创建订单
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<!-- 取消订单确认模态框 -->
+<div class="modal fade" id="cancelModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认取消订单</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>您确定要取消订单 <strong id="orderNo"></strong> 吗？</p>
+                <p class="text-muted small">取消后订单状态将变为已取消，无法恢复。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">保留订单</button>
+                <form id="cancelForm" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">确认取消</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function cancelOrder(orderId, orderNo) {
+    document.getElementById('orderNo').textContent = orderNo;
+    document.getElementById('cancelForm').action = `{{ url_for('order.cancel', order_id=0) }}`.replace('0', orderId);
+    new bootstrap.Modal(document.getElementById('cancelModal')).show();
+}
+</script>
+{% endblock %}

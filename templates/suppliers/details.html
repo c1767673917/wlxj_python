@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+
+{% block title %}{{ supplier.name }} - 供应商详情 - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-user me-2"></i>{{ supplier.name }}
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a href="{{ url_for('supplier.edit', supplier_id=supplier.id) }}" class="btn btn-primary">
+                <i class="fas fa-edit me-1"></i>编辑
+            </a>
+        </div>
+        <a href="{{ url_for('supplier.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>返回列表
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- 基本信息 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-info-circle me-2"></i>基本信息
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td class="fw-bold">供应商名称：</td>
+                                <td>{{ supplier.name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">创建时间：</td>
+                                <td>{{ supplier.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">微信通知：</td>
+                                <td>
+                                    {% if supplier.webhook_url %}
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>已配置
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">
+                                            <i class="fas fa-times me-1"></i>未配置
+                                        </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-center">
+                            <div class="border rounded p-3 bg-light">
+                                <i class="fas fa-qrcode fa-3x text-muted mb-2"></i>
+                                <p class="small mb-0">二维码功能</p>
+                                <p class="small text-muted">（可扩展实现）</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 报价历史 -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-line me-2"></i>报价历史
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if supplier.quotes %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>订单号</th>
+                                <th>报价金额</th>
+                                <th>交期</th>
+                                <th>报价时间</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for quote in supplier.quotes %}
+                            <tr>
+                                <td>{{ quote.order.order_no }}</td>
+                                <td>
+                                    <span class="fw-bold text-primary">{{ quote.format_price() }}</span>
+                                </td>
+                                <td>{{ quote.delivery_time or '-' }}</td>
+                                <td>{{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>
+                                    {% if quote.order.selected_supplier_id == supplier.id %}
+                                        <span class="badge bg-success">已中标</span>
+                                    {% elif quote.order.status == 'completed' %}
+                                        <span class="badge bg-secondary">未中标</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">待定</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">暂无报价记录</h5>
+                    <p class="text-muted">该供应商还没有提交过任何报价</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- 访问信息 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-key me-2"></i>访问信息
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">访问码</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control font-monospace" 
+                               value="{{ supplier.access_code }}" readonly>
+                        <button class="btn btn-outline-secondary" type="button" 
+                                onclick="copyToClipboard('{{ supplier.access_code }}')" title="复制访问码">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">专属访问链接</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control small" 
+                               value="{{ access_url }}" readonly>
+                        <button class="btn btn-outline-secondary" type="button" 
+                                onclick="copyToClipboard('{{ access_url }}')" title="复制链接">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <a href="{{ access_url }}" target="_blank" class="btn btn-success">
+                        <i class="fas fa-external-link-alt me-1"></i>打开供应商门户
+                    </a>
+                    <button type="button" class="btn btn-warning" onclick="regenerateCode()">
+                        <i class="fas fa-refresh me-1"></i>重新生成访问码
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 统计数据 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>统计数据
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6">
+                        <div class="border-end">
+                            <h4 class="text-primary mb-0">{{ supplier.quotes|length }}</h4>
+                            <small class="text-muted">总报价数</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h4 class="text-success mb-0">
+                            {{ supplier.quotes|selectattr('order.selected_supplier_id', 'equalto', supplier.id)|list|length }}
+                        </h4>
+                        <small class="text-muted">中标数</small>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                {% if supplier.quotes %}
+                    {% set total_price = supplier.quotes|sum(attribute='price')|safe_number %}
+                    {% set avg_price = (total_price / supplier.quotes|length)|round(2) %}
+                    <div class="text-center">
+                        <div class="mb-2">
+                            <span class="text-muted">平均报价：</span>
+                            <strong class="text-primary">¥{{ "%.2f"|format(avg_price) }}</strong>
+                        </div>
+                        <div class="mb-2">
+                            <span class="text-muted">中标率：</span>
+                            <strong class="text-success">
+                                {{ "%.1f"|format((supplier.quotes|selectattr('order.selected_supplier_id', 'equalto', supplier.id)|list|length / supplier.quotes|length * 100)) }}%
+                            </strong>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 操作记录 -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-history me-2"></i>操作记录
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-primary"></div>
+                        <div class="timeline-content">
+                            <h6 class="mb-1">供应商创建</h6>
+                            <p class="text-muted small mb-0">{{ supplier.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                        </div>
+                    </div>
+                    <!-- 可以扩展更多操作记录 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // 显示复制成功提示
+        const toast = document.createElement('div');
+        toast.className = 'toast-container position-fixed top-0 end-0 p-3';
+        toast.innerHTML = `
+            <div class="toast show" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas fa-check-circle text-success me-2"></i>内容已复制到剪贴板
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        
+        // 3秒后自动移除
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 3000);
+    });
+}
+
+function regenerateCode() {
+    if (confirm('确定要重新生成访问码吗？原访问码将失效，需要重新发送给供应商。')) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ url_for("supplier.regenerate_access_code", supplier_id=supplier.id) }}';
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+
+<style>
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline:before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #dee2e6;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -23px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.timeline-content {
+    padding-left: 0;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,440 @@
+{% extends "base.html" %}
+
+{% block title %}{{ order.order_no }} - 订单详情 - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-clipboard-list me-2"></i>{{ order.order_no }}
+        {% if order.status == 'active' %}
+            <span class="badge bg-success ms-2">进行中</span>
+        {% elif order.status == 'completed' %}
+            <span class="badge bg-primary ms-2">已完成</span>
+        {% elif order.status == 'cancelled' %}
+            <span class="badge bg-secondary ms-2">已取消</span>
+        {% endif %}
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            {% if order.status == 'active' %}
+            <a href="{{ url_for('order.edit', order_id=order.id) }}" class="btn btn-primary">
+                <i class="fas fa-edit me-1"></i>编辑
+            </a>
+            <a href="{{ url_for('order.add_suppliers', order_id=order.id) }}" class="btn btn-success">
+                <i class="fas fa-user-plus me-1"></i>添加供应商
+            </a>
+            {% endif %}
+        </div>
+        <a href="{{ url_for('order.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>返回列表
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- 订单信息 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-info-circle me-2"></i>订单信息
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td class="fw-bold">订单号：</td>
+                                <td>{{ order.order_no }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">创建时间：</td>
+                                <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">订单状态：</td>
+                                <td>
+                                    {% if order.status == 'active' %}
+                                        <span class="badge bg-success">进行中</span>
+                                    {% elif order.status == 'completed' %}
+                                        <span class="badge bg-primary">已完成</span>
+                                    {% elif order.status == 'cancelled' %}
+                                        <span class="badge bg-secondary">已取消</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% if order.selected_supplier_id %}
+                            <tr>
+                                <td class="fw-bold">中标供应商：</td>
+                                <td>
+                                    <span class="text-success fw-bold">{{ order.selected_supplier.name }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">中标价格：</td>
+                                <td>
+                                    <span class="text-primary fw-bold fs-5">{{ order.selected_price|format_price }}</span>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">起始仓库：</label>
+                            <p class="form-control-plaintext">{{ order.warehouse }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">收货地址：</label>
+                            <p class="form-control-plaintext">{{ order.delivery_address }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">货物信息：</label>
+                    <div class="border rounded p-3 bg-light">
+                        {{ order.goods|nl2br }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 报价列表 -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-line me-2"></i>供应商报价 ({{ quotes|length }})
+                </h5>
+                {% if order.status == 'active' and quotes %}
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#compareModal">
+                    <i class="fas fa-balance-scale me-1"></i>对比报价
+                </button>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if quotes %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>供应商</th>
+                                <th>报价金额</th>
+                                <th>交期</th>
+                                <th>备注</th>
+                                <th>报价时间</th>
+                                {% if order.status == 'active' %}
+                                <th>操作</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for quote in quotes %}
+                            <tr {% if order.selected_supplier_id == quote.supplier_id %}class="table-success"{% endif %}>
+                                <td>
+                                    <strong>{{ quote.supplier.name }}</strong>
+                                    {% if order.selected_supplier_id == quote.supplier_id %}
+                                        <span class="badge bg-success ms-2">中标</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-primary fs-6">{{ quote.price|format_price }}</span>
+                                    {% if loop.first and quotes|length > 1 %}
+                                        <span class="badge bg-warning text-dark ms-1">最低</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ quote.delivery_time or '-' }}</td>
+                                <td>
+                                    {% if quote.remarks %}
+                                        <div class="text-truncate" style="max-width: 150px;" title="{{ quote.remarks }}">
+                                            {{ quote.remarks }}
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <small class="text-muted">
+                                        {{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}
+                                    </small>
+                                </td>
+                                {% if order.status == 'active' %}
+                                <td>
+                                    {% if not order.selected_supplier_id %}
+                                    <button type="button" class="btn btn-sm btn-success" 
+                                            onclick="selectSupplier({{ quote.supplier_id }}, '{{ quote.supplier.name }}', {{ quote.price }})">
+                                        <i class="fas fa-check me-1"></i>选择
+                                    </button>
+                                    {% endif %}
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">暂无报价</h5>
+                    <p class="text-muted">
+                        {% if order.status == 'active' %}
+                            等待供应商提交报价，您可以催促供应商尽快报价
+                        {% else %}
+                            该订单未收到任何报价
+                        {% endif %}
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- 参与供应商 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-users me-2"></i>参与供应商 ({{ order.suppliers|length }})
+                </h5>
+            </div>
+            <div class="card-body">
+                {% for supplier in order.suppliers %}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <strong>{{ supplier.name }}</strong>
+                        <br>
+                        <small class="text-muted">
+                            {% set supplier_quotes = quotes|selectattr('supplier_id', 'equalto', supplier.id)|list %}
+                            {% if supplier_quotes %}
+                                <i class="fas fa-check-circle text-success me-1"></i>已报价
+                            {% else %}
+                                <i class="fas fa-clock text-warning me-1"></i>待报价
+                            {% endif %}
+                        </small>
+                    </div>
+                    {% if supplier.webhook_url %}
+                        <span class="badge bg-success" title="已配置微信通知">
+                            <i class="fas fa-bell"></i>
+                        </span>
+                    {% endif %}
+                </div>
+                {% if not loop.last %}<hr class="my-2">{% endif %}
+                {% endfor %}
+                
+                {% if order.status == 'active' %}
+                <div class="d-grid mt-3">
+                    <a href="{{ url_for('order.add_suppliers', order_id=order.id) }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-plus me-1"></i>添加更多供应商
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 操作面板 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-cog me-2"></i>操作
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    {% if order.status == 'active' %}
+                        <a href="{{ url_for('order.edit', order_id=order.id) }}" class="btn btn-primary">
+                            <i class="fas fa-edit me-1"></i>编辑订单
+                        </a>
+                        <button type="button" class="btn btn-danger" 
+                                onclick="cancelOrder({{ order.id }}, '{{ order.order_no }}')">
+                            <i class="fas fa-ban me-1"></i>取消订单
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-secondary" disabled>
+                            订单已{{ {'completed': '完成', 'cancelled': '取消'}[order.status] }}
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 统计信息 -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>统计信息
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6">
+                        <div class="border-end">
+                            <h4 class="text-primary mb-0">{{ order.suppliers|length }}</h4>
+                            <small class="text-muted">参与供应商</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h4 class="text-success mb-0">{{ quotes|length }}</h4>
+                        <small class="text-muted">收到报价</small>
+                    </div>
+                </div>
+                
+                {% if quotes %}
+                <hr>
+                {% set prices = quotes|map(attribute='price')|map('safe_number', 0)|list %}
+                <div class="text-center">
+                    <div class="mb-2">
+                        <span class="text-muted">最低报价：</span>
+                        <strong class="text-success">{{ (prices|min)|format_price }}</strong>
+                    </div>
+                    <div class="mb-2">
+                        <span class="text-muted">最高报价：</span>
+                        <strong class="text-danger">{{ (prices|max)|format_price }}</strong>
+                    </div>
+                    <div class="mb-2">
+                        <span class="text-muted">平均报价：</span>
+                        {% if prices|length > 0 %}
+                        {% set avg_price = prices|sum / prices|length %}
+                        <strong class="text-primary">{{ avg_price|format_price }}</strong>
+                        {% else %}
+                        <strong class="text-primary">¥0.00</strong>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 选择供应商模态框 -->
+<div class="modal fade" id="selectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">选择中标供应商</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="selectForm" method="POST">
+                <div class="modal-body">
+                    <p>您确定要选择 <strong id="supplierName"></strong> 作为中标供应商吗？</p>
+                    <div class="mb-3">
+                        <label for="confirmPrice" class="form-label">确认价格</label>
+                        <input type="number" class="form-control" id="confirmPrice" name="price" step="0.01" required>
+                    </div>
+                    <input type="hidden" id="supplierId" name="supplier_id">
+                    <p class="text-muted small">选择后订单状态将变为已完成。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-success">确认选择</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 取消订单模态框 -->
+<div class="modal fade" id="cancelModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认取消订单</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>您确定要取消订单 <strong id="orderNo"></strong> 吗？</p>
+                <p class="text-muted small">取消后订单状态将变为已取消，无法恢复。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">保留订单</button>
+                <form id="cancelForm" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">确认取消</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 报价对比模态框 -->
+{% if quotes %}
+<div class="modal fade" id="compareModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">报价对比</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>项目</th>
+                                {% for quote in quotes %}
+                                <th class="text-center">{{ quote.supplier.name }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold">报价金额</td>
+                                {% for quote in quotes %}
+                                <td class="text-center">
+                                    <span class="fw-bold text-primary fs-6">¥{{ quote.price }}</span>
+                                    {% if loop.first %}<br><small class="badge bg-warning text-dark">最低</small>{% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">交期</td>
+                                {% for quote in quotes %}
+                                <td class="text-center">{{ quote.delivery_time or '-' }}</td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">备注</td>
+                                {% for quote in quotes %}
+                                <td class="text-center">
+                                    {% if quote.remarks %}
+                                        <small>{{ quote.remarks }}</small>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">报价时间</td>
+                                {% for quote in quotes %}
+                                <td class="text-center">
+                                    <small>{{ quote.created_at.strftime('%m-%d %H:%M') }}</small>
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function selectSupplier(supplierId, supplierName, price) {
+    document.getElementById('supplierId').value = supplierId;
+    document.getElementById('supplierName').textContent = supplierName;
+    document.getElementById('confirmPrice').value = price;
+    document.getElementById('selectForm').action = `{{ url_for('order.select_supplier', order_id=order.id) }}`;
+    new bootstrap.Modal(document.getElementById('selectModal')).show();
+}
+
+function cancelOrder(orderId, orderNo) {
+    document.getElementById('orderNo').textContent = orderNo;
+    document.getElementById('cancelForm').action = `{{ url_for('order.cancel', order_id=order.id) }}`;
+    new bootstrap.Modal(document.getElementById('cancelModal')).show();
+}
+</script>
+{% endblock %}

@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+
+{% block title %}报价对比 - {{ order.order_no }} - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-balance-scale me-2"></i>报价对比 - {{ order.order_no }}
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a href="{{ url_for('quote.export_quotes', order_id=order.id) }}" 
+               class="btn btn-outline-success" target="_blank">
+                <i class="fas fa-download me-1"></i>导出数据
+            </a>
+        </div>
+        <a href="{{ url_for('quote.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i>返回列表
+        </a>
+    </div>
+</div>
+
+<!-- 订单信息概览 -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-info-circle me-2"></i>订单信息
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>货物：</strong>{{ order.goods|truncate(100) }}</p>
+                <p><strong>起始仓库：</strong>{{ order.warehouse }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>收货地址：</strong>{{ order.delivery_address|truncate(100) }}</p>
+                <p><strong>创建时间：</strong>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 报价统计 -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center border-primary">
+            <div class="card-body">
+                <i class="fas fa-list fa-2x text-primary mb-2"></i>
+                <h4 class="card-title text-primary">{{ stats.count }}</h4>
+                <p class="card-text text-muted">总报价数</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-success">
+            <div class="card-body">
+                <i class="fas fa-arrow-down fa-2x text-success mb-2"></i>
+                <h4 class="card-title text-success">{{ stats.min_price|format_price }}</h4>
+                <p class="card-text text-muted">最低报价</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-danger">
+            <div class="card-body">
+                <i class="fas fa-arrow-up fa-2x text-danger mb-2"></i>
+                <h4 class="card-title text-danger">{{ stats.max_price|format_price }}</h4>
+                <p class="card-text text-muted">最高报价</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center border-info">
+            <div class="card-body">
+                <i class="fas fa-calculator fa-2x text-info mb-2"></i>
+                <h4 class="card-title text-info">{{ stats.avg_price|format_price }}</h4>
+                <p class="card-text text-muted">平均报价</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 报价对比表格 -->
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-table me-2"></i>详细对比
+        </h5>
+        <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn btn-outline-primary active" onclick="showTableView()">
+                <i class="fas fa-table me-1"></i>表格视图
+            </button>
+            <button type="button" class="btn btn-outline-primary" onclick="showCardView()">
+                <i class="fas fa-th me-1"></i>卡片视图
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- 表格视图 -->
+        <div id="tableView" class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>排名</th>
+                        <th>供应商</th>
+                        <th>报价金额</th>
+                        <th>承诺交期</th>
+                        <th>备注说明</th>
+                        <th>报价时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for quote in quotes %}
+                    <tr {% if loop.first %}class="table-success"{% elif order.selected_supplier_id == quote.supplier_id %}class="table-warning"{% endif %}>
+                        <td>
+                            <span class="badge {% if loop.first %}bg-success{% else %}bg-secondary{% endif %}">
+                                {{ loop.index }}
+                            </span>
+                            {% if loop.first %}
+                                <small class="text-success ms-1">最低</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <strong>{{ quote.supplier.name }}</strong>
+                            {% if order.selected_supplier_id == quote.supplier_id %}
+                                <span class="badge bg-warning text-dark ms-2">已选择</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="fw-bold {% if loop.first %}text-success{% else %}text-primary{% endif %} fs-6">
+                                ¥{{ quote.price }}
+                            </span>
+                            {% if stats.count > 1 %}
+                                <br>
+                                <small class="text-muted">
+                                    {% set diff = (quote.price|safe_number) - (stats.min_price|safe_number) %}
+                                    {% if diff > 0 %}
+                                        +¥{{ "%.2f"|format(diff) }}
+                                    {% else %}
+                                        基准价
+                                    {% endif %}
+                                </small>
+                            {% endif %}
+                        </td>
+                        <td>{{ quote.delivery_time or '-' }}</td>
+                        <td>
+                            {% if quote.remarks %}
+                                <div class="text-truncate" style="max-width: 150px;" title="{{ quote.remarks }}">
+                                    {{ quote.remarks }}
+                                </div>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <small class="text-muted">
+                                {{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}
+                            </small>
+                        </td>
+                        <td>
+                            {% if order.status == 'active' and not order.selected_supplier_id %}
+                            <button type="button" class="btn btn-sm btn-success" 
+                                    onclick="selectSupplier({{ quote.supplier_id }}, '{{ quote.supplier.name }}', {{ quote.price }})">
+                                <i class="fas fa-check me-1"></i>选择
+                            </button>
+                            {% elif order.selected_supplier_id == quote.supplier_id %}
+                            <span class="badge bg-success">已选择</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 卡片视图 -->
+        <div id="cardView" class="row" style="display: none;">
+            {% for quote in quotes %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 {% if loop.first %}border-success{% elif order.selected_supplier_id == quote.supplier_id %}border-warning{% endif %}">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <strong>{{ quote.supplier.name }}</strong>
+                        <div>
+                            {% if loop.first %}
+                                <span class="badge bg-success">最低价</span>
+                            {% endif %}
+                            {% if order.selected_supplier_id == quote.supplier_id %}
+                                <span class="badge bg-warning text-dark">已选择</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <h3 class="{% if loop.first %}text-success{% else %}text-primary{% endif %}">
+                                ¥{{ quote.price }}
+                            </h3>
+                            {% if stats.count > 1 %}
+                                {% set diff = (quote.price|safe_number) - (stats.min_price|safe_number) %}
+                                <small class="text-muted">
+                                    {% if diff > 0 %}
+                                        比最低价高 ¥{{ "%.2f"|format(diff) }}
+                                    {% else %}
+                                        最低报价
+                                    {% endif %}
+                                </small>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-2">
+                            <strong>承诺交期：</strong>
+                            <span>{{ quote.delivery_time or '未填写' }}</span>
+                        </div>
+                        
+                        {% if quote.remarks %}
+                        <div class="mb-2">
+                            <strong>备注说明：</strong>
+                            <p class="small">{{ quote.remarks }}</p>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mb-3">
+                            <strong>报价时间：</strong>
+                            <small class="text-muted">{{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                        </div>
+                        
+                        {% if order.status == 'active' and not order.selected_supplier_id %}
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-success" 
+                                    onclick="selectSupplier({{ quote.supplier_id }}, '{{ quote.supplier.name }}', {{ quote.price }})">
+                                <i class="fas fa-check me-1"></i>选择此供应商
+                            </button>
+                        </div>
+                        {% elif order.selected_supplier_id == quote.supplier_id %}
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-warning" disabled>
+                                <i class="fas fa-trophy me-1"></i>已选择
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- 价格分析图表 -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-chart-bar me-2"></i>价格分析
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- 这里可以集成图表库显示价格分布 -->
+                <div class="text-center py-4">
+                    <i class="fas fa-chart-line fa-4x text-muted mb-3"></i>
+                    <h5 class="text-muted">价格分布图表</h5>
+                    <p class="text-muted">可集成 Chart.js 或其他图表库显示价格对比</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h6>价格分析</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <strong>价格区间：</strong>
+                        {{ stats.price_range|format_price }}
+                    </li>
+                    <li class="mb-2">
+                        <strong>价格标准差：</strong>
+                        {{ stats.std_deviation|format_price }}
+                    </li>
+                    <li class="mb-2">
+                        <strong>节省空间：</strong>
+                        {{ ((stats.max_price|safe_number) - (stats.min_price|safe_number))|format_price }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 选择供应商模态框 -->
+<div class="modal fade" id="selectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">选择中标供应商</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="selectForm" method="POST" action="{{ url_for('order.select_supplier', order_id=order.id) }}">
+                <div class="modal-body">
+                    <p>您确定要选择 <strong id="supplierName"></strong> 作为中标供应商吗？</p>
+                    <div class="mb-3">
+                        <label for="confirmPrice" class="form-label">确认价格</label>
+                        <input type="number" class="form-control" id="confirmPrice" name="price" step="0.01" required>
+                    </div>
+                    <input type="hidden" id="supplierId" name="supplier_id">
+                    <p class="text-muted small">选择后订单状态将变为已完成。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-success">确认选择</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showTableView() {
+    document.getElementById('tableView').style.display = 'block';
+    document.getElementById('cardView').style.display = 'none';
+    
+    // 更新按钮状态
+    document.querySelectorAll('.btn-group .btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function showCardView() {
+    document.getElementById('tableView').style.display = 'none';
+    document.getElementById('cardView').style.display = 'block';
+    
+    // 更新按钮状态
+    document.querySelectorAll('.btn-group .btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function selectSupplier(supplierId, supplierName, price) {
+    document.getElementById('supplierId').value = supplierId;
+    document.getElementById('supplierName').textContent = supplierName;
+    document.getElementById('confirmPrice').value = price;
+    new bootstrap.Modal(document.getElementById('selectModal')).show();
+}
+</script>
+{% endblock %}
