@@ -1,6 +1,7 @@
 from datetime import datetime
 from . import db
 import logging
+from decimal import Decimal
 
 class Quote(db.Model):
     __tablename__ = 'quotes'
@@ -61,6 +62,28 @@ class Quote(db.Model):
             logging.error(f"Failed to format price for Quote {self.id}: {e}")
             return f"{currency}0.00"
             
+    def get_price_change_info(self, new_price):
+        """获取价格变动信息"""
+        try:
+            current_price = self.get_price_float()
+            if current_price <= 0 or not new_price:
+                return None
+                
+            diff = new_price - current_price
+            diff_percent = (abs(diff) / current_price) * 100
+            
+            return {
+                'original': current_price,
+                'new': new_price,
+                'diff': diff,
+                'diff_percent': diff_percent,
+                'is_increase': diff > 0,
+                'is_significant': diff_percent > 20
+            }
+        except Exception as e:
+            logging.error(f"Failed to calculate price change for Quote {self.id}: {e}")
+            return None
+            
     def validate_price(self):
         """验证价格的有效性"""
         from decimal import Decimal
@@ -71,8 +94,8 @@ class Quote(db.Model):
                 
             decimal_price = self.get_price_decimal()
             
-            if decimal_price < 0:
-                return False, "价格不能为负数"
+            if decimal_price <= 0:
+                return False, "价格必须大于0"
                 
             if decimal_price > Decimal('9999999999.99'):
                 return False, "价格超出允许范围"
@@ -81,3 +104,47 @@ class Quote(db.Model):
             
         except Exception as e:
             return False, f"价格验证失败: {str(e)}"
+            
+    @classmethod
+    def validate_price_change(cls, original_price, new_price):
+        """验证价格变动的合理性"""
+        from decimal import Decimal
+        
+        warnings = []
+        
+        try:
+            if original_price is None or new_price is None:
+                return warnings
+                
+            if isinstance(original_price, (int, float)):
+                original_price = Decimal(str(original_price))
+            if isinstance(new_price, (int, float)):
+                new_price = Decimal(str(new_price))
+                
+            if original_price <= 0 or new_price <= 0:
+                return warnings
+                
+            # 计算变动幅度
+            price_diff = abs(original_price - new_price)
+            price_diff_percent = (price_diff / original_price) * 100
+            
+            # 大幅变动警告
+            if price_diff_percent > 50:
+                warnings.append(f'价格变动较大({price_diff_percent:.1f}%)，请确认是否正确')
+            
+            # 价格翻倍警告
+            if new_price > original_price * 2:
+                warnings.append('新报价是原报价的2倍以上，请仔细核对')
+            
+            # 价格过低警告
+            if new_price < original_price / 2:
+                warnings.append('新报价比原报价低50%以上，请确认盈利能力')
+                
+            # 异常高价警告
+            if new_price > Decimal('1000000'):
+                warnings.append('报价金额较高，请确认是否正确')
+                
+        except Exception as e:
+            logging.error(f'价格变动验证失败: {e}')
+            
+        return warnings

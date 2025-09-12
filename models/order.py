@@ -229,3 +229,20 @@ class Order(db.Model):
             errors.append("用户ID不能为空")
             
         return errors
+
+    def reset_to_active(self):
+        """将已完成的订单重新激活为进行中状态"""
+        if self.status != 'completed':
+            raise ValueError("只能重新激活已完成的订单")
+        
+        if not self.selected_supplier_id:
+            raise ValueError("订单没有选择供应商，无法重新激活")
+        
+        # 清除选中的供应商和价格
+        self.selected_supplier_id = None
+        self.selected_price = None
+        self.status = 'active'
+        
+        logging.info(f"订单 {self.order_no} 已重新激活为进行中状态")
+        
+        return True

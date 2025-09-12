@@ -13,8 +13,10 @@ quote_bp = Blueprint('quote', __name__, url_prefix='/quotes')
 @login_required
 def index():
     """报价对比首页"""
-    # 获取同业务类型的所有订单及其报价
-    query = db.session.query(Order).join(Quote, Order.id == Quote.order_id, isouter=True).group_by(
+    # 获取同业务类型的所有进行中的订单及其报价
+    query = db.session.query(Order).join(Quote, Order.id == Quote.order_id, isouter=True).filter(
+        Order.status == 'active'  # 只显示进行中的订单
+    ).group_by(
         Order.id
     ).having(func.count(Quote.id) > 0).order_by(Order.created_at.desc())
     orders_with_quotes = business_type_filter(query, Order).all()

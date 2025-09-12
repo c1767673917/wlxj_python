@@ -194,7 +194,23 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <strong class="text-primary">¥{{ quote.price }}</strong>
+                                    {% if quote.order.selected_supplier_id == supplier.id and quote.order.selected_price and quote.order.selected_price|float != 0 %}
+                                        <!-- 中标且有最终价格：显示划线的原价和最终价格 -->
+                                        {% if quote.order.selected_price|float != quote.price|float %}
+                                            <div class="position-relative">
+                                                <span class="text-muted text-decoration-line-through me-2" style="opacity: 0.6;">
+                                                    {{ quote.price|format_price }}
+                                                </span>
+                                                <strong class="text-success">{{ quote.order.selected_price|format_price }}</strong>
+                                            </div>
+                                        {% else %}
+                                            <!-- 价格一致时只显示一个价格 -->
+                                            <strong class="text-success">{{ quote.price|format_price }}</strong>
+                                        {% endif %}
+                                    {% else %}
+                                        <!-- 未中标或未确定价格：显示原始报价 -->
+                                        <strong class="text-primary">{{ quote.price|format_price }}</strong>
+                                    {% endif %}
                                 </td>
                                 <td>{{ quote.delivery_time or '-' }}</td>
                                 <td>

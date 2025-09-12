@@ -71,12 +71,14 @@
                                     <span class="text-success fw-bold">{{ order.selected_supplier.name }}</span>
                                 </td>
                             </tr>
+                            {% if order.selected_price and order.selected_price|float > 0 %}
                             <tr>
                                 <td class="fw-bold">中标价格：</td>
                                 <td>
                                     <span class="text-primary fw-bold fs-5">{{ order.selected_price|format_price }}</span>
                                 </td>
                             </tr>
+                            {% endif %}
                             {% endif %}
                         </table>
                     </div>
@@ -139,9 +141,14 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <span class="fw-bold text-primary fs-6">{{ quote.price|format_price }}</span>
-                                    {% if loop.first and quotes|length > 1 %}
-                                        <span class="badge bg-warning text-dark ms-1">最低</span>
+                                    {% if quote.price and quote.price|float > 0 %}
+                                        <span class="fw-bold text-primary fs-6">{{ quote.price|format_price }}</span>
+                                        {% if loop.first and quotes|length > 1 %}
+                                            <span class="badge bg-warning text-dark ms-1">最低</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                        <small class="text-muted d-block">价格异常</small>
                                     {% endif %}
                                 </td>
                                 <td>{{ quote.delivery_time or '-' }}</td>
@@ -250,9 +257,19 @@
                                 onclick="cancelOrder({{ order.id }}, '{{ order.order_no }}')">
                             <i class="fas fa-ban me-1"></i>取消订单
                         </button>
-                    {% else %}
+                    {% elif order.status == 'completed' %}
+                        {% if order.selected_supplier_id %}
+                        <button type="button" class="btn btn-warning" 
+                                onclick="resetSelection({{ order.id }}, '{{ order.order_no }}')">
+                            <i class="fas fa-undo me-1"></i>取消选择
+                        </button>
+                        {% endif %}
                         <button type="button" class="btn btn-secondary" disabled>
-                            订单已{{ {'completed': '完成', 'cancelled': '取消'}[order.status] }}
+                            订单已完成
+                        </button>
+                    {% elif order.status == 'cancelled' %}
+                        <button type="button" class="btn btn-secondary" disabled>
+                            订单已取消
                         </button>
                     {% endif %}
                 </div>
@@ -282,26 +299,33 @@
                 
                 {% if quotes %}
                 <hr>
-                {% set prices = quotes|map(attribute='price')|map('safe_number', 0)|list %}
+                {% set valid_prices = [] %}
+                {% for quote in quotes %}
+                    {% if quote.price and quote.price|float > 0 %}
+                        {% set _ = valid_prices.append(quote.price|float) %}
+                    {% endif %}
+                {% endfor %}
+                {% if valid_prices|length > 0 %}
                 <div class="text-center">
                     <div class="mb-2">
                         <span class="text-muted">最低报价：</span>
-                        <strong class="text-success">{{ (prices|min)|format_price }}</strong>
+                        <strong class="text-success">{{ (valid_prices|min)|format_price }}</strong>
                     </div>
                     <div class="mb-2">
                         <span class="text-muted">最高报价：</span>
-                        <strong class="text-danger">{{ (prices|max)|format_price }}</strong>
+                        <strong class="text-danger">{{ (valid_prices|max)|format_price }}</strong>
                     </div>
                     <div class="mb-2">
                         <span class="text-muted">平均报价：</span>
-                        {% if prices|length > 0 %}
-                        {% set avg_price = prices|sum / prices|length %}
+                        {% set avg_price = (valid_prices|sum) / (valid_prices|length) %}
                         <strong class="text-primary">{{ avg_price|format_price }}</strong>
-                        {% else %}
-                        <strong class="text-primary">¥0.00</strong>
-                        {% endif %}
                     </div>
                 </div>
+                {% else %}
+                <div class="text-center text-muted">
+                    <small>暂无有效报价统计</small>
+                </div>
+                {% endif %}
                 {% endif %}
             </div>
         </div>
@@ -322,6 +346,7 @@
                     <div class="mb-3">
                         <label for="confirmPrice" class="form-label">确认价格</label>
                         <input type="number" class="form-control" id="confirmPrice" name="price" step="0.01" required>
+                        <div class="form-text">可以修改价格进行协商，不必与原报价完全一致</div>
                     </div>
                     <input type="hidden" id="supplierId" name="supplier_id">
                     <p class="text-muted small">选择后订单状态将变为已完成。</p>
@@ -357,6 +382,28 @@
     </div>
 </div>
 
+<!-- 取消选择模态框 -->
+<div class="modal fade" id="resetModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">确认取消选择</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>您确定要取消订单 <strong id="resetOrderNo"></strong> 的供应商选择吗？</p>
+                <p class="text-muted small">取消后订单将重新变为进行中状态，可以重新选择供应商。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">保留选择</button>
+                <form id="resetForm" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-warning">确认取消选择</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 报价对比模态框 -->
 {% if quotes %}
 <div class="modal fade" id="compareModal" tabindex="-1">
@@ -382,8 +429,13 @@
                                 <td class="fw-bold">报价金额</td>
                                 {% for quote in quotes %}
                                 <td class="text-center">
-                                    <span class="fw-bold text-primary fs-6">¥{{ quote.price }}</span>
-                                    {% if loop.first %}<br><small class="badge bg-warning text-dark">最低</small>{% endif %}
+                                    {% if quote.price and quote.price|float > 0 %}
+                                        <span class="fw-bold text-primary fs-6">{{ quote.price|format_price }}</span>
+                                        {% if loop.first %}<br><small class="badge bg-warning text-dark">最低</small>{% endif %}
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                        <br><small class="text-muted">价格异常</small>
+                                    {% endif %}
                                 </td>
                                 {% endfor %}
                             </tr>
@@ -435,6 +487,12 @@ function cancelOrder(orderId, orderNo) {
     document.getElementById('orderNo').textContent = orderNo;
     document.getElementById('cancelForm').action = `{{ url_for('order.cancel', order_id=order.id) }}`;
     new bootstrap.Modal(document.getElementById('cancelModal')).show();
+}
+
+function resetSelection(orderId, orderNo) {
+    document.getElementById('resetOrderNo').textContent = orderNo;
+    document.getElementById('resetForm').action = `/orders/${orderId}/reset-selection`;
+    new bootstrap.Modal(document.getElementById('resetModal')).show();
 }
 </script>
 {% endblock %}

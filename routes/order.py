@@ -292,10 +292,19 @@ def select_supplier(order_id):
             flash('所选供应商没有该订单的报价', 'error')
             return redirect(url_for('order.detail', order_id=order.id))
         
-        # 验证价格是否匹配
-        if abs(float(quote.price) - price) > 0.01:  # 允许小数精度误差
-            flash('价格不匹配，请确认后重试', 'error')
+        # 验证价格有效性（允许价格协商，不要求严格匹配）
+        if price <= 0:
+            flash('确认价格必须大于0', 'error')
             return redirect(url_for('order.detail', order_id=order.id))
+        
+        # 如果确认价格与报价不一致，记录日志用于审计
+        original_price = float(quote.price)
+        if abs(original_price - price) > 0.01:
+            logging.info(f"订单 {order.order_no} 价格协商：原报价 {original_price}，确认价格 {price}，供应商ID: {supplier_id}")
+            # 在flash消息中提示价格变更
+            flash_message_suffix = f"（原报价：{original_price:.2f}元，确认价格：{price:.2f}元）"
+        else:
+            flash_message_suffix = ""
         
         # 更新订单状态
         order.selected_supplier_id = supplier_id
@@ -308,7 +317,7 @@ def select_supplier(order_id):
         cache_stats = Order.get_cache_stats()
         logging.info(f"订单 {order.order_no} 已完成，选择供应商ID: {supplier_id}，缓存命中率: {cache_stats['hit_rate_percent']}%")
         
-        flash('已选择中标供应商，订单已完成', 'success')
+        flash(f'已选择中标供应商，订单已完成{flash_message_suffix}', 'success')
         return redirect(url_for('order.detail', order_id=order.id))
         
     except Exception as e:
@@ -385,6 +394,44 @@ def add_suppliers(order_id):
     available_suppliers = business_type_filter(query, Supplier).all()
     
     return render_template('orders/add_suppliers.html', order=order, suppliers=available_suppliers)
+
+@order_bp.route('/<int:order_id>/reset-selection', methods=['POST'])
+@login_required
+def reset_selection(order_id):
+    """取消选择的供应商，重新激活订单"""
+    try:
+        query = Order.query.filter_by(id=order_id)
+        order = business_type_filter(query, Order).first_or_404()
+        
+        # 验证订单状态
+        if order.status != 'completed':
+            flash('只能取消已完成订单的供应商选择', 'error')
+            return redirect(url_for('order.detail', order_id=order.id))
+        
+        if not order.selected_supplier_id:
+            flash('订单没有选择供应商，无法取消选择', 'error')
+            return redirect(url_for('order.detail', order_id=order.id))
+        
+        # 记录取消前的信息
+        old_supplier_name = order.selected_supplier.name if order.selected_supplier else '未知'
+        old_price = order.selected_price
+        
+        # 重新激活订单
+        order.reset_to_active()
+        db.session.commit()
+        
+        logging.info(f"管理员 {current_user.username} 取消了订单 {order.order_no} 的供应商选择 - 原选择: {old_supplier_name}, 价格: {old_price}")
+        flash(f'已取消供应商选择，订单重新激活为进行中状态', 'success')
+        return redirect(url_for('order.detail', order_id=order.id))
+        
+    except ValueError as e:
+        flash(str(e), 'error')
+        return redirect(url_for('order.detail', order_id=order_id))
+    except Exception as e:
+        db.session.rollback()
+        logging.error(f"取消供应商选择失败 (订单ID: {order_id}): {str(e)}")
+        flash('操作失败，请稍后重试', 'error')
+        return redirect(url_for('order.detail', order_id=order_id))
 
 def notify_suppliers(order, suppliers):
     """通知供应商新订单 - 增强错误处理和重试机制"""

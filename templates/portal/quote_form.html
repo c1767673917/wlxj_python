@@ -37,11 +37,32 @@
                             <span class="input-group-text">¥</span>
                             <input type="number" class="form-control" id="price" name="price" 
                                    value="{{ quote.price if quote else '' }}" 
-                                   step="0.01" min="0.01" required
-                                   placeholder="请输入报价金额">
+                                   step="0.01" min="0.01" max="9999999999.99" required
+                                   placeholder="请输入报价金额"
+                                   data-original-price="{{ quote.price if quote and quote.price and quote.price|float > 0 else '0' }}">
                             <span class="input-group-text">元</span>
                         </div>
                         <div class="form-text">请输入您的最优报价，包含所有费用</div>
+                        
+                        <!-- 价格对比提示 -->
+                        {% if quote %}
+                        <div id="priceComparison" class="alert alert-info price-comparison mt-2" style="display:none;">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <div>
+                                    <small>
+                                        <strong>原报价：</strong><span id="originalPriceDisplay">¥{{ "%.2f"|format(quote.price|float) if quote.price and quote.price|float > 0 else "0.00" }}</span>
+                                        <span class="mx-2">|</span>
+                                        <strong>价格差异：</strong><span id="priceDiff"></span>
+                                        <span class="mx-2">|</span>
+                                        <strong>变动幅度：</strong><span id="priceChangePercent"></span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="priceWarnings" class="mt-2"></div>
+                        {% endif %}
                     </div>
 
                     <div class="mb-4">
@@ -124,7 +145,11 @@
                 <div class="alert alert-info">
                     <div class="mb-2">
                         <strong>当前报价：</strong>
-                        <span class="fs-5 text-primary fw-bold">¥{{ quote.price }}</span>
+                        {% if quote.price and quote.price|float > 0 %}
+                            <span class="fs-5 text-primary fw-bold">¥{{ quote.price }}</span>
+                        {% else %}
+                            <span class="fs-5 text-muted">价格异常</span>
+                        {% endif %}
                     </div>
                     <div class="mb-2">
                         <strong>交期：</strong>
@@ -179,32 +204,114 @@
 </div>
 
 <script>
-// 表单验证
-document.querySelector('form').addEventListener('submit', function(e) {
-    const price = parseFloat(document.getElementById('price').value);
+// 价格对比和验证功能
+const priceInput = document.getElementById('price');
+const originalPrice = parseFloat(priceInput.dataset.originalPrice) || 0;
+const isUpdate = {{ 'true' if quote else 'false' }};
+
+// 价格变动实时检测
+function updatePriceComparison() {
+    if (!isUpdate || originalPrice === 0) return;
     
+    const currentPrice = parseFloat(priceInput.value) || 0;
+    const comparison = document.getElementById('priceComparison');
+    const warnings = document.getElementById('priceWarnings');
+    
+    if (currentPrice > 0 && currentPrice !== originalPrice) {
+        const diff = currentPrice - originalPrice;
+        const diffPercent = (Math.abs(diff) / originalPrice * 100);
+        
+        // 显示对比信息
+        document.getElementById('priceDiff').innerHTML = 
+            `<span class="${diff > 0 ? 'text-danger' : 'text-success'}">
+                ${diff > 0 ? '+' : ''}¥${diff.toFixed(2)}
+            </span>`;
+        document.getElementById('priceChangePercent').innerHTML = 
+            `<span class="${diffPercent > 20 ? 'text-warning fw-bold' : ''}">
+                ${diffPercent.toFixed(1)}%
+            </span>`;
+        
+        comparison.style.display = 'block';
+        
+        // 生成警告信息
+        let warningHtml = '';
+        if (diffPercent > 50) {
+            warningHtml += '<div class="alert alert-warning alert-sm mb-2">' +
+                          '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                          `价格变动较大(${diffPercent.toFixed(1)}%)，请确认是否正确` +
+                          '</div>';
+        }
+        if (currentPrice > originalPrice * 2) {
+            warningHtml += '<div class="alert alert-warning alert-sm mb-2">' +
+                          '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                          '新报价是原报价的2倍以上，请仔细核对' +
+                          '</div>';
+        }
+        if (currentPrice < originalPrice * 0.5) {
+            warningHtml += '<div class="alert alert-warning alert-sm mb-2">' +
+                          '<i class="fas fa-exclamation-triangle me-2"></i>' +
+                          '新报价比原报价低50%以上，请确认盈利能力' +
+                          '</div>';
+        }
+        warnings.innerHTML = warningHtml;
+    } else {
+        comparison.style.display = 'none';
+        warnings.innerHTML = '';
+    }
+}
+
+// 价格输入事件监听
+priceInput.addEventListener('input', updatePriceComparison);
+priceInput.addEventListener('blur', function() {
+    const value = parseFloat(this.value);
+    if (value) {
+        this.value = value.toFixed(2);
+        updatePriceComparison();
+    }
+});
+
+// 表单提交验证
+document.querySelector('form').addEventListener('submit', function(e) {
+    const price = parseFloat(priceInput.value);
+    
+    // 基本验证
     if (!price || price <= 0) {
         e.preventDefault();
         alert('请输入有效的报价金额');
+        priceInput.focus();
         return false;
     }
     
-    // 确认提交
-    const action = {{ 'true' if quote else 'false' }};
-    const message = action ? '确定要更新报价吗？' : '确定要提交报价吗？';
+    // 价格上限验证
+    if (price > 9999999999.99) {
+        e.preventDefault();
+        alert('报价金额超出系统允许的最大值');
+        priceInput.focus();
+        return false;
+    }
     
+    // 大幅变动确认
+    if (isUpdate && originalPrice > 0) {
+        const diffPercent = Math.abs(price - originalPrice) / originalPrice * 100;
+        if (diffPercent > 50) {
+            const confirmMsg = `价格变动较大(${diffPercent.toFixed(1)}%)，确定要继续吗？`;
+            if (!confirm(confirmMsg)) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    }
+    
+    // 最终确认
+    const message = isUpdate ? '确定要更新报价吗？' : '确定要提交报价吗？';
     if (!confirm(message)) {
         e.preventDefault();
         return false;
     }
 });
 
-// 金额格式化
-document.getElementById('price').addEventListener('blur', function() {
-    const value = parseFloat(this.value);
-    if (value) {
-        this.value = value.toFixed(2);
-    }
-});
+// 初始化价格对比
+updatePriceComparison();
+
 </script>
 {% endblock %}

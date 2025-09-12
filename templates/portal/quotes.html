@@ -103,7 +103,25 @@
                             </div>
                         </td>
                         <td>
-                            <strong class="text-primary fs-6">{{ quote.price|format_price }}</strong>
+                            {% if quote.order.selected_supplier_id == supplier.id and quote.order.selected_price and quote.order.selected_price|float != 0 %}
+                                <!-- 中标且有最终价格：显示划线的原价和最终价格 -->
+                                {% if quote.order.selected_price|float != quote.price|float %}
+                                    <div class="position-relative">
+                                        <span class="text-muted text-decoration-line-through me-2" style="opacity: 0.6;">
+                                            {{ quote.price|format_price }}
+                                        </span>
+                                        <strong class="text-success fs-5">{{ quote.order.selected_price|format_price }}</strong>
+                                        <small class="d-block text-success">最终成交价</small>
+                                    </div>
+                                {% else %}
+                                    <!-- 价格一致时只显示一个价格 -->
+                                    <strong class="text-success fs-5">{{ quote.price|format_price }}</strong>
+                                    <small class="d-block text-success">成交价</small>
+                                {% endif %}
+                            {% else %}
+                                <!-- 未中标或未确定价格：显示原始报价 -->
+                                <strong class="text-primary fs-6">{{ quote.price|format_price }}</strong>
+                            {% endif %}
                         </td>
                         <td>
                             <small>{{ quote.delivery_time or '-' }}</small>
@@ -122,6 +140,13 @@
                                 <span class="badge bg-success">
                                     <i class="fas fa-trophy me-1"></i>已中标
                                 </span>
+                                {% if quote.order.selected_price and quote.order.selected_price|float != 0 and quote.order.selected_price|float != quote.price|float %}
+                                    <div class="mt-1">
+                                        <small class="text-success d-block">
+                                            <i class="fas fa-handshake me-1"></i>价格已协商
+                                        </small>
+                                    </div>
+                                {% endif %}
                             {% elif quote.order.status == 'completed' %}
                                 <span class="badge bg-secondary">
                                     <i class="fas fa-times me-1"></i>未中标

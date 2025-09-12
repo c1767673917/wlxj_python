@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修复验证测试</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <!-- 系统消息区域 - 应该被选择器处理 -->
+        <div class="row system-messages">
+            <div class="col-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    系统成功消息 - 应该4秒后自动隐藏
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                <div class="alert alert-warning alert-dismissible fade show price-warning" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    系统警告消息 - 应该8秒后自动隐藏
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面内容中的alert - 不应该被选择器处理 -->
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <h5>页面内容中的成功提示</h5>
+                    <p>这个alert在页面内容中，不应该被自动隐藏</p>
+                </div>
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    页面内容中的信息提示 - 不应该自动隐藏
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模态框中的alert - 也不应该被处理 -->
+        <div class="modal fade" id="testModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            模态框中的警告 - 不应该自动隐藏
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 价格显示测试 -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>价格边界条件测试</h5>
+            </div>
+            <div class="card-body">
+                <h6>正常价格 (100.50):</h6>
+                <div class="mb-3">
+                    {% set test_price = 100.50 %}
+                    {% if test_price and test_price|float > 0 %}
+                        <span class="text-success">✓ 正常显示: ¥{{ test_price }}</span>
+                    {% else %}
+                        <span class="text-danger">✗ 价格异常</span>
+                    {% endif %}
+                </div>
+
+                <h6>零价格 (0):</h6>
+                <div class="mb-3">
+                    {% set test_price = 0 %}
+                    {% if test_price and test_price|float > 0 %}
+                        <span class="text-success">✓ 正常显示: ¥{{ test_price }}</span>
+                    {% else %}
+                        <span class="text-muted">✓ 价格异常处理正确</span>
+                    {% endif %}
+                </div>
+
+                <h6>负价格 (-10):</h6>
+                <div class="mb-3">
+                    {% set test_price = -10 %}
+                    {% if test_price and test_price|float > 0 %}
+                        <span class="text-success">✓ 正常显示: ¥{{ test_price }}</span>
+                    {% else %}
+                        <span class="text-muted">✓ 负价格处理正确</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // 测试优化后的JavaScript选择器
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('=== JavaScript选择器测试 ===');
+        
+        // 使用优化后的选择器
+        const systemMessages = document.querySelectorAll('.system-messages .alert-dismissible');
+        console.log(`系统消息区域找到 ${systemMessages.length} 个alert (预期: 2)`);
+        
+        // 验证不会选择页面内容中的alert
+        const allAlerts = document.querySelectorAll('.alert-dismissible');
+        console.log(`页面总共有 ${allAlerts.length} 个alert-dismissible`);
+        
+        systemMessages.forEach(function(alert, index) {
+            console.log(`处理第 ${index + 1} 个系统消息alert:`, alert.textContent.trim().substring(0, 20) + '...');
+            
+            if (alert.classList.contains('alert-success')) {
+                setTimeout(function() {
+                    if (alert && alert.parentNode) {
+                        console.log('4秒后隐藏成功消息');
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    }
+                }, 4000);
+            }
+            else if (alert.classList.contains('alert-warning')) {
+                setTimeout(function() {
+                    if (alert && alert.parentNode) {
+                        console.log('8秒后隐藏警告消息');
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    }
+                }, 8000);
+            }
+        });
+        
+        console.log('=== 选择器健壮性测试完成 ===');
+    });
+    </script>
+</body>
+</html>

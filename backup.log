@@ -989,3 +989,333 @@ sqlalchemy.exc.InvalidRequestError: A transaction is already begun on this Sessi
 2025-09-12 15:30:30,554 - INFO - 127.0.0.1 - - [12/Sep/2025 15:30:30] "GET /orders/ HTTP/1.1" 200 -
 2025-09-12 15:30:31,020 - INFO - 127.0.0.1 - - [12/Sep/2025 15:30:31] "GET /orders/ HTTP/1.1" 200 -
 2025-09-12 15:30:31,965 - INFO - 127.0.0.1 - - [12/Sep/2025 15:30:31] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:31:26,738 - INFO - 127.0.0.1 - - [12/Sep/2025 15:31:26] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:33:09,687 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/quote.py', reloading
+2025-09-12 15:33:10,254 - WARNING -  * Debugger is active!
+2025-09-12 15:33:10,264 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:34:59,590 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-12 15:34:59,591 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 15:34:59,591 - INFO -  * Restarting with stat
+2025-09-12 15:34:59,982 - WARNING -  * Debugger is active!
+2025-09-12 15:34:59,997 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:35:13,502 - INFO - 127.0.0.1 - - [12/Sep/2025 15:35:13] "[32mGET /quotes/ HTTP/1.1[0m" 302 -
+2025-09-12 15:37:59,629 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-12 15:37:59,629 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 15:37:59,630 - INFO -  * Restarting with stat
+2025-09-12 15:38:00,016 - WARNING -  * Debugger is active!
+2025-09-12 15:38:00,026 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:38:07,616 - INFO - 127.0.0.1 - - [12/Sep/2025 15:38:07] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:38:09,816 - INFO - 127.0.0.1 - - [12/Sep/2025 15:38:09] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:38:10,239 - INFO - 127.0.0.1 - - [12/Sep/2025 15:38:10] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 15:38:11,732 - INFO - 127.0.0.1 - - [12/Sep/2025 15:38:11] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:38:16,361 - INFO - 127.0.0.1 - - [12/Sep/2025 15:38:16] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:38:23,848 - INFO - 127.0.0.1 - - [12/Sep/2025 15:38:23] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:38:27,914 - INFO - 127.0.0.1 - - [12/Sep/2025 15:38:27] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:38:29,861 - INFO - 127.0.0.1 - - [12/Sep/2025 15:38:29] "GET /quotes/order/2 HTTP/1.1" 200 -
+2025-09-12 15:38:45,520 - INFO - Quote模型已成功导入并缓存，耗时: 0.0001秒
+2025-09-12 15:38:45,524 - INFO - 127.0.0.1 - - [12/Sep/2025 15:38:45] "[32mPOST /orders/2/select-supplier HTTP/1.1[0m" 302 -
+2025-09-12 15:38:45,561 - INFO - 127.0.0.1 - - [12/Sep/2025 15:38:45] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 15:39:03,732 - INFO - 127.0.0.1 - - [12/Sep/2025 15:39:03] "[32mPOST /orders/2/select-supplier HTTP/1.1[0m" 302 -
+2025-09-12 15:39:03,739 - INFO - 127.0.0.1 - - [12/Sep/2025 15:39:03] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 15:39:07,593 - INFO - 订单 ORD20250912145200000002 已完成，选择供应商ID: 1，缓存命中率: 80.0%
+2025-09-12 15:39:07,595 - INFO - 127.0.0.1 - - [12/Sep/2025 15:39:07] "[32mPOST /orders/2/select-supplier HTTP/1.1[0m" 302 -
+2025-09-12 15:39:07,607 - INFO - 127.0.0.1 - - [12/Sep/2025 15:39:07] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 15:39:11,940 - INFO - 127.0.0.1 - - [12/Sep/2025 15:39:11] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 15:42:04,454 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-12 15:42:04,514 - INFO -  * Restarting with stat
+2025-09-12 15:42:05,020 - WARNING -  * Debugger is active!
+2025-09-12 15:42:05,028 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:42:33,771 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-12 15:42:33,825 - INFO -  * Restarting with stat
+2025-09-12 15:42:34,333 - WARNING -  * Debugger is active!
+2025-09-12 15:42:34,342 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:44:57,863 - INFO - 127.0.0.1 - - [12/Sep/2025 15:44:57] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:44:59,771 - INFO - 127.0.0.1 - - [12/Sep/2025 15:44:59] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 15:45:00,826 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:00] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:45:03,265 - INFO - Quote模型已成功导入并缓存，耗时: 0.0001秒
+2025-09-12 15:45:03,297 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:03] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 15:45:07,650 - INFO - 订单 ORD20250912145200000002 已重新激活为进行中状态
+2025-09-12 15:45:07,660 - INFO - 管理员 lcsyz 取消了订单 ORD20250912145200000002 的供应商选择 - 原选择: 大广, 价格: 2000.00
+2025-09-12 15:45:07,661 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:07] "[32mPOST /orders/2/reset-selection HTTP/1.1[0m" 302 -
+2025-09-12 15:45:07,676 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:07] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 15:45:12,396 - INFO - 订单 ORD20250912145200000002 已完成，选择供应商ID: 1，缓存命中率: 66.67%
+2025-09-12 15:45:12,398 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:12] "[32mPOST /orders/2/select-supplier HTTP/1.1[0m" 302 -
+2025-09-12 15:45:12,410 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:12] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 15:45:14,529 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:14] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:45:16,625 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:16] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 15:45:23,071 - INFO - 订单 ORD20250912124504000001 已重新激活为进行中状态
+2025-09-12 15:45:23,077 - INFO - 管理员 lcsyz 取消了订单 ORD20250912124504000001 的供应商选择 - 原选择: 大广, 价格: 300.00
+2025-09-12 15:45:23,079 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:23] "[32mPOST /orders/1/reset-selection HTTP/1.1[0m" 302 -
+2025-09-12 15:45:23,093 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:23] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 15:45:29,390 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:29] "[32mPOST /orders/1/select-supplier HTTP/1.1[0m" 302 -
+2025-09-12 15:45:29,400 - INFO - 127.0.0.1 - - [12/Sep/2025 15:45:29] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 15:48:29,694 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-12 15:48:29,750 - INFO -  * Restarting with stat
+2025-09-12 15:48:30,220 - WARNING -  * Debugger is active!
+2025-09-12 15:48:30,230 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:48:36,248 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-12 15:48:36,295 - INFO -  * Restarting with stat
+2025-09-12 15:48:36,676 - WARNING -  * Debugger is active!
+2025-09-12 15:48:36,683 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:51:43,625 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/supplier_portal.py', reloading
+2025-09-12 15:51:43,676 - INFO -  * Restarting with stat
+2025-09-12 15:51:44,146 - WARNING -  * Debugger is active!
+2025-09-12 15:51:44,156 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:52:53,331 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/quote.py', reloading
+2025-09-12 15:52:53,386 - INFO -  * Restarting with stat
+2025-09-12 15:52:53,854 - WARNING -  * Debugger is active!
+2025-09-12 15:52:53,862 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:53:10,303 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/supplier_portal.py', reloading
+2025-09-12 15:53:10,355 - INFO -  * Restarting with stat
+2025-09-12 15:53:10,748 - WARNING -  * Debugger is active!
+2025-09-12 15:53:10,758 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 16:09:14,043 - INFO - Quote模型已成功导入并缓存，耗时: 0.0000秒
+2025-09-12 16:09:14,080 - INFO - 127.0.0.1 - - [12/Sep/2025 16:09:14] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 16:09:29,167 - INFO - 127.0.0.1 - - [12/Sep/2025 16:09:29] "GET /orders/1/edit HTTP/1.1" 200 -
+2025-09-12 16:09:31,747 - INFO - 127.0.0.1 - - [12/Sep/2025 16:09:31] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 16:09:33,105 - INFO - 127.0.0.1 - - [12/Sep/2025 16:09:33] "GET /orders/1/add-suppliers HTTP/1.1" 200 -
+2025-09-12 16:09:35,395 - INFO - 127.0.0.1 - - [12/Sep/2025 16:09:35] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 16:09:49,665 - INFO - 订单 ORD20250912124504000001 价格协商：原报价 200.0，确认价格 180.0，供应商ID: 3
+2025-09-12 16:09:49,670 - INFO - 订单 ORD20250912124504000001 已完成，选择供应商ID: 3，缓存命中率: 75.0%
+2025-09-12 16:09:49,671 - INFO - 127.0.0.1 - - [12/Sep/2025 16:09:49] "[32mPOST /orders/1/select-supplier HTTP/1.1[0m" 302 -
+2025-09-12 16:09:49,680 - INFO - 127.0.0.1 - - [12/Sep/2025 16:09:49] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 16:10:01,591 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:01] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 16:10:15,421 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:15] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 16:10:21,420 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:21] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 16:10:22,979 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:22] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 16:10:23,714 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:23] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 16:10:25,466 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:25] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 16:10:30,300 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:30] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 16:10:32,310 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:32] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 16:10:41,687 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:41] "GET /suppliers/3/details HTTP/1.1" 200 -
+2025-09-12 16:10:43,109 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:43] "GET /supplier/3du_UdEeqTYnp_6rM6uI3SFZRq8MeK1KgHVYamq0dA4 HTTP/1.1" 200 -
+2025-09-12 16:10:49,242 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:49] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-12 16:10:56,565 - INFO - 127.0.0.1 - - [12/Sep/2025 16:10:56] "GET /portal/order/1 HTTP/1.1" 200 -
+2025-09-12 16:31:13,795 - INFO - 127.0.0.1 - - [12/Sep/2025 16:31:13] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 16:31:14,737 - INFO - 127.0.0.1 - - [12/Sep/2025 16:31:14] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 16:31:15,253 - INFO - 127.0.0.1 - - [12/Sep/2025 16:31:15] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 16:31:15,817 - INFO - 127.0.0.1 - - [12/Sep/2025 16:31:15] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 16:31:37,757 - INFO - 127.0.0.1 - - [12/Sep/2025 16:31:37] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 16:31:41,009 - INFO - 127.0.0.1 - - [12/Sep/2025 16:31:41] "GET /admin/users/add HTTP/1.1" 200 -
+2025-09-12 16:31:49,561 - INFO - 127.0.0.1 - - [12/Sep/2025 16:31:49] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 16:32:02,266 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:02] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 16:32:04,428 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:04] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 16:32:06,983 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:06] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 16:32:09,736 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:09] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 16:32:26,566 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:26] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 16:32:28,528 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:28] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 16:32:31,386 - INFO - 订单 ORD20250912145200000002 已重新激活为进行中状态
+2025-09-12 16:32:31,392 - INFO - 管理员 lcsyz 取消了订单 ORD20250912145200000002 的供应商选择 - 原选择: 大广, 价格: 2000.00
+2025-09-12 16:32:31,393 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:31] "[32mPOST /orders/2/reset-selection HTTP/1.1[0m" 302 -
+2025-09-12 16:32:31,402 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:31] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 16:32:38,512 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:38] "[32mPOST /orders/2/reset-selection HTTP/1.1[0m" 302 -
+2025-09-12 16:32:38,522 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:38] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 16:32:40,518 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:40] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 16:32:42,363 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:42] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 16:32:44,244 - INFO - 订单 ORD20250912124504000001 已重新激活为进行中状态
+2025-09-12 16:32:44,247 - INFO - 管理员 lcsyz 取消了订单 ORD20250912124504000001 的供应商选择 - 原选择: 韵彪, 价格: 180.00
+2025-09-12 16:32:44,248 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:44] "[32mPOST /orders/1/reset-selection HTTP/1.1[0m" 302 -
+2025-09-12 16:32:44,258 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:44] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 16:32:51,025 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:51] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 16:32:56,910 - INFO - 127.0.0.1 - - [12/Sep/2025 16:32:56] "GET /suppliers/add HTTP/1.1" 200 -
+2025-09-12 16:33:04,451 - INFO - 127.0.0.1 - - [12/Sep/2025 16:33:04] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 16:33:07,535 - INFO - 127.0.0.1 - - [12/Sep/2025 16:33:07] "GET /suppliers/1/details HTTP/1.1" 200 -
+2025-09-12 16:33:16,288 - INFO - 127.0.0.1 - - [12/Sep/2025 16:33:16] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 16:33:30,255 - INFO - 127.0.0.1 - - [12/Sep/2025 16:33:30] "GET /portal/order/2/quote HTTP/1.1" 200 -
+2025-09-12 16:33:39,011 - INFO - 127.0.0.1 - - [12/Sep/2025 16:33:39] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 16:33:48,397 - INFO - 127.0.0.1 - - [12/Sep/2025 16:33:48] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 16:33:50,241 - INFO - 127.0.0.1 - - [12/Sep/2025 16:33:50] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 16:33:53,593 - INFO - 127.0.0.1 - - [12/Sep/2025 16:33:53] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 16:33:54,859 - INFO - 127.0.0.1 - - [12/Sep/2025 16:33:54] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 16:33:59,358 - INFO - 127.0.0.1 - - [12/Sep/2025 16:33:59] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 16:34:01,614 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:01] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 16:34:03,674 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:03] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 16:34:11,245 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:11] "GET /quotes/order/1 HTTP/1.1" 200 -
+2025-09-12 16:34:29,760 - INFO - 订单 ORD20250912124504000001 已完成，选择供应商ID: 1，缓存命中率: 92.86%
+2025-09-12 16:34:29,760 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:29] "[32mPOST /orders/1/select-supplier HTTP/1.1[0m" 302 -
+2025-09-12 16:34:29,769 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:29] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 16:34:32,193 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:32] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 16:34:33,541 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:33] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 16:34:34,315 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:34] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 16:34:41,426 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:41] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 16:34:43,424 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:43] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 16:34:52,302 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:52] "GET /supplier/XjS2TYUDJsqe8-Gl1WzI--DMQtkzK0zoUtnTCnTeCD8 HTTP/1.1" 200 -
+2025-09-12 16:34:54,935 - INFO - 127.0.0.1 - - [12/Sep/2025 16:34:54] "GET /supplier/3du_UdEeqTYnp_6rM6uI3SFZRq8MeK1KgHVYamq0dA4 HTTP/1.1" 200 -
+2025-09-12 16:36:21,831 - INFO - 127.0.0.1 - - [12/Sep/2025 16:36:21] "GET /portal/supplier/3du_UdEeqTYnp_6rM6uI3SFZRq8MeK1KgHVYamq0dA4 HTTP/1.1" 200 -
+2025-09-12 21:22:19,923 - INFO - 127.0.0.1 - - [12/Sep/2025 21:22:19] "GET /portal/order/2/quote HTTP/1.1" 200 -
+2025-09-12 21:22:22,396 - INFO - 127.0.0.1 - - [12/Sep/2025 21:22:22] "GET /portal/order/2/quote HTTP/1.1" 200 -
+2025-09-12 21:22:38,217 - INFO - 127.0.0.1 - - [12/Sep/2025 21:22:38] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 21:22:39,766 - INFO - 127.0.0.1 - - [12/Sep/2025 21:22:39] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 21:22:41,682 - INFO - 127.0.0.1 - - [12/Sep/2025 21:22:41] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 21:22:42,464 - INFO - 127.0.0.1 - - [12/Sep/2025 21:22:42] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 21:22:45,092 - INFO - 127.0.0.1 - - [12/Sep/2025 21:22:45] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 21:23:13,559 - INFO - 127.0.0.1 - - [12/Sep/2025 21:23:13] "GET /portal/supplier/3du_UdEeqTYnp_6rM6uI3SFZRq8MeK1KgHVYamq0dA4 HTTP/1.1" 200 -
+2025-09-12 21:49:59,839 - INFO - 订单 ORD20250912145200000002 价格协商：原报价 2000.0，确认价格 1800.0，供应商ID: 1
+2025-09-12 21:49:59,841 - INFO - 订单 ORD20250912145200000002 已完成，选择供应商ID: 1，缓存命中率: 94.12%
+2025-09-12 21:49:59,841 - INFO - 127.0.0.1 - - [12/Sep/2025 21:49:59] "[32mPOST /orders/2/select-supplier HTTP/1.1[0m" 302 -
+2025-09-12 21:49:59,851 - INFO - 127.0.0.1 - - [12/Sep/2025 21:49:59] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 21:50:05,592 - INFO - 127.0.0.1 - - [12/Sep/2025 21:50:05] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 21:50:09,939 - INFO - 127.0.0.1 - - [12/Sep/2025 21:50:09] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 21:51:12,560 - INFO - 127.0.0.1 - - [12/Sep/2025 21:51:12] "GET /portal/order/1 HTTP/1.1" 200 -
+2025-09-12 21:51:26,712 - INFO - 127.0.0.1 - - [12/Sep/2025 21:51:26] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 21:51:27,572 - INFO - 127.0.0.1 - - [12/Sep/2025 21:51:27] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 21:51:28,444 - INFO - 127.0.0.1 - - [12/Sep/2025 21:51:28] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 21:51:29,324 - INFO - 127.0.0.1 - - [12/Sep/2025 21:51:29] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 21:52:29,436 - INFO - 127.0.0.1 - - [12/Sep/2025 21:52:29] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 21:52:32,173 - INFO - 127.0.0.1 - - [12/Sep/2025 21:52:32] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 21:52:40,860 - INFO - 127.0.0.1 - - [12/Sep/2025 21:52:40] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 21:52:48,460 - INFO - 127.0.0.1 - - [12/Sep/2025 21:52:48] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 21:52:49,091 - INFO - 127.0.0.1 - - [12/Sep/2025 21:52:49] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 21:53:16,206 - INFO - 127.0.0.1 - - [12/Sep/2025 21:53:16] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 21:53:19,050 - INFO - 订单 ORD20250912145200000002 已重新激活为进行中状态
+2025-09-12 21:53:19,054 - INFO - 管理员 lcsyz 取消了订单 ORD20250912145200000002 的供应商选择 - 原选择: 大广, 价格: 1800.00
+2025-09-12 21:53:19,055 - INFO - 127.0.0.1 - - [12/Sep/2025 21:53:19] "[32mPOST /orders/2/reset-selection HTTP/1.1[0m" 302 -
+2025-09-12 21:53:19,070 - INFO - 127.0.0.1 - - [12/Sep/2025 21:53:19] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 21:58:42,208 - INFO - === 供应商门户价格显示修复测试 ===
+2025-09-12 21:58:42,209 - INFO - 测试场景: 原始报价2000元，最终确认价格1800元
+2025-09-12 21:58:42,216 - ERROR - 创建测试数据失败: 'email' is an invalid keyword argument for User
+2025-09-12 21:58:42,216 - ERROR - 测试失败: 'email' is an invalid keyword argument for User
+2025-09-12 21:58:42,216 - ERROR - 清理测试数据失败: Entity namespace for "orders" has no property "order_no__like"
+2025-09-12 21:58:54,663 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/test_supplier_portal_price_display.py', reloading
+2025-09-12 21:58:54,698 - INFO -  * Restarting with stat
+2025-09-12 21:58:54,888 - WARNING -  * Debugger is active!
+2025-09-12 21:58:54,893 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 21:58:59,868 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/test_supplier_portal_price_display.py', reloading
+2025-09-12 21:58:59,896 - INFO -  * Restarting with stat
+2025-09-12 21:59:00,081 - WARNING -  * Debugger is active!
+2025-09-12 21:59:00,085 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 21:59:05,256 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/test_supplier_portal_price_display.py', reloading
+2025-09-12 21:59:05,286 - INFO -  * Restarting with stat
+2025-09-12 21:59:05,496 - WARNING -  * Debugger is active!
+2025-09-12 21:59:05,500 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 21:59:09,278 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/test_supplier_portal_price_display.py', reloading
+2025-09-12 21:59:09,306 - INFO -  * Restarting with stat
+2025-09-12 21:59:09,493 - WARNING -  * Debugger is active!
+2025-09-12 21:59:09,497 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 21:59:13,309 - INFO - === 供应商门户价格显示修复测试 ===
+2025-09-12 21:59:13,309 - INFO - 测试场景: 原始报价2000元，最终确认价格1800元
+2025-09-12 21:59:13,318 - ERROR - 创建测试数据失败: 'contact' is an invalid keyword argument for Supplier
+2025-09-12 21:59:13,318 - ERROR - 测试失败: 'contact' is an invalid keyword argument for Supplier
+2025-09-12 21:59:13,320 - INFO - 测试数据清理完成
+2025-09-12 21:59:27,460 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/test_supplier_portal_price_display.py', reloading
+2025-09-12 21:59:27,489 - INFO -  * Restarting with stat
+2025-09-12 21:59:27,697 - WARNING -  * Debugger is active!
+2025-09-12 21:59:27,701 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 21:59:30,872 - INFO - === 供应商门户价格显示修复测试 ===
+2025-09-12 21:59:30,873 - INFO - 测试场景: 原始报价2000元，最终确认价格1800元
+2025-09-12 21:59:30,886 - INFO - 测试数据创建成功:
+2025-09-12 21:59:30,886 - INFO - - 订单号: TEST202412120001
+2025-09-12 21:59:30,887 - INFO - - 供应商: 测试供应商
+2025-09-12 21:59:30,887 - INFO - - 原始报价: ¥2000.00
+2025-09-12 21:59:30,887 - INFO - - 最终成交价: ¥1800.00
+2025-09-12 21:59:30,887 - INFO - - 价格差异: ¥-200.00
+2025-09-12 21:59:30,887 - INFO - 
+=== 验证价格显示逻辑 ===
+2025-09-12 21:59:30,887 - INFO - 1. 是否中标: True
+2025-09-12 21:59:30,887 - INFO - 2. 是否有最终价格: True
+2025-09-12 21:59:30,887 - INFO - 3. 价格是否不同: True
+2025-09-12 21:59:30,887 - INFO - ✅ 符合显示价格差异的条件
+2025-09-12 21:59:30,887 - INFO -    - 原始报价: ¥2000.00 (应显示为划线+变灰)
+2025-09-12 21:59:30,887 - INFO -    - 最终成交价: ¥1800.00 (应突出显示)
+2025-09-12 21:59:30,887 - INFO -    - 价格调整: ¥-200.00
+2025-09-12 21:59:30,887 - INFO - 
+=== 模拟模板渲染效果 ===
+2025-09-12 21:59:30,888 - INFO - 供应商门户 - 报价列表页面显示效果:
+2025-09-12 21:59:30,888 - INFO -   原始报价: ¥2000.00 (划线+变灰)
+2025-09-12 21:59:30,888 - INFO -   最终成交价: ¥1800.00 (绿色突出)
+2025-09-12 21:59:30,888 - INFO -   标签: 最终成交价
+2025-09-12 21:59:30,888 - INFO -   状态: 已中标 (绿色徽章)
+2025-09-12 21:59:30,888 - INFO -   价格调整: -¥200.00 (绿色)
+2025-09-12 21:59:30,888 - INFO - 
+供应商门户 - 订单详情页面显示效果:
+2025-09-12 21:59:30,888 - INFO -   报价金额区域:
+2025-09-12 21:59:30,888 - INFO -     - 原报价: ¥2000.00 (划线+变灰)
+2025-09-12 21:59:30,888 - INFO -     - 最终成交价: ¥1800.00 (绿色大字)
+2025-09-12 21:59:30,888 - INFO -     - 标签: 最终成交价
+2025-09-12 21:59:30,888 - INFO -   中标通知区域:
+2025-09-12 21:59:30,888 - INFO -     - 标题: 恭喜中标！
+2025-09-12 21:59:30,888 - INFO -     - 原报价: ¥2000.00 (划线)
+2025-09-12 21:59:30,888 - INFO -     - 成交价: ¥1800.00 (绿色粗体)
+2025-09-12 21:59:30,888 - INFO -     - 协商调整: -¥200.00 (绿色)
+2025-09-12 21:59:30,888 - INFO - 
+=== 测试总结 ===
+2025-09-12 21:59:30,888 - INFO - ✅ 修复已实现以下功能:
+2025-09-12 21:59:30,888 - INFO -   1. 在报价列表中区分显示原始报价和最终成交价
+2025-09-12 21:59:30,888 - INFO -   2. 原始报价用划线和变灰效果处理
+2025-09-12 21:59:30,888 - INFO -   3. 最终成交价用绿色突出显示
+2025-09-12 21:59:30,888 - INFO -   4. 在状态列显示价格调整幅度
+2025-09-12 21:59:30,888 - INFO -   5. 在订单详情页提供详细的价格对比信息
+2025-09-12 21:59:30,888 - INFO - 
+✅ 用户体验改进:
+2025-09-12 21:59:30,888 - INFO -   - 供应商能清楚看到原始报价和最终成交价
+2025-09-12 21:59:30,888 - INFO -   - 价格协商信息透明化
+2025-09-12 21:59:30,888 - INFO -   - 视觉层次清晰，便于理解
+2025-09-12 21:59:30,894 - INFO - 测试数据清理完成
+2025-09-12 22:09:42,392 - INFO - Quote模型已成功导入并缓存，耗时: 0.0000秒
+2025-09-12 22:09:42,394 - INFO - 订单 ORD20250912145200000002 价格协商：原报价 2000.0，确认价格 1800.0，供应商ID: 1
+2025-09-12 22:09:42,399 - INFO - 订单 ORD20250912145200000002 已完成，选择供应商ID: 1，缓存命中率: 0.0%
+2025-09-12 22:09:42,400 - INFO - 127.0.0.1 - - [12/Sep/2025 22:09:42] "[32mPOST /orders/2/select-supplier HTTP/1.1[0m" 302 -
+2025-09-12 22:09:42,433 - INFO - 127.0.0.1 - - [12/Sep/2025 22:09:42] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 22:09:48,283 - INFO - 127.0.0.1 - - [12/Sep/2025 22:09:48] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 22:09:54,734 - INFO - 127.0.0.1 - - [12/Sep/2025 22:09:54] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 22:09:59,791 - INFO - 127.0.0.1 - - [12/Sep/2025 22:09:59] "GET /portal/supplier/3du_UdEeqTYnp_6rM6uI3SFZRq8MeK1KgHVYamq0dA4 HTTP/1.1" 200 -
+2025-09-12 22:10:04,481 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:04] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 22:10:05,011 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:05] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 22:10:05,851 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:05] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 22:10:06,567 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:06] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 22:10:07,319 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:07] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 22:10:08,937 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:08] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 22:10:11,652 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:11] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 22:10:15,244 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:15] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 22:10:35,209 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-12 22:10:35,209 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 22:10:35,210 - INFO -  * Restarting with stat
+2025-09-12 22:10:35,396 - WARNING -  * Debugger is active!
+2025-09-12 22:10:35,403 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 22:10:38,434 - INFO - Quote模型已成功导入并缓存，耗时: 0.0000秒
+2025-09-12 22:10:38,471 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:38] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 22:10:41,502 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:41] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 22:10:45,028 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:45] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 22:10:59,515 - INFO - 127.0.0.1 - - [12/Sep/2025 22:10:59] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 22:11:23,717 - INFO - 127.0.0.1 - - [12/Sep/2025 22:11:23] "GET /portal/order/1 HTTP/1.1" 200 -
+2025-09-12 22:11:27,232 - INFO - 127.0.0.1 - - [12/Sep/2025 22:11:27] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 22:11:35,907 - INFO - 127.0.0.1 - - [12/Sep/2025 22:11:35] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 22:11:39,074 - INFO - 127.0.0.1 - - [12/Sep/2025 22:11:39] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 22:12:01,459 - INFO - 127.0.0.1 - - [12/Sep/2025 22:12:01] "GET /portal/order/1 HTTP/1.1" 200 -
+2025-09-12 22:12:12,323 - INFO - 127.0.0.1 - - [12/Sep/2025 22:12:12] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 22:12:20,544 - INFO - 127.0.0.1 - - [12/Sep/2025 22:12:20] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 22:12:28,178 - INFO - 127.0.0.1 - - [12/Sep/2025 22:12:28] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 22:12:35,255 - INFO - 127.0.0.1 - - [12/Sep/2025 22:12:35] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 22:12:49,053 - INFO - 127.0.0.1 - - [12/Sep/2025 22:12:49] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 22:12:50,930 - INFO - 127.0.0.1 - - [12/Sep/2025 22:12:50] "[33mGET /apple-touch-icon-precomposed.png HTTP/1.1[0m" 404 -
+2025-09-12 22:12:50,932 - INFO - 127.0.0.1 - - [12/Sep/2025 22:12:50] "[33mGET /apple-touch-icon.png HTTP/1.1[0m" 404 -
+2025-09-12 22:12:50,933 - INFO - 127.0.0.1 - - [12/Sep/2025 22:12:50] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-12 22:12:53,947 - INFO - 127.0.0.1 - - [12/Sep/2025 22:12:53] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 22:12:57,128 - INFO - 127.0.0.1 - - [12/Sep/2025 22:12:57] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 22:13:00,636 - INFO - 127.0.0.1 - - [12/Sep/2025 22:13:00] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-09-12 22:13:07,027 - INFO - 127.0.0.1 - - [12/Sep/2025 22:13:07] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 22:13:15,015 - INFO - 127.0.0.1 - - [12/Sep/2025 22:13:15] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 22:14:26,480 - INFO - 127.0.0.1 - - [12/Sep/2025 22:14:26] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 22:59:09,937 - INFO - 127.0.0.1 - - [12/Sep/2025 22:59:09] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-12 23:25:08,091 - INFO - 127.0.0.1 - - [12/Sep/2025 23:25:08] "GET /portal/supplier/3du_UdEeqTYnp_6rM6uI3SFZRq8MeK1KgHVYamq0dA4 HTTP/1.1" 200 -
+2025-09-12 23:25:12,579 - INFO - 127.0.0.1 - - [12/Sep/2025 23:25:12] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 23:25:16,811 - INFO - 127.0.0.1 - - [12/Sep/2025 23:25:16] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 23:25:27,894 - INFO - 127.0.0.1 - - [12/Sep/2025 23:25:27] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 23:26:33,362 - INFO - 127.0.0.1 - - [12/Sep/2025 23:26:33] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 23:26:34,799 - INFO - 127.0.0.1 - - [12/Sep/2025 23:26:34] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 23:26:46,925 - INFO - 127.0.0.1 - - [12/Sep/2025 23:26:46] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 23:28:00,836 - INFO - 127.0.0.1 - - [12/Sep/2025 23:28:00] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 23:33:03,809 - INFO - 127.0.0.1 - - [12/Sep/2025 23:33:03] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 23:34:16,616 - INFO - 127.0.0.1 - - [12/Sep/2025 23:34:16] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 23:34:17,455 - INFO - 127.0.0.1 - - [12/Sep/2025 23:34:17] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 23:35:31,261 - INFO - 127.0.0.1 - - [12/Sep/2025 23:35:31] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 23:35:32,745 - INFO - 127.0.0.1 - - [12/Sep/2025 23:35:32] "GET /portal/order/2 HTTP/1.1" 200 -

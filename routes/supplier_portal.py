@@ -86,6 +86,7 @@ def submit_quote(order_id):
         delivery_time = request.form.get('delivery_time', '').strip()
         remarks = request.form.get('remarks', '').strip()
         
+        # 基础价格验证
         if not price or price <= 0:
             flash('请输入有效的报价金额', 'error')
             return render_template('portal/quote_form.html', 
@@ -93,12 +94,35 @@ def submit_quote(order_id):
                                  order=order, 
                                  quote=existing_quote)
         
+        # 价格上限验证
+        if price > 9999999999.99:
+            flash('报价金额超出系统允许的最大值', 'error')
+            return render_template('portal/quote_form.html', 
+                                 supplier=supplier, 
+                                 order=order, 
+                                 quote=existing_quote)
+        
+        # 价格变动合理性检查（仅在更新报价时）
+        price_warnings = []
+        if existing_quote:
+            try:
+                original_price = existing_quote.get_price_decimal()
+                price_warnings = Quote.validate_price_change(original_price, price)
+            except Exception as e:
+                import logging
+                logging.warning(f'价格对比计算失败: {e}')
+        
         if existing_quote:
             # 更新现有报价
             existing_quote.price = price
             existing_quote.delivery_time = delivery_time if delivery_time else None
             existing_quote.remarks = remarks if remarks else None
             existing_quote.created_at = datetime.utcnow()  # 更新时间
+            
+            # 显示价格警告和成功消息
+            if price_warnings:
+                for warning in price_warnings:
+                    flash(warning, 'warning')
             flash('报价更新成功', 'success')
         else:
             # 创建新报价
@@ -112,7 +136,17 @@ def submit_quote(order_id):
             db.session.add(new_quote)
             flash('报价提交成功', 'success')
         
-        db.session.commit()
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            import logging
+            logging.error(f'报价保存失败: {e}')
+            flash('报价保存失败，请重试', 'error')
+            return render_template('portal/quote_form.html', 
+                                 supplier=supplier, 
+                                 order=order, 
+                                 quote=existing_quote)
         
         # 可以在这里添加通知采购方的逻辑
         notify_buyer_new_quote(order, supplier, price)
