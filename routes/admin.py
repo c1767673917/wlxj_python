@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, send_file
 from flask_login import login_required, current_user
-from backup_manager import BackupManager
+from scripts.backup.backup_manager import BackupManager
 from utils.auth import admin_required
 from werkzeug.security import generate_password_hash
 from datetime import datetime

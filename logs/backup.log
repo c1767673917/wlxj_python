@@ -1,0 +1,52 @@
+2025-09-12 23:45:53,059 - WARNING -  * Debugger is active!
+2025-09-12 23:45:53,065 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 23:46:02,759 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/scripts/backup/scheduled_backup.py', reloading
+2025-09-12 23:46:03,045 - WARNING -  * Debugger is active!
+2025-09-12 23:46:03,049 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 23:46:22,781 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/tests/test_decimal_fixes.py', reloading
+2025-09-12 23:46:23,005 - WARNING -  * Debugger is active!
+2025-09-12 23:46:23,009 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 23:46:34,996 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/tests/test_cache_mechanism.py', reloading
+2025-09-12 23:46:35,215 - WARNING -  * Debugger is active!
+2025-09-12 23:46:35,219 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 23:46:47,965 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/scripts/validation/final_validation.py', reloading
+2025-09-12 23:46:48,193 - WARNING -  * Debugger is active!
+2025-09-12 23:46:48,197 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 23:47:51,792 - INFO - 127.0.0.1 - - [12/Sep/2025 23:47:51] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:47:52,904 - INFO - 127.0.0.1 - - [12/Sep/2025 23:47:52] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:47:53,972 - INFO - 127.0.0.1 - - [12/Sep/2025 23:47:53] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 23:47:55,666 - INFO - 127.0.0.1 - - [12/Sep/2025 23:47:55] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 23:47:56,864 - INFO - 127.0.0.1 - - [12/Sep/2025 23:47:56] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 23:47:58,072 - INFO - 127.0.0.1 - - [12/Sep/2025 23:47:58] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 23:48:00,132 - INFO - 127.0.0.1 - - [12/Sep/2025 23:48:00] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:49:02,145 - INFO - 127.0.0.1 - - [12/Sep/2025 23:49:02] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 23:49:03,088 - INFO - 127.0.0.1 - - [12/Sep/2025 23:49:03] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:50:12,309 - INFO - 127.0.0.1 - - [12/Sep/2025 23:50:12] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:50:47,598 - INFO - 127.0.0.1 - - [12/Sep/2025 23:50:47] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 23:50:48,081 - INFO - 127.0.0.1 - - [12/Sep/2025 23:50:48] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 23:50:48,522 - INFO - 127.0.0.1 - - [12/Sep/2025 23:50:48] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 23:50:49,707 - INFO - 127.0.0.1 - - [12/Sep/2025 23:50:49] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:50:51,842 - INFO - 127.0.0.1 - - [12/Sep/2025 23:50:51] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:50:52,216 - INFO - 127.0.0.1 - - [12/Sep/2025 23:50:52] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 23:50:53,092 - INFO - 127.0.0.1 - - [12/Sep/2025 23:50:53] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:50:54,072 - INFO - 127.0.0.1 - - [12/Sep/2025 23:50:54] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 23:50:54,778 - INFO - 127.0.0.1 - - [12/Sep/2025 23:50:54] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 23:50:55,575 - INFO - 127.0.0.1 - - [12/Sep/2025 23:50:55] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:51:07,850 - INFO - 127.0.0.1 - - [12/Sep/2025 23:51:07] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 23:51:10,656 - INFO - 127.0.0.1 - - [12/Sep/2025 23:51:10] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 23:51:11,226 - INFO - 127.0.0.1 - - [12/Sep/2025 23:51:11] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:51:12,804 - INFO - 127.0.0.1 - - [12/Sep/2025 23:51:12] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:51:15,803 - INFO - 127.0.0.1 - - [12/Sep/2025 23:51:15] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:51:16,734 - INFO - 127.0.0.1 - - [12/Sep/2025 23:51:16] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 23:51:17,659 - INFO - 127.0.0.1 - - [12/Sep/2025 23:51:17] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 23:51:18,453 - INFO - 127.0.0.1 - - [12/Sep/2025 23:51:18] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 23:51:19,497 - INFO - 127.0.0.1 - - [12/Sep/2025 23:51:19] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 23:51:20,333 - INFO - 127.0.0.1 - - [12/Sep/2025 23:51:20] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:52:10,900 - INFO - 127.0.0.1 - - [12/Sep/2025 23:52:10] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:52:11,558 - INFO - 127.0.0.1 - - [12/Sep/2025 23:52:11] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 23:52:12,608 - INFO - 127.0.0.1 - - [12/Sep/2025 23:52:12] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 23:52:13,238 - INFO - 127.0.0.1 - - [12/Sep/2025 23:52:13] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 23:52:15,926 - INFO - 127.0.0.1 - - [12/Sep/2025 23:52:15] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 23:52:16,588 - INFO - 127.0.0.1 - - [12/Sep/2025 23:52:16] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 23:52:17,291 - INFO - 127.0.0.1 - - [12/Sep/2025 23:52:17] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 23:52:18,494 - INFO - 127.0.0.1 - - [12/Sep/2025 23:52:18] "GET /dashboard HTTP/1.1" 200 -

@@ -18,7 +18,7 @@ from unittest.mock import MagicMock, patch
 import logging
 
 # 添加项目根目录到路径
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # 导入应用模块
 from app import decimal_to_float, safe_number, format_price
