@@ -1,21 +1,17 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, send_file
 from flask_login import login_required, current_user
 from backup_manager import BackupManager
+from utils.auth import admin_required
+from werkzeug.security import generate_password_hash
 from datetime import datetime
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 # 创建蓝图
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-def admin_required(f):
-    """管理员权限装饰器"""
-    def decorated_function(*args, **kwargs):
-        if not current_user.is_authenticated or not current_user.is_admin():
-            flash('需要管理员权限才能访问此页面', 'error')
-            return redirect(url_for('dashboard'))
-        return f(*args, **kwargs)
-    decorated_function.__name__ = f.__name__
-    return decorated_function
 
 @admin_bp.route('/')
 @login_required
@@ -198,3 +194,191 @@ def view_logs():
             logs[log_file] = ['日志文件不存在']
     
     return render_template('admin/logs.html', logs=logs)
+
+@admin_bp.route('/users/add', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def add_user():
+    """添加新用户"""
+    if request.method == 'POST':
+        from models import User, db
+        
+        username = request.form.get('username')
+        password = request.form.get('password')
+        business_type = request.form.get('business_type')
+        
+        # 数据验证
+        if not username or not password or not business_type:
+            flash('请填写所有字段', 'error')
+            return render_template('admin/add_user.html')
+        
+        if business_type not in ['admin', 'oil', 'fast_moving']:
+            flash('无效的业务类型', 'error')
+            return render_template('admin/add_user.html')
+        
+        # 检查用户名是否已存在
+        if User.query.filter_by(username=username).first():
+            flash('用户名已存在', 'error')
+            return render_template('admin/add_user.html')
+        
+        try:
+            user = User(
+                username=username,
+                password=generate_password_hash(password),
+                business_type=business_type
+            )
+            db.session.add(user)
+            db.session.commit()
+            flash(f'用户 "{username}" 添加成功', 'success')
+            return redirect(url_for('admin.user_management'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'添加用户失败: {str(e)}', 'error')
+    
+    return render_template('admin/add_user.html')
+
+@admin_bp.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_user(user_id):
+    """编辑用户"""
+    from models import User, db
+    user = User.query.get_or_404(user_id)
+    
+    if request.method == 'POST':
+        username = request.form.get('username')
+        business_type = request.form.get('business_type')
+        password = request.form.get('password')
+        
+        # 数据验证
+        if not username or not business_type:
+            flash('用户名和业务类型不能为空', 'error')
+            return render_template('admin/edit_user.html', user=user)
+        
+        if business_type not in ['admin', 'oil', 'fast_moving']:
+            flash('无效的业务类型', 'error')
+            return render_template('admin/edit_user.html', user=user)
+        
+        # 检查用户名是否被其他用户使用
+        existing = User.query.filter_by(username=username).filter(User.id != user_id).first()
+        if existing:
+            flash('用户名已被其他用户使用', 'error')
+            return render_template('admin/edit_user.html', user=user)
+        
+        try:
+            user.username = username
+            user.business_type = business_type
+            
+            # 如果提供了新密码则更新
+            if password:
+                user.password = generate_password_hash(password)
+            
+            db.session.commit()
+            flash(f'用户 "{username}" 更新成功', 'success')
+            return redirect(url_for('admin.user_management'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'更新用户失败: {str(e)}', 'error')
+    
+    return render_template('admin/edit_user.html', user=user)
+
+@admin_bp.route('/users/delete/<int:user_id>', methods=['POST'])
+@login_required
+@admin_required
+def delete_user(user_id):
+    """删除用户 - 增强版本包含并发保护和详细的状态检查"""
+    from models import User
+    from utils.database_utils import safe_delete_user, get_user_deletion_status, cleanup_stale_deletion_locks
+    
+    # 清理陈旧的删除锁
+    cleanup_stale_deletion_locks()
+    
+    # 检查用户删除状态
+    status_info = get_user_deletion_status(user_id)
+    
+    if not status_info['user_exists']:
+        flash('用户不存在或已被删除', 'warning')
+        return redirect(url_for('admin.user_management'))
+    
+    if status_info['is_being_deleted']:
+        flash('该用户正在被其他管理员删除，请稍后刷新页面查看结果', 'warning')
+        return redirect(url_for('admin.user_management'))
+    
+    if not status_info['can_delete']:
+        flash('当前无法删除该用户，请稍后再试', 'error')
+        return redirect(url_for('admin.user_management'))
+    
+    # 获取用户信息进行额外验证
+    user = User.query.get(user_id)
+    if not user:
+        flash('用户不存在', 'error')
+        return redirect(url_for('admin.user_management'))
+    
+    # 不能删除管理员账户的业务逻辑检查
+    if user.business_type == 'admin':
+        # 不能删除自己
+        if user.id == current_user.id:
+            flash('不能删除当前登录的账户', 'error')
+            return redirect(url_for('admin.user_management'))
+        
+        # 检查是否是唯一的管理员
+        admin_count = User.query.filter_by(business_type='admin').count()
+        if admin_count <= 1:
+            flash('不能删除唯一的管理员账户', 'error')
+            return redirect(url_for('admin.user_management'))
+    
+    # 执行安全删除
+    success, message, data = safe_delete_user(user_id)
+    
+    if success:
+        # 构建详细的删除成功消息
+        detail_msg = f'用户 "{data["username"]}" 删除成功'
+        
+        # 添加关联数据统计
+        if data.get('supplier_count', 0) > 0 or data.get('order_count', 0) > 0:
+            detail_msg += f' (供应商: {data["supplier_count"]}个, 订单: {data["order_count"]}个, 报价: {data["quote_count"]}个)'
+        
+        # 添加性能信息
+        if 'deletion_duration' in data:
+            detail_msg += f' - 耗时: {data["deletion_duration"]:.2f}秒'
+        
+        flash(detail_msg, 'success')
+        logger.info(f"管理员 {current_user.username} 成功删除用户 {data['username']} (ID: {user_id})")
+        
+    else:
+        flash(f'删除用户失败: {message}', 'error')
+        logger.error(f"管理员 {current_user.username} 删除用户失败 (ID: {user_id}): {message}")
+    
+    return redirect(url_for('admin.user_management'))
+
+@admin_bp.route('/database/integrity')
+@login_required
+@admin_required
+def database_integrity():
+    """数据库完整性检查页面"""
+    from utils.database_utils import check_data_integrity
+    
+    integrity_results = check_data_integrity()
+    return render_template('admin/database_integrity.html', results=integrity_results)
+
+@admin_bp.route('/database/cleanup', methods=['POST'])
+@login_required
+@admin_required
+def database_cleanup():
+    """清理孤立数据"""
+    from utils.database_utils import cleanup_orphaned_data
+    
+    try:
+        results = cleanup_orphaned_data()
+        if 'error' in results:
+            flash(f'数据清理失败: {results["error"]}', 'error')
+        else:
+            total_cleaned = sum(results.values())
+            if total_cleaned > 0:
+                flash(f'数据清理完成，共清理了 {total_cleaned} 条孤立数据', 'success')
+            else:
+                flash('数据完整性良好，无需清理', 'info')
+    except Exception as e:
+        flash(f'数据清理失败: {str(e)}', 'error')
+    
+    return redirect(url_for('admin.database_integrity'))

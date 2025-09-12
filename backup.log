@@ -508,3 +508,421 @@
 2025-09-11 16:49:04,459 - INFO - 127.0.0.1 - - [11/Sep/2025 16:49:04] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
 2025-09-11 16:49:34,238 - INFO - 127.0.0.1 - - [11/Sep/2025 16:49:34] "GET /portal/supplier/O_mtE8VVv6uHUk_GzZwzPtaGJjG8nGpxzMWegC1DTnI HTTP/1.1" 200 -
 2025-09-11 16:49:36,612 - INFO - 127.0.0.1 - - [11/Sep/2025 16:49:36] "GET /portal/supplier/oduM6nQVGgBlz0FQ5SciooHjEerK9q1P_cHsmRuOAeM HTTP/1.1" 200 -
+2025-09-12 10:03:26,485 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-12 10:03:26,486 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 10:03:26,486 - INFO -  * Restarting with stat
+2025-09-12 10:03:26,864 - WARNING -  * Debugger is active!
+2025-09-12 10:03:26,872 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 10:03:34,847 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:34] "[35m[1mGET /admin/users HTTP/1.1[0m" 500 -
+2025-09-12 10:03:34,876 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:34] "GET /admin/users?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-09-12 10:03:34,876 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:34] "GET /admin/users?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-09-12 10:03:34,885 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:34] "GET /admin/users?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-09-12 10:03:34,933 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:34] "[36mGET /admin/users?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-12 10:03:36,781 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:36] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 10:03:38,597 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:38] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 10:03:39,317 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:39] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 10:03:39,774 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:39] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 10:03:40,348 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:40] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 10:03:40,932 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:40] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 10:03:41,825 - INFO - 127.0.0.1 - - [12/Sep/2025 10:03:41] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 10:21:03,782 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/user.py', reloading
+2025-09-12 10:21:03,837 - INFO -  * Restarting with stat
+2025-09-12 10:35:57,117 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-12 10:35:57,118 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 10:35:57,118 - INFO -  * Restarting with stat
+2025-09-12 10:35:57,513 - WARNING -  * Debugger is active!
+2025-09-12 10:35:57,524 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 10:38:17,132 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/user.py', reloading
+2025-09-12 10:38:17,184 - INFO -  * Restarting with stat
+2025-09-12 10:38:17,661 - WARNING -  * Debugger is active!
+2025-09-12 10:38:17,671 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 10:40:16,980 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-12 10:40:16,980 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 10:40:16,981 - INFO -  * Restarting with stat
+2025-09-12 10:40:17,362 - WARNING -  * Debugger is active!
+2025-09-12 10:40:17,370 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 11:02:46,985 - INFO - 127.0.0.1 - - [12/Sep/2025 11:02:46] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 11:02:54,563 - INFO - 127.0.0.1 - - [12/Sep/2025 11:02:54] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 11:02:55,228 - INFO - 127.0.0.1 - - [12/Sep/2025 11:02:55] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 11:02:56,752 - INFO - 127.0.0.1 - - [12/Sep/2025 11:02:56] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 11:02:58,220 - INFO - 127.0.0.1 - - [12/Sep/2025 11:02:58] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 11:03:00,045 - INFO - 127.0.0.1 - - [12/Sep/2025 11:03:00] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 11:03:07,370 - INFO - 127.0.0.1 - - [12/Sep/2025 11:03:07] "[32mGET /admin HTTP/1.1[0m" 308 -
+2025-09-12 11:03:07,403 - INFO - 127.0.0.1 - - [12/Sep/2025 11:03:07] "[35m[1mGET /admin/ HTTP/1.1[0m" 500 -
+2025-09-12 11:03:07,429 - INFO - 127.0.0.1 - - [12/Sep/2025 11:03:07] "GET /admin/?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-09-12 11:03:07,430 - INFO - 127.0.0.1 - - [12/Sep/2025 11:03:07] "GET /admin/?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-09-12 11:03:07,435 - INFO - 127.0.0.1 - - [12/Sep/2025 11:03:07] "GET /admin/?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-09-12 11:03:07,487 - INFO - 127.0.0.1 - - [12/Sep/2025 11:03:07] "[36mGET /admin/?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-12 11:03:10,705 - INFO - 127.0.0.1 - - [12/Sep/2025 11:03:10] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 11:03:11,720 - INFO - 127.0.0.1 - - [12/Sep/2025 11:03:11] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 11:03:12,226 - INFO - 127.0.0.1 - - [12/Sep/2025 11:03:12] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 11:03:15,851 - INFO - 127.0.0.1 - - [12/Sep/2025 11:03:15] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 11:16:00,056 - INFO - 127.0.0.1 - - [12/Sep/2025 11:16:00] "[33mGET /templates/admin HTTP/1.1[0m" 404 -
+2025-09-12 11:16:05,329 - INFO - 127.0.0.1 - - [12/Sep/2025 11:16:05] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 11:16:05,857 - INFO - 127.0.0.1 - - [12/Sep/2025 11:16:05] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 11:16:06,160 - INFO - 127.0.0.1 - - [12/Sep/2025 11:16:06] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 11:16:06,339 - INFO - 127.0.0.1 - - [12/Sep/2025 11:16:06] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:14:33,695 - INFO - 127.0.0.1 - - [12/Sep/2025 12:14:33] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-12 12:14:33,714 - INFO - 127.0.0.1 - - [12/Sep/2025 12:14:33] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:14:56,591 - INFO - 127.0.0.1 - - [12/Sep/2025 12:14:56] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:14:57,551 - INFO - 127.0.0.1 - - [12/Sep/2025 12:14:57] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:14:58,699 - INFO - 127.0.0.1 - - [12/Sep/2025 12:14:58] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:15:06,827 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:06] "[32mPOST /orders/2/cancel HTTP/1.1[0m" 302 -
+2025-09-12 12:15:06,839 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:06] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:15:09,580 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:09] "[32mPOST /orders/1/cancel HTTP/1.1[0m" 302 -
+2025-09-12 12:15:09,590 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:09] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:15:12,193 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:12] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 12:15:12,690 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:12] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 12:15:13,216 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:13] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:15:14,410 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:14] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 12:15:15,318 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:15] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:15:15,983 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:15] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:15:16,715 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:16] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:15:17,855 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:17] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:15:18,476 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:18] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:15:19,327 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:19] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:15:19,906 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:19] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:15:21,145 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:21] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:15:22,982 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:22] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:15:26,058 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:26] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:15:26,541 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:26] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 12:15:27,573 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:27] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 12:15:32,014 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:32] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 12:15:39,496 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:39] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 12:15:47,677 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:47] "GET /admin/users/add HTTP/1.1" 200 -
+2025-09-12 12:15:49,715 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:49] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 12:15:54,967 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:54] "[32mPOST /admin/users/delete/4 HTTP/1.1[0m" 302 -
+2025-09-12 12:15:54,976 - INFO - 127.0.0.1 - - [12/Sep/2025 12:15:54] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 12:17:35,214 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/user.py', reloading
+2025-09-12 12:17:35,272 - INFO -  * Restarting with stat
+2025-09-12 12:17:35,762 - WARNING -  * Debugger is active!
+2025-09-12 12:17:35,771 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 12:17:54,643 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/admin.py', reloading
+2025-09-12 12:17:54,695 - INFO -  * Restarting with stat
+2025-09-12 12:17:55,092 - WARNING -  * Debugger is active!
+2025-09-12 12:17:55,099 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 12:18:05,770 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-12 12:18:05,819 - INFO -  * Restarting with stat
+2025-09-12 12:21:55,018 - INFO - 数据完整性检查完成: {'orphaned_suppliers': 0, 'orphaned_orders': 0, 'orphaned_quotes_order': 0, 'orphaned_quotes_supplier': 0}
+2025-09-12 12:21:55,342 - INFO - 开始删除用户: test_user_delete (ID: 5)
+2025-09-12 12:21:55,342 - INFO - 关联数据统计: 供应商 1个, 订单 1个, 报价 1个
+2025-09-12 12:21:55,342 - ERROR - 删除用户失败: A transaction is already begun on this Session.
+Traceback (most recent call last):
+  File "/Users/lichuansong/Desktop/projects/wlxj_python/utils/database_utils.py", line 42, in safe_delete_user
+    with db.session.begin():
+  File "/Users/lichuansong/Library/Python/3.9/lib/python/site-packages/sqlalchemy/orm/scoping.py", line 445, in begin
+    return self._proxied.begin(nested=nested)
+  File "/Users/lichuansong/Library/Python/3.9/lib/python/site-packages/sqlalchemy/orm/session.py", line 1943, in begin
+    raise sa_exc.InvalidRequestError(
+sqlalchemy.exc.InvalidRequestError: A transaction is already begun on this Session.
+2025-09-12 12:21:55,349 - INFO - 数据完整性检查完成: {'orphaned_suppliers': 0, 'orphaned_orders': 0, 'orphaned_quotes_order': 0, 'orphaned_quotes_supplier': 0}
+2025-09-12 12:22:57,629 - INFO - 数据完整性检查完成: {'orphaned_suppliers': 0, 'orphaned_orders': 0, 'orphaned_quotes_order': 0, 'orphaned_quotes_supplier': 0}
+2025-09-12 12:23:12,449 - INFO - 数据完整性检查完成: {'orphaned_suppliers': 0, 'orphaned_orders': 0, 'orphaned_quotes_order': 0, 'orphaned_quotes_supplier': 0}
+2025-09-12 12:23:12,458 - INFO - 开始删除用户: test_user_delete (ID: 5)
+2025-09-12 12:23:12,458 - INFO - 关联数据统计: 供应商 1个, 订单 1个, 报价 1个
+2025-09-12 12:23:12,466 - INFO - 用户 test_user_delete 及其关联数据删除成功
+2025-09-12 12:23:12,782 - INFO - 开始删除用户: test_user_delete (ID: 5)
+2025-09-12 12:23:12,782 - INFO - 关联数据统计: 供应商 1个, 订单 1个, 报价 1个
+2025-09-12 12:23:12,786 - INFO - 用户 test_user_delete 及其关联数据删除成功
+2025-09-12 12:23:12,788 - INFO - 数据完整性检查完成: {'orphaned_suppliers': 0, 'orphaned_orders': 0, 'orphaned_quotes_order': 0, 'orphaned_quotes_supplier': 0}
+2025-09-12 12:33:55,663 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-12 12:33:55,664 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 12:33:55,665 - INFO -  * Restarting with stat
+2025-09-12 12:33:56,042 - WARNING -  * Debugger is active!
+2025-09-12 12:33:56,049 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 12:34:03,124 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:03] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 12:34:07,361 - INFO - 开始删除用户: oil_user1 (ID: 2) - 开始时间: 2025-09-12 12:34:07.361363
+2025-09-12 12:34:07,374 - INFO - 关联数据统计: 供应商 1个, 订单 1个, 报价 0个
+2025-09-12 12:34:07,383 - INFO - 用户 2 删除完整性验证通过
+2025-09-12 12:34:07,383 - INFO - 用户 oil_user1 删除成功且完整性验证通过 - 耗时: 0.021秒
+2025-09-12 12:34:07,383 - INFO - 删除统计: {'quotes_deleted': 0, 'order_supplier_relations_cleared': 0, 'orders_deleted': 1, 'suppliers_deleted': 1}
+2025-09-12 12:34:07,384 - INFO - 管理员 admin 成功删除用户 oil_user1 (ID: 2)
+2025-09-12 12:34:07,384 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:07] "[32mPOST /admin/users/delete/2 HTTP/1.1[0m" 302 -
+2025-09-12 12:34:07,389 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:07] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 12:34:12,169 - INFO - 开始删除用户: oil_user2 (ID: 3) - 开始时间: 2025-09-12 12:34:12.169451
+2025-09-12 12:34:12,173 - INFO - 关联数据统计: 供应商 1个, 订单 1个, 报价 0个
+2025-09-12 12:34:12,182 - INFO - 用户 3 删除完整性验证通过
+2025-09-12 12:34:12,182 - INFO - 用户 oil_user2 删除成功且完整性验证通过 - 耗时: 0.010秒
+2025-09-12 12:34:12,182 - INFO - 删除统计: {'quotes_deleted': 0, 'order_supplier_relations_cleared': 0, 'orders_deleted': 1, 'suppliers_deleted': 1}
+2025-09-12 12:34:12,183 - INFO - 管理员 admin 成功删除用户 oil_user2 (ID: 3)
+2025-09-12 12:34:12,184 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:12] "[32mPOST /admin/users/delete/3 HTTP/1.1[0m" 302 -
+2025-09-12 12:34:12,190 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:12] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 12:34:14,368 - INFO - 开始删除用户: fast_user1 (ID: 4) - 开始时间: 2025-09-12 12:34:14.368130
+2025-09-12 12:34:14,371 - INFO - 关联数据统计: 供应商 1个, 订单 1个, 报价 0个
+2025-09-12 12:34:14,382 - INFO - 用户 4 删除完整性验证通过
+2025-09-12 12:34:14,382 - INFO - 用户 fast_user1 删除成功且完整性验证通过 - 耗时: 0.011秒
+2025-09-12 12:34:14,382 - INFO - 删除统计: {'quotes_deleted': 0, 'order_supplier_relations_cleared': 0, 'orders_deleted': 1, 'suppliers_deleted': 1}
+2025-09-12 12:34:14,383 - INFO - 管理员 admin 成功删除用户 fast_user1 (ID: 4)
+2025-09-12 12:34:14,384 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:14] "[32mPOST /admin/users/delete/4 HTTP/1.1[0m" 302 -
+2025-09-12 12:34:14,390 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:14] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 12:34:17,218 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:17] "GET /admin/users/add HTTP/1.1" 200 -
+2025-09-12 12:34:30,296 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:30] "[32mPOST /admin/users/add HTTP/1.1[0m" 302 -
+2025-09-12 12:34:30,301 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:30] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 12:34:37,790 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:37] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-12 12:34:37,805 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:37] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:34:49,369 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:49] "[32mGET /admin/users HTTP/1.1[0m" 302 -
+2025-09-12 12:34:49,400 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:49] "[35m[1mGET /login?next=/admin/users HTTP/1.1[0m" 500 -
+2025-09-12 12:34:49,420 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:49] "GET /login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-09-12 12:34:49,420 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:49] "GET /login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-09-12 12:34:49,428 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:49] "GET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-09-12 12:34:49,454 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:49] "[36mGET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-12 12:34:57,541 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:57] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-12 12:34:57,565 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:57] "[35m[1mGET /login HTTP/1.1[0m" 500 -
+2025-09-12 12:34:57,573 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:57] "[36mGET /login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-12 12:34:57,573 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:57] "[36mGET /login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-12 12:34:57,578 - INFO - 127.0.0.1 - - [12/Sep/2025 12:34:57] "[36mGET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-12 12:35:02,102 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:02] "[32mGET /logout HTTP/1.1[0m" 302 -
+2025-09-12 12:35:02,118 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:02] "[35m[1mGET /login HTTP/1.1[0m" 500 -
+2025-09-12 12:35:02,140 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:02] "GET /login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-09-12 12:35:02,141 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:02] "GET /login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-09-12 12:35:02,154 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:02] "GET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-09-12 12:35:02,203 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:02] "[36mGET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-12 12:35:06,000 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:06] "[35m[1mGET /login HTTP/1.1[0m" 500 -
+2025-09-12 12:35:06,022 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:06] "[36mGET /login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-12 12:35:06,023 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:06] "[36mGET /login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-12 12:35:06,039 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:06] "[36mGET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-12 12:35:09,917 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:09] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-12 12:35:09,935 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:09] "[35m[1mGET /login HTTP/1.1[0m" 500 -
+2025-09-12 12:35:09,959 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:09] "[36mGET /login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-12 12:35:09,959 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:09] "[36mGET /login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-12 12:35:09,966 - INFO - 127.0.0.1 - - [12/Sep/2025 12:35:09] "[36mGET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-12 12:36:04,977 - INFO - 127.0.0.1 - - [12/Sep/2025 12:36:04] "[35m[1mGET /login HTTP/1.1[0m" 500 -
+2025-09-12 12:36:04,995 - INFO - 127.0.0.1 - - [12/Sep/2025 12:36:04] "[36mGET /login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-12 12:36:04,995 - INFO - 127.0.0.1 - - [12/Sep/2025 12:36:04] "[36mGET /login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-12 12:36:05,005 - INFO - 127.0.0.1 - - [12/Sep/2025 12:36:05] "[36mGET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-12 12:36:16,855 - INFO - 127.0.0.1 - - [12/Sep/2025 12:36:16] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-12 12:36:16,866 - INFO - 127.0.0.1 - - [12/Sep/2025 12:36:16] "[35m[1mGET /login HTTP/1.1[0m" 500 -
+2025-09-12 12:36:16,889 - INFO - 127.0.0.1 - - [12/Sep/2025 12:36:16] "[36mGET /login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-09-12 12:36:16,890 - INFO - 127.0.0.1 - - [12/Sep/2025 12:36:16] "[36mGET /login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-09-12 12:36:16,894 - INFO - 127.0.0.1 - - [12/Sep/2025 12:36:16] "[36mGET /login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-09-12 12:41:09,543 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:09] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-12 12:41:09,549 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:09] "GET /login HTTP/1.1" 200 -
+2025-09-12 12:41:15,437 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:15] "GET /login HTTP/1.1" 200 -
+2025-09-12 12:41:23,166 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:23] "GET /login HTTP/1.1" 200 -
+2025-09-12 12:41:37,333 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:37] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-09-12 12:41:37,344 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:37] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:41:40,177 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:40] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:41:40,726 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:40] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 12:41:41,305 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:41] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:41:41,910 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:41] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 12:41:42,784 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:42] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:41:46,368 - INFO - 127.0.0.1 - - [12/Sep/2025 12:41:46] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 12:42:18,340 - INFO - 127.0.0.1 - - [12/Sep/2025 12:42:18] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:42:22,246 - INFO - 127.0.0.1 - - [12/Sep/2025 12:42:22] "[32mPOST /suppliers/delete/4 HTTP/1.1[0m" 302 -
+2025-09-12 12:42:22,254 - INFO - 127.0.0.1 - - [12/Sep/2025 12:42:22] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:42:23,418 - INFO - 127.0.0.1 - - [12/Sep/2025 12:42:23] "GET /suppliers/add HTTP/1.1" 200 -
+2025-09-12 12:42:32,232 - INFO - 127.0.0.1 - - [12/Sep/2025 12:42:32] "[32mPOST /suppliers/add HTTP/1.1[0m" 302 -
+2025-09-12 12:42:32,244 - INFO - 127.0.0.1 - - [12/Sep/2025 12:42:32] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:42:33,565 - INFO - 127.0.0.1 - - [12/Sep/2025 12:42:33] "GET /suppliers/add HTTP/1.1" 200 -
+2025-09-12 12:42:49,996 - INFO - 127.0.0.1 - - [12/Sep/2025 12:42:49] "[32mPOST /suppliers/add HTTP/1.1[0m" 302 -
+2025-09-12 12:42:50,009 - INFO - 127.0.0.1 - - [12/Sep/2025 12:42:50] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:42:52,717 - INFO - 127.0.0.1 - - [12/Sep/2025 12:42:52] "GET /suppliers/2/details HTTP/1.1" 200 -
+2025-09-12 12:42:54,819 - INFO - 127.0.0.1 - - [12/Sep/2025 12:42:54] "GET /supplier/XjS2TYUDJsqe8-Gl1WzI--DMQtkzK0zoUtnTCnTeCD8 HTTP/1.1" 200 -
+2025-09-12 12:43:00,095 - INFO - 127.0.0.1 - - [12/Sep/2025 12:43:00] "GET /supplier/XjS2TYUDJsqe8-Gl1WzI--DMQtkzK0zoUtnTCnTeCD8 HTTP/1.1" 200 -
+2025-09-12 12:43:06,763 - INFO - 127.0.0.1 - - [12/Sep/2025 12:43:06] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:43:08,806 - INFO - 127.0.0.1 - - [12/Sep/2025 12:43:08] "GET /suppliers/1/details HTTP/1.1" 200 -
+2025-09-12 12:43:10,339 - INFO - 127.0.0.1 - - [12/Sep/2025 12:43:10] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:43:25,232 - INFO - 127.0.0.1 - - [12/Sep/2025 12:43:25] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:43:27,558 - INFO - 127.0.0.1 - - [12/Sep/2025 12:43:27] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 12:43:54,415 - INFO - 127.0.0.1 - - [12/Sep/2025 12:43:54] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:43:55,538 - INFO - 127.0.0.1 - - [12/Sep/2025 12:43:55] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:43:56,031 - INFO - 127.0.0.1 - - [12/Sep/2025 12:43:56] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:43:57,105 - INFO - 127.0.0.1 - - [12/Sep/2025 12:43:57] "GET /suppliers/add HTTP/1.1" 200 -
+2025-09-12 12:44:19,819 - INFO - 127.0.0.1 - - [12/Sep/2025 12:44:19] "[32mPOST /suppliers/add HTTP/1.1[0m" 302 -
+2025-09-12 12:44:19,827 - INFO - 127.0.0.1 - - [12/Sep/2025 12:44:19] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:44:22,145 - INFO - 127.0.0.1 - - [12/Sep/2025 12:44:22] "GET /suppliers/3/details HTTP/1.1" 200 -
+2025-09-12 12:44:23,358 - INFO - 127.0.0.1 - - [12/Sep/2025 12:44:23] "GET /supplier/3du_UdEeqTYnp_6rM6uI3SFZRq8MeK1KgHVYamq0dA4 HTTP/1.1" 200 -
+2025-09-12 12:44:36,624 - INFO - 127.0.0.1 - - [12/Sep/2025 12:44:36] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:44:37,354 - INFO - 127.0.0.1 - - [12/Sep/2025 12:44:37] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:44:37,788 - INFO - 127.0.0.1 - - [12/Sep/2025 12:44:37] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 12:44:38,870 - INFO - 127.0.0.1 - - [12/Sep/2025 12:44:38] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:44:39,465 - INFO - 127.0.0.1 - - [12/Sep/2025 12:44:39] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 12:45:04,609 - INFO - 订单创建成功: ORD20250912124504000001, 用户: 2, 供应商数量: 2
+2025-09-12 12:45:04,610 - INFO - 供应商 大广 未配置webhook，跳过通知
+2025-09-12 12:45:04,611 - INFO - 供应商 韵彪 未配置webhook，跳过通知
+2025-09-12 12:45:04,611 - INFO - 供应商通知完成 - 成功: 0, 失败: 0
+2025-09-12 12:45:04,612 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:04] "[32mPOST /orders/new HTTP/1.1[0m" 302 -
+2025-09-12 12:45:04,623 - INFO - Quote模型已成功导入并缓存，耗时: 0.0001秒
+2025-09-12 12:45:04,649 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:04] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 12:45:21,601 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:21] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:45:23,669 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:23] "GET /supplier/3du_UdEeqTYnp_6rM6uI3SFZRq8MeK1KgHVYamq0dA4 HTTP/1.1" 200 -
+2025-09-12 12:45:25,888 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:25] "GET /supplier/XjS2TYUDJsqe8-Gl1WzI--DMQtkzK0zoUtnTCnTeCD8 HTTP/1.1" 200 -
+2025-09-12 12:45:28,613 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:28] "[33mGET /portal/order/1/quote HTTP/1.1[0m" 404 -
+2025-09-12 12:45:31,590 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:31] "[33mGET /portal/order/1/quote HTTP/1.1[0m" 404 -
+2025-09-12 12:45:37,482 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:37] "[33mGET /portal/order/1 HTTP/1.1[0m" 404 -
+2025-09-12 12:45:41,370 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:41] "[33mGET /portal/order/1/quote HTTP/1.1[0m" 404 -
+2025-09-12 12:45:44,953 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:44] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:45:47,355 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:47] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:45:54,049 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:54] "GET /portal/order/1/quote HTTP/1.1" 200 -
+2025-09-12 12:45:58,931 - INFO - 127.0.0.1 - - [12/Sep/2025 12:45:58] "GET /portal/order/1 HTTP/1.1" 200 -
+2025-09-12 12:46:20,787 - INFO - 127.0.0.1 - - [12/Sep/2025 12:46:20] "GET /portal/order/1/quote HTTP/1.1" 200 -
+2025-09-12 12:46:23,482 - INFO - 127.0.0.1 - - [12/Sep/2025 12:46:23] "GET /supplier/XjS2TYUDJsqe8-Gl1WzI--DMQtkzK0zoUtnTCnTeCD8 HTTP/1.1" 200 -
+2025-09-12 12:48:30,957 - INFO - 127.0.0.1 - - [12/Sep/2025 12:48:30] "GET /login HTTP/1.1" 200 -
+2025-09-12 12:48:42,370 - INFO - 127.0.0.1 - - [12/Sep/2025 12:48:42] "[33mGET /portal/order/1/quote HTTP/1.1[0m" 404 -
+2025-09-12 12:48:44,616 - INFO - 127.0.0.1 - - [12/Sep/2025 12:48:44] "[33mGET /portal/order/1/quote HTTP/1.1[0m" 404 -
+2025-09-12 12:48:48,358 - INFO - 127.0.0.1 - - [12/Sep/2025 12:48:48] "GET /supplier/XjS2TYUDJsqe8-Gl1WzI--DMQtkzK0zoUtnTCnTeCD8 HTTP/1.1" 200 -
+2025-09-12 12:48:53,879 - INFO - 127.0.0.1 - - [12/Sep/2025 12:48:53] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 12:48:57,553 - INFO - 127.0.0.1 - - [12/Sep/2025 12:48:57] "[33mGET /portal/order/1/quote HTTP/1.1[0m" 404 -
+2025-09-12 12:48:59,198 - INFO - 127.0.0.1 - - [12/Sep/2025 12:48:59] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:49:12,780 - INFO - 127.0.0.1 - - [12/Sep/2025 12:49:12] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-12 12:49:12,790 - INFO - 127.0.0.1 - - [12/Sep/2025 12:49:12] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:49:12,833 - INFO - 127.0.0.1 - - [12/Sep/2025 12:49:12] "[33mGET /apple-touch-icon-precomposed.png HTTP/1.1[0m" 404 -
+2025-09-12 12:49:12,961 - INFO - 127.0.0.1 - - [12/Sep/2025 12:49:12] "[33mGET /apple-touch-icon.png HTTP/1.1[0m" 404 -
+2025-09-12 12:49:27,440 - INFO - 127.0.0.1 - - [12/Sep/2025 12:49:27] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:49:30,051 - INFO - 127.0.0.1 - - [12/Sep/2025 12:49:30] "GET /suppliers/3/details HTTP/1.1" 200 -
+2025-09-12 12:49:32,133 - INFO - 127.0.0.1 - - [12/Sep/2025 12:49:32] "GET /supplier/3du_UdEeqTYnp_6rM6uI3SFZRq8MeK1KgHVYamq0dA4 HTTP/1.1" 200 -
+2025-09-12 12:49:38,934 - INFO - 127.0.0.1 - - [12/Sep/2025 12:49:38] "GET /portal/order/1/quote HTTP/1.1" 200 -
+2025-09-12 12:49:53,448 - INFO - 127.0.0.1 - - [12/Sep/2025 12:49:53] "[32mPOST /portal/order/1/quote HTTP/1.1[0m" 302 -
+2025-09-12 12:49:53,464 - INFO - 127.0.0.1 - - [12/Sep/2025 12:49:53] "GET /portal/order/1 HTTP/1.1" 200 -
+2025-09-12 12:49:57,220 - INFO - 127.0.0.1 - - [12/Sep/2025 12:49:57] "GET /portal/order/1/quote HTTP/1.1" 200 -
+2025-09-12 12:50:10,204 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:10] "GET /portal/order/1/quote HTTP/1.1" 200 -
+2025-09-12 12:50:15,786 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:15] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:50:17,997 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:17] "[33mGET /apple-touch-icon-precomposed.png HTTP/1.1[0m" 404 -
+2025-09-12 12:50:17,998 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-12 12:50:17,998 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:17] "[33mGET /apple-touch-icon.png HTTP/1.1[0m" 404 -
+2025-09-12 12:50:21,551 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:21] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:50:22,291 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:22] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-12 12:50:25,109 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:25] "GET /portal/order/1/quote HTTP/1.1" 200 -
+2025-09-12 12:50:40,517 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:40] "[32mPOST /portal/order/1/quote HTTP/1.1[0m" 302 -
+2025-09-12 12:50:40,522 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:40] "GET /portal/order/1 HTTP/1.1" 200 -
+2025-09-12 12:50:46,537 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:46] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 12:50:48,527 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:48] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 12:50:51,138 - INFO - 127.0.0.1 - - [12/Sep/2025 12:50:51] "GET /quotes/order/1 HTTP/1.1" 200 -
+2025-09-12 12:51:08,310 - INFO - 订单 ORD20250912124504000001 已完成，选择供应商ID: 1，缓存命中率: 66.67%
+2025-09-12 12:51:08,311 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:08] "[32mPOST /orders/1/select-supplier HTTP/1.1[0m" 302 -
+2025-09-12 12:51:08,321 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:08] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 12:51:14,921 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:14] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:51:16,349 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:16] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 12:51:17,795 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:17] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 12:51:30,286 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:30] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 12:51:31,079 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:31] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 12:51:32,026 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:32] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 12:51:39,274 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:39] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 12:51:40,139 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:40] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 12:51:49,620 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:49] "GET /portal/supplier/3du_UdEeqTYnp_6rM6uI3SFZRq8MeK1KgHVYamq0dA4 HTTP/1.1" 200 -
+2025-09-12 12:51:53,851 - INFO - 127.0.0.1 - - [12/Sep/2025 12:51:53] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:52:25,070 - INFO - 127.0.0.1 - - [12/Sep/2025 12:52:25] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-12 12:52:35,278 - INFO - 127.0.0.1 - - [12/Sep/2025 12:52:35] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:52:35,985 - INFO - 127.0.0.1 - - [12/Sep/2025 12:52:35] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-12 12:52:36,875 - INFO - 127.0.0.1 - - [12/Sep/2025 12:52:36] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:52:38,844 - INFO - 127.0.0.1 - - [12/Sep/2025 12:52:38] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-12 12:52:53,396 - INFO - 127.0.0.1 - - [12/Sep/2025 12:52:53] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-12 12:52:54,380 - INFO - 127.0.0.1 - - [12/Sep/2025 12:52:54] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:52:55,152 - INFO - 127.0.0.1 - - [12/Sep/2025 12:52:55] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-12 12:52:58,268 - INFO - 127.0.0.1 - - [12/Sep/2025 12:52:58] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:52:59,262 - INFO - 127.0.0.1 - - [12/Sep/2025 12:52:59] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-12 12:53:10,829 - INFO - 127.0.0.1 - - [12/Sep/2025 12:53:10] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:53:17,851 - INFO - 127.0.0.1 - - [12/Sep/2025 12:53:17] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-12 12:53:20,466 - INFO - 127.0.0.1 - - [12/Sep/2025 12:53:20] "GET /portal/order/1 HTTP/1.1" 200 -
+2025-09-12 12:54:39,715 - INFO - 127.0.0.1 - - [12/Sep/2025 12:54:39] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:54:44,744 - INFO - 127.0.0.1 - - [12/Sep/2025 12:54:44] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-12 12:54:48,803 - INFO - 127.0.0.1 - - [12/Sep/2025 12:54:48] "GET /portal/order/1 HTTP/1.1" 200 -
+2025-09-12 12:54:50,809 - INFO - 127.0.0.1 - - [12/Sep/2025 12:54:50] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:55:55,247 - INFO - 127.0.0.1 - - [12/Sep/2025 12:55:55] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 12:55:56,837 - INFO - 127.0.0.1 - - [12/Sep/2025 12:55:56] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-12 12:55:57,954 - INFO - 127.0.0.1 - - [12/Sep/2025 12:55:57] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 14:40:46,630 - INFO - 127.0.0.1 - - [12/Sep/2025 14:40:46] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 14:40:58,249 - INFO - 127.0.0.1 - - [12/Sep/2025 14:40:58] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 14:40:59,907 - INFO - 127.0.0.1 - - [12/Sep/2025 14:40:59] "GET /supplier/XjS2TYUDJsqe8-Gl1WzI--DMQtkzK0zoUtnTCnTeCD8 HTTP/1.1" 200 -
+2025-09-12 14:41:01,094 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:01] "GET /supplier/XjS2TYUDJsqe8-Gl1WzI--DMQtkzK0zoUtnTCnTeCD8 HTTP/1.1" 200 -
+2025-09-12 14:41:03,603 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:03] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 14:41:06,651 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:06] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:41:14,059 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:14] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 14:41:16,875 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:16] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 14:41:33,545 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:33] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:41:34,113 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:34] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:41:34,755 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:34] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:41:35,307 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:35] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 14:41:36,156 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:36] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:41:37,656 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:37] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 14:41:38,206 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:38] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 14:41:55,164 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:55] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-09-12 14:41:55,171 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:55] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 14:41:59,026 - INFO - 127.0.0.1 - - [12/Sep/2025 14:41:59] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 14:42:00,456 - INFO - 127.0.0.1 - - [12/Sep/2025 14:42:00] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 14:42:02,600 - INFO - 127.0.0.1 - - [12/Sep/2025 14:42:02] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:42:03,269 - INFO - 127.0.0.1 - - [12/Sep/2025 14:42:03] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 14:42:04,501 - INFO - 127.0.0.1 - - [12/Sep/2025 14:42:04] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 14:42:11,435 - INFO - 127.0.0.1 - - [12/Sep/2025 14:42:11] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 14:42:14,864 - INFO - 127.0.0.1 - - [12/Sep/2025 14:42:14] "GET /admin/users/add HTTP/1.1" 200 -
+2025-09-12 14:42:23,301 - INFO - 127.0.0.1 - - [12/Sep/2025 14:42:23] "[32mPOST /admin/users/add HTTP/1.1[0m" 302 -
+2025-09-12 14:42:23,308 - INFO - 127.0.0.1 - - [12/Sep/2025 14:42:23] "GET /admin/users HTTP/1.1" 200 -
+2025-09-12 14:42:42,811 - INFO - 127.0.0.1 - - [12/Sep/2025 14:42:42] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-12 14:42:42,816 - INFO - 127.0.0.1 - - [12/Sep/2025 14:42:42] "GET /login HTTP/1.1" 200 -
+2025-09-12 14:42:52,852 - INFO - 127.0.0.1 - - [12/Sep/2025 14:42:52] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-12 14:43:03,784 - INFO - 127.0.0.1 - - [12/Sep/2025 14:43:03] "GET /login HTTP/1.1" 200 -
+2025-09-12 14:43:12,264 - INFO - 127.0.0.1 - - [12/Sep/2025 14:43:12] "GET /login HTTP/1.1" 200 -
+2025-09-12 14:49:16,666 - INFO - 127.0.0.1 - - [12/Sep/2025 14:49:16] "GET /login HTTP/1.1" 200 -
+2025-09-12 14:49:48,520 - INFO - 127.0.0.1 - - [12/Sep/2025 14:49:48] "GET /login HTTP/1.1" 200 -
+2025-09-12 14:49:51,268 - INFO - 127.0.0.1 - - [12/Sep/2025 14:49:51] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-09-12 14:50:01,908 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:01] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-09-12 14:50:23,080 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:23] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-12 14:50:23,084 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:23] "GET /login HTTP/1.1" 200 -
+2025-09-12 14:50:23,176 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:23] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-12 14:50:33,887 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:33] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-09-12 14:50:33,895 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:33] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 14:50:38,478 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:38] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:50:39,252 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:39] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 14:50:40,114 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:40] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:50:40,836 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:40] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:50:41,723 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:41] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:50:42,828 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:42] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 14:50:48,386 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:48] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:50:49,222 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:49] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:50:51,201 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:51] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:50:52,061 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:52] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:50:52,452 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:52] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:50:52,903 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:52] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:50:56,483 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:56] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 14:50:59,906 - INFO - 127.0.0.1 - - [12/Sep/2025 14:50:59] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:51:00,828 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:00] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:51:01,517 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:01] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:51:02,155 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:02] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:51:03,202 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:03] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 14:51:03,762 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:03] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:51:04,274 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:04] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:51:12,948 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:12] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:51:14,570 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:14] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 14:51:15,046 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:15] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:51:15,770 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:15] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:51:23,102 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:23] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:51:25,353 - INFO - 127.0.0.1 - - [12/Sep/2025 14:51:25] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:52:00,387 - INFO - 订单创建成功: ORD20250912145200000002, 用户: 2, 供应商数量: 2
+2025-09-12 14:52:00,387 - INFO - 供应商 大广 未配置webhook，跳过通知
+2025-09-12 14:52:00,388 - INFO - 供应商 韵彪 未配置webhook，跳过通知
+2025-09-12 14:52:00,388 - INFO - 供应商通知完成 - 成功: 0, 失败: 0
+2025-09-12 14:52:00,390 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:00] "[32mPOST /orders/new HTTP/1.1[0m" 302 -
+2025-09-12 14:52:00,404 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:00] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 14:52:05,541 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:05] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:52:07,485 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:07] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:52:08,328 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:08] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 14:52:09,069 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:09] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:52:09,508 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:09] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:52:10,286 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:10] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:52:20,396 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:20] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 14:52:25,025 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:25] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:52:25,504 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:25] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:52:26,262 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:26] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:52:27,776 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:27] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:52:28,266 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:28] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 14:52:28,862 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:28] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:52:29,596 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:29] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:52:33,039 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:33] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:52:34,219 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:34] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:52:35,444 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:35] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 14:52:36,069 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:36] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 14:52:37,045 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:37] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 14:52:37,588 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:37] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 14:52:38,212 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:38] "GET /orders/ HTTP/1.1" 200 -

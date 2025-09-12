@@ -24,6 +24,17 @@
             </div>
             <div class="card-body">
                 <form method="POST">
+                    {% if current_user.is_admin() %}
+                    <div class="mb-3">
+                        <label for="business_type" class="form-label">业务类型 <span class="text-danger">*</span></label>
+                        <select class="form-select" id="business_type" name="business_type" required>
+                            <option value="oil">油脂</option>
+                            <option value="fast_moving">快消品</option>
+                        </select>
+                        <div class="form-text">选择该供应商所属的业务类型</div>
+                    </div>
+                    {% endif %}
+                    
                     <div class="mb-3">
                         <label for="name" class="form-label">供应商名称 <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="name" name="name" required
@@ -79,6 +90,12 @@
                         <i class="fas fa-check text-success me-2"></i>
                         <strong>安全性：</strong>访问码可随时重新生成
                     </li>
+                    {% if current_user.is_admin() %}
+                    <li class="mb-2">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        <strong>业务类型：</strong>管理员可选择供应商所属业务类型
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

@@ -8,15 +8,23 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    role = db.Column(db.String(20), default='user')  # user, admin
+    business_type = db.Column(db.String(20), default='oil')  # admin, oil, fast_moving
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
-    # 关联关系
-    suppliers = db.relationship('Supplier', backref='user', lazy=True)
-    orders = db.relationship('Order', backref='user', lazy=True)
+    # 关联关系配置级联删除策略
+    suppliers = db.relationship('Supplier', backref='creator', lazy=True, cascade='all, delete-orphan')
+    orders = db.relationship('Order', backref='creator', lazy=True, cascade='all, delete-orphan')
     
     def __repr__(self):
         return f'<User {self.username}>'
     
     def is_admin(self):
-        return self.role == 'admin'
+        return self.business_type == 'admin'
+        
+    def get_business_type_display(self):
+        type_map = {
+            'admin': '系统管理员',
+            'oil': '油脂',
+            'fast_moving': '快消品'
+        }
+        return type_map.get(self.business_type, self.business_type)

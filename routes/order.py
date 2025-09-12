@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_required, current_user
 from models import db, Order, Supplier, order_suppliers
+from utils.auth import business_type_filter
 from datetime import datetime
 import requests
 import json
@@ -20,7 +21,8 @@ def index():
     page = request.args.get('page', 1, type=int)
     status = request.args.get('status', '')
     
-    query = Order.query.filter_by(user_id=current_user.id)
+    query = Order.query
+    query = business_type_filter(query, Order)
     
     if status:
         query = query.filter_by(status=status)
@@ -42,22 +44,38 @@ def create():
             delivery_address = request.form.get('delivery_address', '').strip()
             supplier_ids = request.form.getlist('supplier_ids')
             
+            # 管理员可以选择业务类型，普通用户使用自己的业务类型
+            if current_user.is_admin():
+                business_type = request.form.get('business_type', 'oil')
+                if business_type not in ['oil', 'fast_moving']:
+                    flash('无效的业务类型', 'error')
+                    query = Supplier.query
+                    suppliers = business_type_filter(query, Supplier).all()
+                    return render_template('orders/create.html', suppliers=suppliers)
+            else:
+                business_type = current_user.business_type
+            
             # 数据验证
             if not all([warehouse, goods, delivery_address]):
                 flash('请填写所有必填字段', 'error')
-                suppliers = Supplier.query.filter_by(user_id=current_user.id).all()
+                # 根据业务类型获取供应商
+                query = Supplier.query.filter_by(business_type=business_type)
+                suppliers = query.all() if current_user.is_admin() else business_type_filter(Supplier.query, Supplier).all()
                 return render_template('orders/create.html', suppliers=suppliers)
             
             if not supplier_ids:
                 flash('请至少选择一个供应商', 'error')
-                suppliers = Supplier.query.filter_by(user_id=current_user.id).all()
+                # 根据业务类型获取供应商
+                query = Supplier.query.filter_by(business_type=business_type)
+                suppliers = query.all() if current_user.is_admin() else business_type_filter(Supplier.query, Supplier).all()
                 return render_template('orders/create.html', suppliers=suppliers)
             
             # 验证供应商ID是否有效
             supplier_ids = [int(sid) for sid in supplier_ids if sid.isdigit()]
             if not supplier_ids:
                 flash('选择的供应商无效', 'error')
-                suppliers = Supplier.query.filter_by(user_id=current_user.id).all()
+                query = Supplier.query.filter_by(business_type=business_type)
+                suppliers = query.all() if current_user.is_admin() else business_type_filter(Supplier.query, Supplier).all()
                 return render_template('orders/create.html', suppliers=suppliers)
             
             # 创建订单对象
@@ -66,7 +84,8 @@ def create():
                 warehouse=warehouse,
                 goods=goods,
                 delivery_address=delivery_address,
-                user_id=current_user.id
+                user_id=current_user.id,
+                business_type=business_type
             )
             
             # 数据验证
@@ -74,18 +93,17 @@ def create():
             if validation_errors:
                 for error in validation_errors:
                     flash(error, 'error')
-                suppliers = Supplier.query.filter_by(user_id=current_user.id).all()
+                query = Supplier.query.filter_by(business_type=business_type)
+                suppliers = query.all() if current_user.is_admin() else business_type_filter(Supplier.query, Supplier).all()
                 return render_template('orders/create.html', suppliers=suppliers)
             
-            # 验证用户是否拥有这些供应商
-            selected_suppliers = Supplier.query.filter(
-                Supplier.id.in_(supplier_ids),
-                Supplier.user_id == current_user.id
-            ).all()
+            # 验证供应商是否属于指定业务类型
+            selected_suppliers = Supplier.query.filter(Supplier.id.in_(supplier_ids), Supplier.business_type == business_type).all()
             
             if len(selected_suppliers) != len(supplier_ids):
                 flash('选择的供应商中包含无效项目', 'error')
-                suppliers = Supplier.query.filter_by(user_id=current_user.id).all()
+                query = Supplier.query.filter_by(business_type=business_type)
+                suppliers = query.all() if current_user.is_admin() else business_type_filter(Supplier.query, Supplier).all()
                 return render_template('orders/create.html', suppliers=suppliers)
             
             # 开始数据库事务
@@ -138,14 +156,22 @@ def create():
         
         # 出错时返回表单
         try:
-            suppliers = Supplier.query.filter_by(user_id=current_user.id).all()
+            if current_user.is_admin():
+                suppliers = Supplier.query.all()
+            else:
+                query = Supplier.query
+                suppliers = business_type_filter(query, Supplier).all()
         except Exception:
             suppliers = []
         return render_template('orders/create.html', suppliers=suppliers)
     
     # GET请求 - 显示创建表单
     try:
-        suppliers = Supplier.query.filter_by(user_id=current_user.id).all()
+        if current_user.is_admin():
+            suppliers = Supplier.query.all()
+        else:
+            query = Supplier.query
+            suppliers = business_type_filter(query, Supplier).all()
     except SQLAlchemyError as e:
         logging.error(f"获取供应商列表失败: {str(e)}")
         flash('获取供应商列表失败，请稍后重试', 'error')
@@ -158,7 +184,8 @@ def create():
 def detail(order_id):
     """订单详情页面 - 使用缓存机制优化性能"""
     try:
-        order = Order.query.filter_by(id=order_id, user_id=current_user.id).first_or_404()
+        query = Order.query.filter_by(id=order_id)
+        order = business_type_filter(query, Order).first_or_404()
         
         # 使用缓存机制获取Quote模型，提升性能
         Quote = Order._get_quote_model()
@@ -180,7 +207,8 @@ def detail(order_id):
 def edit(order_id):
     """编辑订单 - 带异常处理"""
     try:
-        order = Order.query.filter_by(id=order_id, user_id=current_user.id).first_or_404()
+        query = Order.query.filter_by(id=order_id)
+        order = business_type_filter(query, Order).first_or_404()
         
         if order.status != 'active':
             flash('只能编辑活跃状态的订单', 'error')
@@ -246,7 +274,8 @@ def edit(order_id):
 def select_supplier(order_id):
     """选择中标供应商 - 使用缓存机制优化性能"""
     try:
-        order = Order.query.filter_by(id=order_id, user_id=current_user.id).first_or_404()
+        query = Order.query.filter_by(id=order_id)
+        order = business_type_filter(query, Order).first_or_404()
         
         supplier_id = request.form.get('supplier_id', type=int)
         price = request.form.get('price', type=float)
@@ -292,7 +321,8 @@ def select_supplier(order_id):
 @login_required
 def cancel(order_id):
     """取消订单"""
-    order = Order.query.filter_by(id=order_id, user_id=current_user.id).first_or_404()
+    query = Order.query.filter_by(id=order_id)
+    order = business_type_filter(query, Order).first_or_404()
     
     if order.status != 'active':
         flash('只能取消活跃状态的订单', 'error')
@@ -308,7 +338,8 @@ def cancel(order_id):
 @login_required
 def add_suppliers(order_id):
     """为订单添加更多供应商"""
-    order = Order.query.filter_by(id=order_id, user_id=current_user.id).first_or_404()
+    query = Order.query.filter_by(id=order_id)
+    order = business_type_filter(query, Order).first_or_404()
     
     if order.status != 'active':
         flash('只能为活跃状态的订单添加供应商', 'error')
@@ -350,8 +381,8 @@ def add_suppliers(order_id):
     
     # 获取可添加的供应商（排除已关联的）
     current_supplier_ids = [s.id for s in order.suppliers]
-    available_suppliers = Supplier.query.filter_by(user_id=current_user.id).filter(
-        ~Supplier.id.in_(current_supplier_ids)).all()
+    query = Supplier.query.filter(~Supplier.id.in_(current_supplier_ids))
+    available_suppliers = business_type_filter(query, Supplier).all()
     
     return render_template('orders/add_suppliers.html', order=order, suppliers=available_suppliers)
 

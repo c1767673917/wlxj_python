@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}系统日志 - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-file-alt me-2"></i>系统日志
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('admin.index') }}" class="btn btn-secondary">
+            返回管理首页
+        </a>
+        <button onclick="location.reload()" class="btn btn-primary ms-2">
+            <i class="fas fa-refresh"></i> 刷新
+        </button>
+    </div>
+</div>
+
+{% for log_file, log_lines in logs.items() %}
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-file me-2"></i>{{ log_file }}
+        </h5>
+        <span class="badge bg-primary">{{ log_lines|length }} 行</span>
+    </div>
+    <div class="card-body">
+        {% if log_lines and log_lines[0].startswith('读取日志文件失败') or log_lines[0] == '日志文件不存在' %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                {{ log_lines[0] }}
+            </div>
+        {% else %}
+            <div class="log-container" style="height: 400px; overflow-y: auto; background-color: #f8f9fa; padding: 15px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 12px;">
+                {% for line in log_lines %}
+                    <div class="log-line mb-1" style="
+                        {% if 'ERROR' in line %}color: #dc3545;
+                        {% elif 'WARNING' in line %}color: #fd7e14;
+                        {% elif 'INFO' in line %}color: #0d6efd;
+                        {% else %}color: #495057;{% endif %}
+                    ">{{ line|e }}</div>
+                {% endfor %}
+            </div>
+            
+            {% if log_lines|length >= 100 %}
+            <div class="alert alert-info mt-3">
+                <i class="fas fa-info-circle"></i>
+                显示最新的100行日志。如需查看完整日志，请直接访问服务器上的日志文件。
+            </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+<script>
+// 自动滚动到日志底部
+document.addEventListener('DOMContentLoaded', function() {
+    const logContainers = document.querySelectorAll('.log-container');
+    logContainers.forEach(container => {
+        container.scrollTop = container.scrollHeight;
+    });
+});
+</script>
+{% endblock %}

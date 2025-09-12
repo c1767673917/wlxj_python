@@ -25,6 +25,17 @@
                     </h5>
                 </div>
                 <div class="card-body">
+                    {% if current_user.is_admin() %}
+                    <div class="mb-3">
+                        <label for="business_type" class="form-label">业务类型 <span class="text-danger">*</span></label>
+                        <select class="form-select" id="business_type" name="business_type" required onchange="updateSupplierList()">
+                            <option value="oil">油脂</option>
+                            <option value="fast_moving">快消品</option>
+                        </select>
+                        <div class="form-text">选择该订单所属的业务类型</div>
+                    </div>
+                    {% endif %}
+                    
                     <div class="mb-3">
                         <label for="warehouse" class="form-label">起始仓库 <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="warehouse" name="warehouse" required

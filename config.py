@@ -15,3 +15,10 @@ class Config:
     # 备份配置
     BACKUP_DIR = 'backup'
     BACKUP_KEEP_DAYS = 7
+
+# 业务类型配置
+BUSINESS_TYPES = {
+    'admin': '系统管理员',
+    'oil': '石油化工',
+    'fast_moving': '快消品'
+}

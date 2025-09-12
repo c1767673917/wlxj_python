@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}管理员控制台 - 瑞勋物流询价{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <i class="fas fa-tachometer-alt me-2"></i>管理员控制台
+    </h1>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ stats.total_users }}</h4>
+                        <p class="mb-0">总用户数</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ stats.total_suppliers }}</h4>
+                        <p class="mb-0">供应商总数</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-building fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ stats.active_orders }}</h4>
+                        <p class="mb-0">活跃订单</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-shopping-cart fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ stats.total_quotes }}</h4>
+                        <p class="mb-0">报价总数</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-file-invoice-dollar fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-cog me-2"></i>系统管理
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <a href="{{ url_for('admin.user_management') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-users me-2"></i>用户管理
+                        <small class="text-muted d-block">管理系统用户账户</small>
+                    </a>
+                    <a href="{{ url_for('admin.database_integrity') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-database me-2"></i>数据库完整性
+                        <small class="text-muted d-block">检查和修复数据完整性问题</small>
+                    </a>
+                    <a href="{{ url_for('admin.system_info') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-info-circle me-2"></i>系统信息
+                        <small class="text-muted d-block">查看系统状态和配置</small>
+                    </a>
+                    <a href="{{ url_for('admin.view_logs') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-file-alt me-2"></i>系统日志
+                        <small class="text-muted d-block">查看系统运行日志</small>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-save me-2"></i>数据备份
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <a href="{{ url_for('admin.backup_management') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-download me-2"></i>备份管理
+                        <small class="text-muted d-block">管理系统数据备份</small>
+                    </a>
+                </div>
+                
+                {% if backup_stats %}
+                <div class="mt-3">
+                    <h6>备份统计</h6>
+                    <ul class="list-unstyled small">
+                        <li><strong>备份总数:</strong> {{ backup_stats.total_backups }} 个</li>
+                        <li><strong>总大小:</strong> {{ "%.2f"|format(backup_stats.total_size_mb) }} MB</li>
+                        <li><strong>最近备份:</strong> 
+                            {% if backup_stats.latest_backup %}
+                                {{ backup_stats.latest_backup.strftime('%Y-%m-%d %H:%M') }}
+                            {% else %}
+                                无
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if admin_stats %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>业务类型统计
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for btype, data in admin_stats.items() %}
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    {% if btype == 'oil' %}
+                                        <i class="fas fa-oil-can me-2"></i>石油化工
+                                    {% elif btype == 'fast_moving' %}
+                                        <i class="fas fa-shipping-fast me-2"></i>快消品
+                                    {% else %}
+                                        {{ btype }}
+                                    {% endif %}
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <h5 class="text-primary">{{ data.total_orders }}</h5>
+                                        <small>总订单</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h5 class="text-success">{{ data.active_orders }}</h5>
+                                        <small>活跃订单</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h5 class="text-info">{{ data.total_suppliers }}</h5>
+                                        <small>供应商</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

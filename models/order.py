@@ -5,10 +5,10 @@ import threading
 import uuid
 from . import db
 
-# 订单供应商关联表
+# 订单供应商关联表 - 添加级联删除
 order_suppliers = db.Table('order_suppliers',
-    db.Column('order_id', db.Integer, db.ForeignKey('orders.id'), primary_key=True),
-    db.Column('supplier_id', db.Integer, db.ForeignKey('suppliers.id'), primary_key=True),
+    db.Column('order_id', db.Integer, db.ForeignKey('orders.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('supplier_id', db.Integer, db.ForeignKey('suppliers.id', ondelete='CASCADE'), primary_key=True),
     db.Column('notified', db.Boolean, default=False)
 )
 
@@ -28,11 +28,12 @@ class Order(db.Model):
     status = db.Column(db.String(20), default='active')  # active, completed, cancelled
     selected_supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.id'), nullable=True)
     selected_price = db.Column(db.Numeric(10, 2), nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)  # 创建者
+    business_type = db.Column(db.String(20), nullable=False, default='oil')  # 业务类型
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
-    # 关联关系
-    quotes = db.relationship('Quote', backref='order', lazy=True)
+    # 关联关系 - 添加级联删除
+    quotes = db.relationship('Quote', backref='order', lazy=True, cascade='all, delete-orphan')
     selected_supplier = db.relationship('Supplier', foreign_keys=[selected_supplier_id])
     suppliers = db.relationship('Supplier', secondary=order_suppliers, backref='orders')
     

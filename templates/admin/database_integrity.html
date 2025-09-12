@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block title %}数据库完整性检查{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>数据库完整性检查</h2>
+                <div>
+                    <a href="{{ url_for('admin.index') }}" class="btn btn-secondary">返回管理首页</a>
+                    <form method="POST" action="{{ url_for('admin.database_cleanup') }}" class="d-inline">
+                        <button type="submit" class="btn btn-warning" onclick="return confirm('确认要清理孤立数据吗？这个操作不可逆转。');">
+                            清理孤立数据
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">数据完整性状态</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if results.get('error') %}
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    检查失败: {{ results.error }}
+                                </div>
+                            {% else %}
+                                {% set total_issues = results.orphaned_suppliers + results.orphaned_orders + results.orphaned_quotes_order + results.orphaned_quotes_supplier %}
+                                {% if total_issues > 0 %}
+                                    <div class="alert alert-warning">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        发现 {{ total_issues }} 个数据完整性问题
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-success">
+                                        <i class="fas fa-check-circle"></i>
+                                        数据完整性良好，未发现问题
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">操作说明</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-info-circle text-info"></i> 定期进行数据完整性检查可确保系统稳定性</li>
+                                <li><i class="fas fa-warning text-warning"></i> 孤立数据可能导致系统错误和性能问题</li>
+                                <li><i class="fas fa-tools text-primary"></i> 建议在发现问题时及时清理孤立数据</li>
+                                <li><i class="fas fa-backup text-success"></i> 清理前请确保已进行数据备份</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if not results.get('error') %}
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">详细检查结果</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>数据类型</th>
+                                            <th>问题描述</th>
+                                            <th>数量</th>
+                                            <th>状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><i class="fas fa-building"></i> 供应商</td>
+                                            <td>关联用户不存在的孤立供应商</td>
+                                            <td>
+                                                <span class="badge bg-{{ 'danger' if results.orphaned_suppliers > 0 else 'success' }}">
+                                                    {{ results.orphaned_suppliers }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {% if results.orphaned_suppliers > 0 %}
+                                                    <i class="fas fa-exclamation-triangle text-warning"></i> 需要清理
+                                                {% else %}
+                                                    <i class="fas fa-check-circle text-success"></i> 正常
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-file-alt"></i> 订单</td>
+                                            <td>关联用户不存在的孤立订单</td>
+                                            <td>
+                                                <span class="badge bg-{{ 'danger' if results.orphaned_orders > 0 else 'success' }}">
+                                                    {{ results.orphaned_orders }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {% if results.orphaned_orders > 0 %}
+                                                    <i class="fas fa-exclamation-triangle text-warning"></i> 需要清理
+                                                {% else %}
+                                                    <i class="fas fa-check-circle text-success"></i> 正常
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-quote-left"></i> 报价</td>
+                                            <td>关联订单不存在的孤立报价</td>
+                                            <td>
+                                                <span class="badge bg-{{ 'danger' if results.orphaned_quotes_order > 0 else 'success' }}">
+                                                    {{ results.orphaned_quotes_order }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {% if results.orphaned_quotes_order > 0 %}
+                                                    <i class="fas fa-exclamation-triangle text-warning"></i> 需要清理
+                                                {% else %}
+                                                    <i class="fas fa-check-circle text-success"></i> 正常
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-quote-left"></i> 报价</td>
+                                            <td>关联供应商不存在的孤立报价</td>
+                                            <td>
+                                                <span class="badge bg-{{ 'danger' if results.orphaned_quotes_supplier > 0 else 'success' }}">
+                                                    {{ results.orphaned_quotes_supplier }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {% if results.orphaned_quotes_supplier > 0 %}
+                                                    <i class="fas fa-exclamation-triangle text-warning"></i> 需要清理
+                                                {% else %}
+                                                    <i class="fas fa-check-circle text-success"></i> 正常
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">相关操作</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('admin.backup_management') }}" class="btn btn-outline-primary">
+                                    <i class="fas fa-download"></i> 数据备份
+                                </a>
+                                <a href="{{ url_for('admin.user_management') }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-users"></i> 用户管理
+                                </a>
+                                <a href="{{ url_for('admin.system_info') }}" class="btn btn-outline-info">
+                                    <i class="fas fa-info-circle"></i> 系统信息
+                                </a>
+                                <button onclick="location.reload()" class="btn btn-outline-success">
+                                    <i class="fas fa-refresh"></i> 重新检查
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -6,8 +6,8 @@ class Quote(db.Model):
     __tablename__ = 'quotes'
     
     id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
-    supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.id'), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id', ondelete='CASCADE'), nullable=False)
+    supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.id', ondelete='CASCADE'), nullable=False)
     price = db.Column(db.Numeric(10, 2), nullable=False)
     delivery_time = db.Column(db.String(50), nullable=True)
     remarks = db.Column(db.Text, nullable=True)

@@ -13,6 +13,18 @@ app.config.from_object(Config)
 from models import db
 db.init_app(app)
 
+# SQLite外键约束配置
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
+
+@event.listens_for(Engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    """启用SQLite外键约束"""
+    if 'sqlite' in app.config.get('SQLALCHEMY_DATABASE_URI', ''):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+
 # 登录管理器初始化
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -48,24 +60,7 @@ def login():
     
     return render_template('login.html')
 
-# 注册路由
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        from models import User
-        username = request.form.get('username')
-        password = request.form.get('password')
-        
-        if User.query.filter_by(username=username).first():
-            flash('用户名已存在')
-        else:
-            user = User(username=username, password=generate_password_hash(password))
-            db.session.add(user)
-            db.session.commit()
-            flash('注册成功，请登录')
-            return redirect(url_for('login'))
-    
-    return render_template('register.html')
+# 注册路由已移除，仅管理员可添加用户
 
 # 登出路由
 @app.route('/logout')
@@ -79,15 +74,30 @@ def logout():
 @login_required
 def dashboard():
     from models import Order, Supplier
-    # 统计数据
-    total_orders = Order.query.filter_by(user_id=current_user.id).count()
-    active_orders = Order.query.filter_by(user_id=current_user.id, status='active').count()
-    total_suppliers = Supplier.query.filter_by(user_id=current_user.id).count()
     
-    return render_template('dashboard.html', 
-                         total_orders=total_orders,
-                         active_orders=active_orders,
-                         total_suppliers=total_suppliers)
+    if current_user.is_admin():
+        # 管理员看到所有数据的分类统计
+        stats_by_type = {}
+        for btype in ['oil', 'fast_moving']:
+            total_orders = Order.query.filter_by(business_type=btype).count()
+            active_orders = Order.query.filter_by(business_type=btype, status='active').count()
+            total_suppliers = Supplier.query.filter_by(business_type=btype).count()
+            stats_by_type[btype] = {
+                'total_orders': total_orders,
+                'active_orders': active_orders, 
+                'total_suppliers': total_suppliers
+            }
+        return render_template('dashboard.html', admin_stats=stats_by_type)
+    else:
+        # 普通用户按业务类型查看数据
+        total_orders = Order.query.filter_by(business_type=current_user.business_type).count()
+        active_orders = Order.query.filter_by(business_type=current_user.business_type, status='active').count()
+        total_suppliers = Supplier.query.filter_by(business_type=current_user.business_type).count()
+        
+        return render_template('dashboard.html',
+                             total_orders=total_orders,
+                             active_orders=active_orders,
+                             total_suppliers=total_suppliers)
 
 # 注册蓝图
 from routes.supplier import supplier_bp
@@ -305,7 +315,7 @@ def create_tables():
             admin_user = User(
                 username='admin',
                 password=generate_password_hash('admin123'),
-                role='admin'
+                business_type='admin'
             )
             db.session.add(admin_user)
             db.session.commit()
