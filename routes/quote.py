@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_required, current_user
 from models import db, Order, Quote, Supplier
-from sqlalchemy import func
+from utils.auth import business_type_filter
+from sqlalchemy import func, and_
 from decimal import Decimal, InvalidOperation
 import logging
 
@@ -12,12 +13,11 @@ quote_bp = Blueprint('quote', __name__, url_prefix='/quotes')
 @login_required
 def index():
     """报价对比首页"""
-    # 获取用户的所有订单及其报价
-    orders_with_quotes = db.session.query(Order).filter_by(
-        user_id=current_user.id
-    ).join(Quote, Order.id == Quote.order_id, isouter=True).group_by(
+    # 获取同业务类型的所有订单及其报价
+    query = db.session.query(Order).join(Quote, Order.id == Quote.order_id, isouter=True).group_by(
         Order.id
-    ).having(func.count(Quote.id) > 0).order_by(Order.created_at.desc()).all()
+    ).having(func.count(Quote.id) > 0).order_by(Order.created_at.desc())
+    orders_with_quotes = business_type_filter(query, Order).all()
     
     return render_template('quotes/index.html', orders=orders_with_quotes)
 
@@ -25,7 +25,8 @@ def index():
 @login_required
 def compare(order_id):
     """订单报价对比页面"""
-    order = Order.query.filter_by(id=order_id, user_id=current_user.id).first_or_404()
+    query = Order.query.filter_by(id=order_id)
+    order = business_type_filter(query, Order).first_or_404()
     
     # 获取所有报价，按价格排序
     quotes = Quote.query.filter_by(order_id=order.id).order_by(Quote.price.asc()).all()
@@ -97,32 +98,52 @@ def compare(order_id):
 def analysis():
     """报价分析页面"""
     # 获取统计数据
-    total_orders = Order.query.filter_by(user_id=current_user.id).count()
-    orders_with_quotes = db.session.query(Order).filter_by(
-        user_id=current_user.id
-    ).join(Quote).group_by(Order.id).count()
+    query = Order.query
+    total_orders = business_type_filter(query, Order).count()
     
-    total_quotes = Quote.query.join(Order).filter(Order.user_id == current_user.id).count()
-    completed_orders = Order.query.filter_by(user_id=current_user.id, status='completed').count()
+    query = db.session.query(Order).join(Quote).group_by(Order.id)
+    orders_with_quotes = business_type_filter(query, Order).count()
     
-    # 获取供应商报价统计
-    supplier_stats = db.session.query(
-        Supplier.name,
-        func.count(Quote.id).label('quote_count'),
-        func.avg(Quote.price).label('avg_price'),
-        func.min(Quote.price).label('min_price'),
-        func.max(Quote.price).label('max_price'),
-        func.count(
-            db.case([(Order.selected_supplier_id == Supplier.id, 1)], else_=0)
-        ).label('win_count')
-    ).join(Quote).join(Order).filter(
-        Order.user_id == current_user.id
-    ).group_by(Supplier.id, Supplier.name).all()
+    query = Quote.query.join(Order)
+    total_quotes = business_type_filter(query, Order).count()
     
-    # 最近的报价活动
-    recent_quotes = Quote.query.join(Order).filter(
-        Order.user_id == current_user.id
-    ).order_by(Quote.created_at.desc()).limit(10).all()
+    query = Order.query.filter_by(status='completed')
+    completed_orders = business_type_filter(query, Order).count()
+    
+    # 获取供应商报价统计 - 优化查询和业务类型过滤
+    try:
+        base_query = db.session.query(
+            Supplier.name,
+            func.count(Quote.id).label('quote_count'),
+            func.avg(Quote.price).label('avg_price'),
+            func.min(Quote.price).label('min_price'),
+            func.max(Quote.price).label('max_price'),
+            func.sum(
+                db.case([(Order.selected_supplier_id == Supplier.id, 1)], else_=0)
+            ).label('win_count')
+        ).select_from(Supplier).join(Quote).join(Order)
+        
+        # 应用业务类型过滤
+        if not current_user.is_admin():
+            base_query = base_query.filter(
+                and_(
+                    Supplier.business_type == current_user.business_type,
+                    Order.business_type == current_user.business_type
+                )
+            )
+        
+        supplier_stats = base_query.group_by(Supplier.id, Supplier.name).all()
+    except Exception as e:
+        logging.error(f"查询供应商统计数据失败: {e}")
+        supplier_stats = []
+    
+    # 最近的报价活动 - 优化查询
+    try:
+        query = Quote.query.join(Order).order_by(Quote.created_at.desc()).limit(10)
+        recent_quotes = business_type_filter(query, Order).all()
+    except Exception as e:
+        logging.error(f"查询最近报价活动失败: {e}")
+        recent_quotes = []
     
     return render_template('quotes/analysis.html', 
                          total_orders=total_orders,
@@ -136,7 +157,8 @@ def analysis():
 @login_required
 def export_quotes(order_id):
     """导出订单报价数据"""
-    order = Order.query.filter_by(id=order_id, user_id=current_user.id).first_or_404()
+    query = Order.query.filter_by(id=order_id)
+    order = business_type_filter(query, Order).first_or_404()
     quotes = Quote.query.filter_by(order_id=order.id).order_by(Quote.price.asc()).all()
     
     if not quotes:
@@ -168,52 +190,91 @@ def export_quotes(order_id):
 @login_required
 def supplier_history(supplier_id):
     """供应商报价历史"""
-    supplier = Supplier.query.filter_by(id=supplier_id, user_id=current_user.id).first_or_404()
+    # 验证供应商存在性和业务类型权限
+    try:
+        query = Supplier.query.filter_by(id=supplier_id)
+        supplier = business_type_filter(query, Supplier).first_or_404()
+    except Exception as e:
+        logging.error(f"查询供应商失败 (ID: {supplier_id}): {e}")
+        flash('供应商不存在或无权限访问', 'error')
+        return redirect(url_for('supplier.index'))
     
-    # 获取该供应商的所有报价
-    quotes = Quote.query.join(Order).filter(
-        Quote.supplier_id == supplier.id,
-        Order.user_id == current_user.id
-    ).order_by(Quote.created_at.desc()).all()
+    # 获取该供应商的所有报价 - 优化查询逻辑
+    try:
+        query = Quote.query.join(Order).filter(
+            and_(
+                Quote.supplier_id == supplier.id,
+                # 确保关联的订单符合业务类型权限
+                Order.business_type == current_user.business_type if not current_user.is_admin() else True
+            )
+        ).order_by(Quote.created_at.desc())
+        quotes = query.all()
+    except Exception as e:
+        logging.error(f"查询供应商报价历史失败 (供应商ID: {supplier_id}): {e}")
+        quotes = []
     
     if not quotes:
         flash('该供应商还没有报价记录', 'info')
         return redirect(url_for('supplier.details', supplier_id=supplier.id))
     
-    # 计算统计数据（安全处理）
+    # 计算统计数据（强化错误处理和性能优化）
+    stats = _calculate_supplier_stats(quotes, supplier.id)
+    
+    return render_template('quotes/supplier_history.html', 
+                         supplier=supplier, 
+                         quotes=quotes, 
+                         stats=stats)
+
+def _calculate_supplier_stats(quotes, supplier_id):
+    """计算供应商统计数据的辅助函数"""
     try:
+        # 批量验证价格，减少重复调用
         valid_prices = []
-        for quote in quotes:
-            is_valid, _ = quote.validate_price()
-            if is_valid:
-                valid_prices.append(quote.get_price_decimal())
-                
-        win_count = sum(1 for quote in quotes if quote.order.selected_supplier_id == supplier.id)
+        win_count = 0
         
+        for quote in quotes:
+            try:
+                is_valid, _ = quote.validate_price()
+                if is_valid:
+                    valid_prices.append(quote.get_price_decimal())
+                
+                # 检查是否为中标报价
+                if quote.order and quote.order.selected_supplier_id == supplier_id:
+                    win_count += 1
+            except Exception as e:
+                logging.warning(f"处理报价数据时出错 (Quote ID: {quote.id}): {e}")
+                continue
+        
+        total_quotes = len(quotes)
         if valid_prices:
+            avg_price = sum(valid_prices) / len(valid_prices)
             stats = {
-                'total_quotes': len(quotes),
+                'total_quotes': total_quotes,
                 'valid_quotes': len(valid_prices),
                 'win_count': win_count,
-                'win_rate': (win_count / len(quotes) * 100) if quotes else 0,
-                'avg_price': sum(valid_prices) / len(valid_prices),
+                'win_rate': round((win_count / total_quotes * 100), 2) if total_quotes > 0 else 0,
+                'avg_price': avg_price,
                 'min_price': min(valid_prices),
                 'max_price': max(valid_prices)
             }
         else:
             stats = {
-                'total_quotes': len(quotes),
+                'total_quotes': total_quotes,
                 'valid_quotes': 0,
                 'win_count': win_count,
-                'win_rate': (win_count / len(quotes) * 100) if quotes else 0,
+                'win_rate': round((win_count / total_quotes * 100), 2) if total_quotes > 0 else 0,
                 'avg_price': Decimal('0'),
                 'min_price': Decimal('0'),
                 'max_price': Decimal('0')
             }
+        
+        logging.info(f"供应商 {supplier_id} 统计计算完成: {stats}")
+        return stats
+        
     except Exception as e:
-        logging.error(f"Error calculating supplier statistics: {e}")
-        stats = {
-            'total_quotes': len(quotes),
+        logging.error(f"计算供应商统计数据时发生错误 (供应商ID: {supplier_id}): {e}")
+        return {
+            'total_quotes': len(quotes) if quotes else 0,
             'valid_quotes': 0,
             'win_count': 0,
             'win_rate': 0,
@@ -221,8 +282,3 @@ def supplier_history(supplier_id):
             'min_price': Decimal('0'),
             'max_price': Decimal('0')
         }
-    
-    return render_template('quotes/supplier_history.html', 
-                         supplier=supplier, 
-                         quotes=quotes, 
-                         stats=stats)

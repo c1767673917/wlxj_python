@@ -926,3 +926,66 @@ sqlalchemy.exc.InvalidRequestError: A transaction is already begun on this Sessi
 2025-09-12 14:52:37,045 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:37] "GET /suppliers/ HTTP/1.1" 200 -
 2025-09-12 14:52:37,588 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:37] "GET /orders/new HTTP/1.1" 200 -
 2025-09-12 14:52:38,212 - INFO - 127.0.0.1 - - [12/Sep/2025 14:52:38] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:00:15,549 - WARNING -  * Debugger is active!
+2025-09-12 15:00:15,560 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:06:44,333 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/quote.py', reloading
+2025-09-12 15:06:44,885 - WARNING -  * Debugger is active!
+2025-09-12 15:06:44,897 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:08:33,875 - INFO - 供应商 3 统计计算完成: {'total_quotes': 2, 'valid_quotes': 2, 'win_count': 0, 'win_rate': 0.0, 'avg_price': Decimal('250.00'), 'min_price': Decimal('200.00'), 'max_price': Decimal('300.00')}
+2025-09-12 15:08:33,879 - INFO - 供应商 -1 统计计算完成: {'total_quotes': 0, 'valid_quotes': 0, 'win_count': 0, 'win_rate': 0, 'avg_price': Decimal('0'), 'min_price': Decimal('0'), 'max_price': Decimal('0')}
+2025-09-12 15:08:33,881 - ERROR - 计算供应商统计数据时发生错误 (供应商ID: 3): This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(sqlite3.IntegrityError) NOT NULL constraint failed: quotes.price
+[SQL: UPDATE quotes SET price=? WHERE quotes.id = ?]
+[parameters: (None, 1)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-09-12 15:08:44,595 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/utils/auth.py', reloading
+2025-09-12 15:08:45,123 - WARNING -  * Debugger is active!
+2025-09-12 15:08:45,131 - INFO -  * Debugger PIN: 190-428-606
+2025-09-12 15:09:34,442 - INFO - 供应商 3 统计计算完成: {'total_quotes': 2, 'valid_quotes': 2, 'win_count': 0, 'win_rate': 0.0, 'avg_price': Decimal('250.00'), 'min_price': Decimal('200.00'), 'max_price': Decimal('300.00')}
+2025-09-12 15:09:34,444 - INFO - 供应商 -1 统计计算完成: {'total_quotes': 0, 'valid_quotes': 0, 'win_count': 0, 'win_rate': 0, 'avg_price': Decimal('0'), 'min_price': Decimal('0'), 'max_price': Decimal('0')}
+2025-09-12 15:09:34,444 - WARNING - 处理报价数据时出错 (Quote ID: -1): 测试异常
+2025-09-12 15:09:34,444 - INFO - 供应商 -1 统计计算完成: {'total_quotes': 1, 'valid_quotes': 0, 'win_count': 0, 'win_rate': 0.0, 'avg_price': Decimal('0'), 'min_price': Decimal('0'), 'max_price': Decimal('0')}
+2025-09-12 15:09:34,446 - INFO - 供应商 3 统计计算完成: {'total_quotes': 1, 'valid_quotes': 1, 'win_count': 0, 'win_rate': 0.0, 'avg_price': Decimal('200.00'), 'min_price': Decimal('200.00'), 'max_price': Decimal('200.00')}
+2025-09-12 15:09:34,447 - INFO - 供应商 -1 统计计算完成: {'total_quotes': 0, 'valid_quotes': 0, 'win_count': 0, 'win_rate': 0, 'avg_price': Decimal('0'), 'min_price': Decimal('0'), 'max_price': Decimal('0')}
+2025-09-12 15:28:13,368 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:13] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:28:15,336 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:15] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:28:19,548 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:19] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:28:24,292 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:24] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 15:28:24,952 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:24] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:28:26,899 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:26] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:28:28,123 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:28] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:28:28,608 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:28] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 15:28:28,998 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:28] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:28:37,097 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:37] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-12 15:28:37,622 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:37] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:28:38,138 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:38] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 15:28:38,723 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:38] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 15:28:39,498 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:39] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 15:28:41,012 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:41] "GET /dashboard HTTP/1.1" 200 -
+2025-09-12 15:28:43,609 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:43] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:28:44,231 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:44] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 15:28:44,725 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:44] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:28:47,486 - INFO - Quote模型已成功导入并缓存，耗时: 0.0000秒
+2025-09-12 15:28:47,511 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:47] "GET /orders/1 HTTP/1.1" 200 -
+2025-09-12 15:28:56,114 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:56] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:28:59,574 - INFO - 127.0.0.1 - - [12/Sep/2025 15:28:59] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:29:03,123 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:03] "GET /orders/2 HTTP/1.1" 200 -
+2025-09-12 15:29:06,226 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:06] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:29:16,306 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:16] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:29:18,761 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:18] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 15:29:19,281 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:19] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:29:34,991 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:34] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-12 15:29:36,821 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:36] "GET /portal/order/2/quote HTTP/1.1" 200 -
+2025-09-12 15:29:46,108 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:46] "[32mPOST /portal/order/2/quote HTTP/1.1[0m" 302 -
+2025-09-12 15:29:46,134 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:46] "GET /portal/order/2 HTTP/1.1" 200 -
+2025-09-12 15:29:48,248 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:48] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:29:49,667 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:49] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:29:50,967 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:50] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:29:54,777 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:54] "GET /orders/new HTTP/1.1" 200 -
+2025-09-12 15:29:55,316 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:55] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:29:59,964 - INFO - 127.0.0.1 - - [12/Sep/2025 15:29:59] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:30:15,383 - INFO - 127.0.0.1 - - [12/Sep/2025 15:30:15] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:30:29,971 - INFO - 127.0.0.1 - - [12/Sep/2025 15:30:29] "GET /quotes/ HTTP/1.1" 200 -
+2025-09-12 15:30:30,554 - INFO - 127.0.0.1 - - [12/Sep/2025 15:30:30] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:30:31,020 - INFO - 127.0.0.1 - - [12/Sep/2025 15:30:31] "GET /orders/ HTTP/1.1" 200 -
+2025-09-12 15:30:31,965 - INFO - 127.0.0.1 - - [12/Sep/2025 15:30:31] "GET /quotes/ HTTP/1.1" 200 -
