@@ -11,8 +11,9 @@ from pathlib import Path
 def setup_cron_job():
     """设置定时备份的cron任务"""
     current_dir = Path(__file__).parent.absolute()
+    project_root = current_dir.parent.parent
     script_path = current_dir / 'scheduled_backup.py'
-    log_path = current_dir / 'backup_cron.log'
+    log_path = project_root / 'logs' / 'backup_cron.log'
     
     # 创建cron任务内容（每天凌晨2点执行）
     cron_entry = f"0 2 * * * cd {current_dir} && /usr/bin/python3 {script_path} >> {log_path} 2>&1"
@@ -72,7 +73,8 @@ fi
     
     print(f"已创建备份脚本: {script_path}")
     print("可以使用以下cron条目:")
-    print(f"0 2 * * * {script_path} >> {current_dir}/backup_cron.log 2>&1")
+    project_root = current_dir.parent.parent
+    print(f"0 2 * * * {script_path} >> {project_root}/logs/backup_cron.log 2>&1")
 
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == '--create-script':

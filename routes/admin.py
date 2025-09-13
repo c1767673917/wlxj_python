@@ -178,7 +178,7 @@ def user_management():
 @admin_required
 def view_logs():
     """查看系统日志"""
-    log_files = ['backup.log', 'app.log']  # 可以根据需要添加更多日志文件
+    log_files = ['logs/backup.log', 'logs/app.log']  # 可以根据需要添加更多日志文件
     
     logs = {}
     for log_file in log_files:

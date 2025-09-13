@@ -22,7 +22,7 @@ def setup_logging():
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler(f'decimal_validation_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'),
+            logging.FileHandler(f'logs/decimal_validation_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'),
             logging.StreamHandler()
         ]
     )

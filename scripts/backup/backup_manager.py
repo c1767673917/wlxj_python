@@ -18,7 +18,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('backup.log'),
+        logging.FileHandler('logs/backup.log'),
         logging.StreamHandler()
     ]
 )
