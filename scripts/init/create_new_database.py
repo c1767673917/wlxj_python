@@ -50,8 +50,8 @@ def create_new_database():
         
         print(f"\n用户统计:")
         print(f"- 管理员: {admin_count}")
-        print(f"- 石油化工: {oil_count}")
-        print(f"- 快消品: {fast_count}")
+        print(f"- 油脂: {oil_count}")
+        print(f"- 快消: {fast_count}")
         print(f"\n默认管理员账户: admin / admin123")
         print(f"测试账户密码统一为: password123")
 

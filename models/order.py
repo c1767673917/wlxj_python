@@ -99,19 +99,55 @@ class Order(db.Model):
         logging.info("Quote模型缓存统计信息已重置")
     
     def generate_order_no(self):
-        """生成订单号 - 使用ID确保唯一性"""
+        """生成订单号 - RX+yymmdd+3位数流水号格式"""
         if not self.id:
             raise ValueError("订单ID不能为空，请先保存订单")
         
-        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-        return f'ORD{timestamp}{self.id:06d}'
+        from datetime import datetime
+        from sqlalchemy import func, and_
+        
+        # 获取当前日期
+        now = datetime.now()
+        date_str = now.strftime('%y%m%d')
+        
+        # 查询当天的所有订单号，使用LIKE模式匹配
+        date_pattern = f'RX{date_str}%'
+        today_orders = Order.query.filter(
+            Order.order_no.like(date_pattern)
+        ).all()
+        
+        # 过滤出符合格式的订单号并找到最大流水号
+        max_seq = 0
+        expected_length = 11  # RX + 6位日期 + 3位流水号
+        
+        for order in today_orders:
+            if (len(order.order_no) == expected_length and 
+                order.order_no.startswith(f'RX{date_str}') and
+                order.order_no[-3:].isdigit()):
+                try:
+                    seq = int(order.order_no[-3:])
+                    max_seq = max(max_seq, seq)
+                except ValueError:
+                    continue
+        
+        # 计算新的流水号
+        new_seq = max_seq + 1
+        
+        # 确保流水号不超过999
+        if new_seq > 999:
+            raise ValueError(f"当日订单数量已达上限999个")
+        
+        return f'RX{date_str}{new_seq:03d}'
     
     @staticmethod
     def generate_temp_order_no():
-        """生成临时订单号（用于初始化）"""
-        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-        # 使用UUID确保唯一性
-        unique_suffix = str(uuid.uuid4())[:8].upper()
+        """生成临时订单号（用于初始化）- 使用新的RX格式但带TEMP前缀"""
+        from datetime import datetime
+        import uuid
+        
+        timestamp = datetime.now().strftime('%y%m%d')
+        # 使用UUID确保唯一性，但保持格式一致性
+        unique_suffix = str(uuid.uuid4())[:3].upper()
         return f'TEMP{timestamp}{unique_suffix}'
     
     def get_lowest_quote(self):
@@ -183,14 +219,46 @@ class Order(db.Model):
     
     @staticmethod
     def generate_unique_order_no(max_retries=5):
-        """生成唯一订单号（带重试机制）"""
+        """生成唯一订单号（带重试机制）- 使用RX+yymmdd+3位数流水号格式"""
+        from datetime import datetime
+        from sqlalchemy import func, and_
+        import time
+        import logging
+        
         for attempt in range(max_retries):
             try:
-                timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-                # 使用纳秒时间戳和UUID确保唯一性
-                nano_suffix = str(int(time.time() * 1000000))[-6:]  # 取纳秒时间戳后6位
-                uuid_suffix = str(uuid.uuid4())[:4].upper()
-                order_no = f'ORD{timestamp}{nano_suffix}{uuid_suffix}'
+                # 获取当前日期
+                now = datetime.now()
+                date_str = now.strftime('%y%m%d')
+                
+                # 查询当天的所有订单号，使用LIKE模式匹配
+                date_pattern = f'RX{date_str}%'
+                today_orders = Order.query.filter(
+                    Order.order_no.like(date_pattern)
+                ).all()
+                
+                # 过滤出符合格式的订单号并找到最大流水号
+                max_seq = 0
+                expected_length = 11  # RX + 6位日期 + 3位流水号
+                
+                for order in today_orders:
+                    if (len(order.order_no) == expected_length and 
+                        order.order_no.startswith(f'RX{date_str}') and
+                        order.order_no[-3:].isdigit()):
+                        try:
+                            seq = int(order.order_no[-3:])
+                            max_seq = max(max_seq, seq)
+                        except ValueError:
+                            continue
+                
+                # 计算新的流水号
+                new_seq = max_seq + 1
+                
+                # 确保流水号不超过999
+                if new_seq > 999:
+                    raise ValueError(f"当日订单数量已达上限999个")
+                
+                order_no = f'RX{date_str}{new_seq:03d}'
                 
                 # 检查唯一性
                 existing = Order.query.filter_by(order_no=order_no).first()

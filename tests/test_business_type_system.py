@@ -47,8 +47,8 @@ def test_business_type_system():
         # 创建测试订单
         print("\n3. 创建测试订单:")
         test_orders = [
-            {'order_no': 'ORD001', 'warehouse': '石油仓库A', 'goods': '汽油', 'user': oil_user1, 'business_type': 'oil'},
-            {'order_no': 'ORD002', 'warehouse': '石油仓库B', 'goods': '柴油', 'user': oil_user2, 'business_type': 'oil'},
+            {'order_no': 'ORD001', 'warehouse': '食用油仓库A', 'goods': '大豆油', 'user': oil_user1, 'business_type': 'oil'},
+            {'order_no': 'ORD002', 'warehouse': '食用油仓库B', 'goods': '花生油', 'user': oil_user2, 'business_type': 'oil'},
             {'order_no': 'ORD003', 'warehouse': '快消仓库', 'goods': '洗发水', 'user': fast_user1, 'business_type': 'fast_moving'},
         ]
         
@@ -70,7 +70,7 @@ def test_business_type_system():
         print("\n4. 权限过滤测试:")
         
         # 模拟不同用户查看数据
-        print("   石油化工用户oil_user1可见的供应商:")
+        print("   油脂用户oil_user1可见的供应商:")
         with app.test_request_context():
             # 模拟当前用户为oil_user1
             from flask_login import login_user
@@ -99,7 +99,7 @@ def test_business_type_system():
         oil_orders = Order.query.filter_by(business_type='oil').all()
         fast_orders = Order.query.filter_by(business_type='fast_moving').all()
         
-        print(f"   石油化工订单数量: {len(oil_orders)}")
+        print(f"   油脂订单数量: {len(oil_orders)}")
         for order in oil_orders:
             print(f"     - {order.order_no}: {order.goods}")
         
@@ -124,7 +124,7 @@ def test_business_type_system():
             by_type_stats[btype] = {'suppliers': supplier_count, 'orders': order_count}
         
         for btype, stats in by_type_stats.items():
-            type_name = '石油化工' if btype == 'oil' else '快消品'
+            type_name = '油脂' if btype == 'oil' else '快消'
             print(f"   {type_name}: 供应商{stats['suppliers']}个, 订单{stats['orders']}个")
         
         print("\n=== 测试完成 ===")

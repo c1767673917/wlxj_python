@@ -99,3 +99,89 @@
 2025-09-13 22:57:41,047 - INFO - 127.0.0.1 - - [13/Sep/2025 22:57:41] "GET /dashboard HTTP/1.1" 200 -
 2025-09-13 23:11:38,413 - INFO - 测试日志配置 - 日志文件路径修改成功
 2025-09-13 23:11:43,563 - INFO - 测试备份管理器日志配置 - 路径修改成功
+2025-09-13 23:56:14,792 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-13 23:56:14,801 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-13 23:56:14,802 - INFO -  * Restarting with stat
+2025-09-13 23:56:14,982 - WARNING -  * Debugger is active!
+2025-09-13 23:56:14,987 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 00:00:41,189 - INFO - 127.0.0.1 - - [14/Sep/2025 00:00:41] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 00:00:41,875 - INFO - 127.0.0.1 - - [14/Sep/2025 00:00:41] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 00:03:11,345 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-14 00:03:11,373 - INFO -  * Restarting with stat
+2025-09-14 00:03:11,660 - WARNING -  * Debugger is active!
+2025-09-14 00:03:11,665 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 00:03:16,627 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-14 00:03:16,652 - INFO -  * Restarting with stat
+2025-09-14 00:03:16,834 - WARNING -  * Debugger is active!
+2025-09-14 00:03:16,838 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 00:03:26,512 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-14 00:03:26,539 - INFO -  * Restarting with stat
+2025-09-14 00:03:26,723 - WARNING -  * Debugger is active!
+2025-09-14 00:03:26,727 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 00:03:48,178 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-14 00:03:48,204 - INFO -  * Restarting with stat
+2025-09-14 00:03:48,388 - WARNING -  * Debugger is active!
+2025-09-14 00:03:48,392 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 00:03:58,007 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-14 00:03:58,033 - INFO -  * Restarting with stat
+2025-09-14 00:03:58,219 - WARNING -  * Debugger is active!
+2025-09-14 00:03:58,223 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 00:09:43,237 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-14 00:09:43,238 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-14 00:09:43,238 - INFO -  * Restarting with stat
+2025-09-14 00:09:43,414 - WARNING -  * Debugger is active!
+2025-09-14 00:09:43,419 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 00:10:27,355 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:27] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-09-14 00:10:27,368 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:27] "GET /dashboard HTTP/1.1" 200 -
+2025-09-14 00:10:27,373 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:27] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 00:10:27,378 - INFO - 订单创建成功: RX250914001, 用户: 1, 供应商数量: 1
+2025-09-14 00:10:27,379 - INFO - 供应商 大广 未配置webhook，跳过通知
+2025-09-14 00:10:27,379 - INFO - 供应商通知完成 - 成功: 0, 失败: 0
+2025-09-14 00:10:27,379 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:27] "[32mPOST /orders/new HTTP/1.1[0m" 302 -
+2025-09-14 00:10:27,381 - INFO - Quote模型已成功导入并缓存，耗时: 0.0000秒
+2025-09-14 00:10:27,393 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:27] "GET /orders/3 HTTP/1.1" 200 -
+2025-09-14 00:10:27,402 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:27] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 00:10:42,500 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/test_api_order_creation.py', reloading
+2025-09-14 00:10:42,527 - INFO -  * Restarting with stat
+2025-09-14 00:10:42,705 - WARNING -  * Debugger is active!
+2025-09-14 00:10:42,709 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 00:10:48,869 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/test_api_order_creation.py', reloading
+2025-09-14 00:10:48,896 - INFO -  * Restarting with stat
+2025-09-14 00:10:49,078 - WARNING -  * Debugger is active!
+2025-09-14 00:10:49,082 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 00:10:53,525 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:53] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-09-14 00:10:53,537 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:53] "GET /dashboard HTTP/1.1" 200 -
+2025-09-14 00:10:53,542 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:53] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 00:10:53,549 - INFO - 订单创建成功: RX250914002, 用户: 1, 供应商数量: 1
+2025-09-14 00:10:53,549 - INFO - 供应商 大广 未配置webhook，跳过通知
+2025-09-14 00:10:53,549 - INFO - 供应商通知完成 - 成功: 0, 失败: 0
+2025-09-14 00:10:53,550 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:53] "[32mPOST /orders/new HTTP/1.1[0m" 302 -
+2025-09-14 00:10:53,552 - INFO - Quote模型已成功导入并缓存，耗时: 0.0000秒
+2025-09-14 00:10:53,568 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:53] "GET /orders/4 HTTP/1.1" 200 -
+2025-09-14 00:10:53,585 - INFO - 127.0.0.1 - - [14/Sep/2025 00:10:53] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 00:12:52,262 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-14 00:12:52,262 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-14 00:12:52,263 - INFO -  * Restarting with stat
+2025-09-14 00:12:52,455 - WARNING -  * Debugger is active!
+2025-09-14 00:12:52,459 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 00:12:56,021 - INFO - 127.0.0.1 - - [14/Sep/2025 00:12:56] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 00:13:00,749 - INFO - 127.0.0.1 - - [14/Sep/2025 00:13:00] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 00:13:05,253 - INFO - Quote模型已成功导入并缓存，耗时: 0.0001秒
+2025-09-14 00:13:05,286 - INFO - 127.0.0.1 - - [14/Sep/2025 00:13:05] "GET /orders/4 HTTP/1.1" 200 -
+2025-09-14 00:13:11,118 - INFO - 127.0.0.1 - - [14/Sep/2025 00:13:11] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 00:13:35,269 - INFO - 订单创建成功: RX250914003, 用户: 2, 供应商数量: 3
+2025-09-14 00:13:35,269 - INFO - 供应商 大广 未配置webhook，跳过通知
+2025-09-14 00:13:35,270 - INFO - 供应商 盟藤 未配置webhook，跳过通知
+2025-09-14 00:13:35,270 - INFO - 供应商 韵彪 未配置webhook，跳过通知
+2025-09-14 00:13:35,270 - INFO - 供应商通知完成 - 成功: 0, 失败: 0
+2025-09-14 00:13:35,271 - INFO - 127.0.0.1 - - [14/Sep/2025 00:13:35] "[32mPOST /orders/new HTTP/1.1[0m" 302 -
+2025-09-14 00:13:35,278 - INFO - 127.0.0.1 - - [14/Sep/2025 00:13:35] "GET /orders/5 HTTP/1.1" 200 -

@@ -92,8 +92,8 @@ class User(UserMixin, db.Model):
     def get_business_type_display(self):
         type_map = {
             'admin': '系统管理员',
-            'oil': '石油化工',
-            'fast_moving': '快消品'
+            'oil': '油脂',
+            'fast_moving': '快消'
         }
         return type_map.get(self.business_type, self.business_type)
 ```
@@ -295,8 +295,8 @@ def delete_user(user_id):
 # 业务类型配置
 BUSINESS_TYPES = {
     'admin': '系统管理员',
-    'oil': '石油化工',
-    'fast_moving': '快消品'
+    'oil': '油脂',
+    'fast_moving': '快消'
 }
 ```
 

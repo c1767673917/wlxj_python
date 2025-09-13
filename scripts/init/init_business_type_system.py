@@ -52,8 +52,8 @@ def init_business_type_system():
         
         print(f"\n用户统计:")
         print(f"- 管理员: {admin_count}")
-        print(f"- 石油化工: {oil_count}")
-        print(f"- 快消品: {fast_count}")
+        print(f"- 油脂: {oil_count}")
+        print(f"- 快消: {fast_count}")
 
 if __name__ == '__main__':
     init_business_type_system()
