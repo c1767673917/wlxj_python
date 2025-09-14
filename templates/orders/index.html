@@ -17,28 +17,17 @@
 <!-- 筛选栏 -->
 <div class="card mb-4">
     <div class="card-body">
-        <form method="GET" class="row g-3">
+        <div class="row g-3">
             <div class="col-md-4">
                 <label for="status" class="form-label">订单状态</label>
-                <select class="form-select" id="status" name="status">
+                <select class="form-select" id="status" name="status" onchange="autoFilter()">
                     <option value="">全部状态</option>
                     <option value="active" {{ 'selected' if status == 'active' }}>进行中</option>
                     <option value="completed" {{ 'selected' if status == 'completed' }}>已完成</option>
                     <option value="cancelled" {{ 'selected' if status == 'cancelled' }}>已取消</option>
                 </select>
             </div>
-            <div class="col-md-2">
-                <label class="form-label">&nbsp;</label>
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-outline-primary">
-                        <i class="fas fa-search me-1"></i>筛选
-                    </button>
-                    <a href="{{ url_for('order.index') }}" class="btn btn-outline-secondary">
-                        <i class="fas fa-times me-1"></i>清除
-                    </a>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
@@ -261,6 +250,26 @@ function deleteOrder(orderId, orderNo) {
     document.getElementById('orderNo').textContent = orderNo;
     document.getElementById('deleteForm').action = `{{ url_for('order.cancel', order_id=0) }}`.replace('0', orderId);
     new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+
+function autoFilter() {
+    const statusSelect = document.getElementById('status');
+    const selectedStatus = statusSelect.value;
+    
+    // 构建新的URL
+    const currentUrl = new URL(window.location);
+    
+    if (selectedStatus) {
+        currentUrl.searchParams.set('status', selectedStatus);
+    } else {
+        currentUrl.searchParams.delete('status');
+    }
+    
+    // 重置页码到第一页
+    currentUrl.searchParams.delete('page');
+    
+    // 跳转到新URL
+    window.location.href = currentUrl.toString();
 }
 </script>
 {% endblock %}

@@ -274,3 +274,114 @@
 2025-09-14 10:15:53,986 - INFO - 127.0.0.1 - - [14/Sep/2025 10:15:53] "GET /orders/ HTTP/1.1" 200 -
 2025-09-14 10:20:51,124 - INFO - 127.0.0.1 - - [14/Sep/2025 10:20:51] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
 2025-09-14 10:20:55,524 - INFO - 127.0.0.1 - - [14/Sep/2025 10:20:55] "GET /supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 11:28:56,286 - INFO - 127.0.0.1 - - [14/Sep/2025 11:28:56] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 11:28:57,550 - INFO - 127.0.0.1 - - [14/Sep/2025 11:28:57] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 11:28:58,568 - INFO - 127.0.0.1 - - [14/Sep/2025 11:28:58] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 11:28:59,218 - INFO - 127.0.0.1 - - [14/Sep/2025 11:28:59] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 11:29:05,131 - INFO - 127.0.0.1 - - [14/Sep/2025 11:29:05] "GET /portal/order/5/quote HTTP/1.1" 200 -
+2025-09-14 11:29:13,897 - INFO - 127.0.0.1 - - [14/Sep/2025 11:29:13] "[32mPOST /portal/order/5/quote HTTP/1.1[0m" 302 -
+2025-09-14 11:29:13,923 - INFO - 127.0.0.1 - - [14/Sep/2025 11:29:13] "GET /portal/order/5 HTTP/1.1" 200 -
+2025-09-14 11:29:20,406 - INFO - 127.0.0.1 - - [14/Sep/2025 11:29:20] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 11:29:27,089 - INFO - 127.0.0.1 - - [14/Sep/2025 11:29:27] "GET /orders/5 HTTP/1.1" 200 -
+2025-09-14 11:29:31,336 - INFO - 127.0.0.1 - - [14/Sep/2025 11:29:31] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 11:29:31,966 - INFO - 127.0.0.1 - - [14/Sep/2025 11:29:31] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 11:29:32,919 - INFO - 127.0.0.1 - - [14/Sep/2025 11:29:32] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 12:07:03,533 - INFO - 127.0.0.1 - - [14/Sep/2025 12:07:03] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 12:07:25,866 - INFO - 127.0.0.1 - - [14/Sep/2025 12:07:25] "GET /orders/5 HTTP/1.1" 200 -
+2025-09-14 12:07:27,552 - INFO - 127.0.0.1 - - [14/Sep/2025 12:07:27] "GET /orders/5/edit HTTP/1.1" 200 -
+2025-09-14 12:07:30,201 - INFO - 127.0.0.1 - - [14/Sep/2025 12:07:30] "GET /orders/5 HTTP/1.1" 200 -
+2025-09-14 12:07:35,046 - INFO - 127.0.0.1 - - [14/Sep/2025 12:07:35] "GET /orders/5/add-suppliers HTTP/1.1" 200 -
+2025-09-14 12:07:38,837 - INFO - 127.0.0.1 - - [14/Sep/2025 12:07:38] "GET /orders/5 HTTP/1.1" 200 -
+2025-09-14 12:09:43,042 - INFO - 订单 RX250914003 价格协商：原报价 100.0，确认价格 80.0，供应商ID: 1
+2025-09-14 12:09:43,046 - INFO - 订单 RX250914003 已完成，选择供应商ID: 1，缓存命中率: 96.15%
+2025-09-14 12:09:43,047 - INFO - 127.0.0.1 - - [14/Sep/2025 12:09:43] "[32mPOST /orders/5/select-supplier HTTP/1.1[0m" 302 -
+2025-09-14 12:09:43,058 - INFO - 127.0.0.1 - - [14/Sep/2025 12:09:43] "GET /orders/5 HTTP/1.1" 200 -
+2025-09-14 12:09:49,178 - INFO - 127.0.0.1 - - [14/Sep/2025 12:09:49] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 12:10:44,955 - INFO - 127.0.0.1 - - [14/Sep/2025 12:10:44] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 12:10:45,609 - INFO - 127.0.0.1 - - [14/Sep/2025 12:10:45] "GET /dashboard HTTP/1.1" 200 -
+2025-09-14 12:10:46,202 - INFO - 127.0.0.1 - - [14/Sep/2025 12:10:46] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 13:18:00,311 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:00] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 13:18:02,935 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:02] "GET /orders/?page=2&status= HTTP/1.1" 200 -
+2025-09-14 13:18:04,401 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:04] "GET /orders/?page=4&status= HTTP/1.1" 200 -
+2025-09-14 13:18:06,063 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:06] "GET /orders/?page=10&status= HTTP/1.1" 200 -
+2025-09-14 13:18:09,240 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:09] "GET /orders/39 HTTP/1.1" 200 -
+2025-09-14 13:18:15,163 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:15] "GET /orders/?page=1&status= HTTP/1.1" 200 -
+2025-09-14 13:18:17,916 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:17] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 13:18:33,700 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:33] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 13:18:36,301 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:36] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 13:18:36,957 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:36] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 13:18:52,069 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:52] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 13:18:52,498 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:52] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 13:18:53,122 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:53] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 13:18:56,192 - INFO - 127.0.0.1 - - [14/Sep/2025 13:18:56] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 15:01:44,014 - INFO - 127.0.0.1 - - [14/Sep/2025 15:01:44] "GET /orders/?page=2&status= HTTP/1.1" 200 -
+2025-09-14 15:01:45,400 - INFO - 127.0.0.1 - - [14/Sep/2025 15:01:45] "GET /orders/?page=3&status= HTTP/1.1" 200 -
+2025-09-14 15:01:47,664 - INFO - 127.0.0.1 - - [14/Sep/2025 15:01:47] "GET /orders/?page=4&status= HTTP/1.1" 200 -
+2025-09-14 15:01:48,848 - INFO - 127.0.0.1 - - [14/Sep/2025 15:01:48] "GET /orders/?page=5&status= HTTP/1.1" 200 -
+2025-09-14 15:01:50,221 - INFO - 127.0.0.1 - - [14/Sep/2025 15:01:50] "GET /orders/?page=6&status= HTTP/1.1" 200 -
+2025-09-14 15:01:51,705 - INFO - 127.0.0.1 - - [14/Sep/2025 15:01:51] "GET /orders/?page=8&status= HTTP/1.1" 200 -
+2025-09-14 15:01:53,235 - INFO - 127.0.0.1 - - [14/Sep/2025 15:01:53] "GET /orders/?page=9&status= HTTP/1.1" 200 -
+2025-09-14 15:01:54,330 - INFO - 127.0.0.1 - - [14/Sep/2025 15:01:54] "GET /orders/?page=10&status= HTTP/1.1" 200 -
+2025-09-14 15:01:55,533 - INFO - 127.0.0.1 - - [14/Sep/2025 15:01:55] "GET /orders/?page=11&status= HTTP/1.1" 200 -
+2025-09-14 15:01:57,250 - INFO - 127.0.0.1 - - [14/Sep/2025 15:01:57] "GET /orders/?page=1&status= HTTP/1.1" 200 -
+2025-09-14 15:02:49,510 - INFO - 127.0.0.1 - - [14/Sep/2025 15:02:49] "GET /orders/85 HTTP/1.1" 200 -
+2025-09-14 15:03:00,200 - INFO - 127.0.0.1 - - [14/Sep/2025 15:03:00] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 15:03:01,013 - INFO - 127.0.0.1 - - [14/Sep/2025 15:03:01] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 15:03:01,543 - INFO - 127.0.0.1 - - [14/Sep/2025 15:03:01] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 15:04:45,124 - INFO - 127.0.0.1 - - [14/Sep/2025 15:04:45] "GET /orders/?page=2&status= HTTP/1.1" 200 -
+2025-09-14 15:04:46,880 - INFO - 127.0.0.1 - - [14/Sep/2025 15:04:46] "GET /orders/?page=1&status= HTTP/1.1" 200 -
+2025-09-14 15:04:52,318 - INFO - 127.0.0.1 - - [14/Sep/2025 15:04:52] "GET /orders/73 HTTP/1.1" 200 -
+2025-09-14 15:05:10,185 - INFO - 127.0.0.1 - - [14/Sep/2025 15:05:10] "GET /orders/?page=2&status= HTTP/1.1" 200 -
+2025-09-14 15:05:11,595 - INFO - 127.0.0.1 - - [14/Sep/2025 15:05:11] "GET /orders/?page=1&status= HTTP/1.1" 200 -
+2025-09-14 15:25:44,184 - INFO - 127.0.0.1 - - [14/Sep/2025 15:25:44] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 15:25:45,001 - INFO - 127.0.0.1 - - [14/Sep/2025 15:25:45] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 15:25:46,477 - INFO - 127.0.0.1 - - [14/Sep/2025 15:25:46] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 15:25:47,482 - INFO - 127.0.0.1 - - [14/Sep/2025 15:25:47] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 15:32:55,027 - INFO - 127.0.0.1 - - [14/Sep/2025 15:32:55] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 15:32:55,826 - INFO - 127.0.0.1 - - [14/Sep/2025 15:32:55] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 15:32:56,744 - INFO - 127.0.0.1 - - [14/Sep/2025 15:32:56] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 15:33:32,292 - INFO - 127.0.0.1 - - [14/Sep/2025 15:33:32] "GET /orders/?status=completed HTTP/1.1" 200 -
+2025-09-14 15:33:34,667 - INFO - 127.0.0.1 - - [14/Sep/2025 15:33:34] "GET /orders/?status=active HTTP/1.1" 200 -
+2025-09-14 15:33:37,975 - INFO - 127.0.0.1 - - [14/Sep/2025 15:33:37] "GET /orders/?status=cancelled HTTP/1.1" 200 -
+2025-09-14 15:33:40,707 - INFO - 127.0.0.1 - - [14/Sep/2025 15:33:40] "GET /orders/?status=completed HTTP/1.1" 200 -
+2025-09-14 15:34:09,952 - INFO - 127.0.0.1 - - [14/Sep/2025 15:34:09] "GET /orders/?status=active HTTP/1.1" 200 -
+2025-09-14 15:36:57,457 - INFO - 127.0.0.1 - - [14/Sep/2025 15:36:57] "GET /orders/?status=active HTTP/1.1" 200 -
+2025-09-14 15:37:00,381 - INFO - 127.0.0.1 - - [14/Sep/2025 15:37:00] "GET /orders/?status=completed HTTP/1.1" 200 -
+2025-09-14 15:37:01,968 - INFO - 127.0.0.1 - - [14/Sep/2025 15:37:01] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 15:37:17,083 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-14 15:37:17,111 - INFO -  * Restarting with stat
+2025-09-14 15:37:17,291 - WARNING -  * Debugger is active!
+2025-09-14 15:37:17,295 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 15:37:20,490 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://198.18.0.1:5002
+2025-09-14 15:37:20,491 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-14 15:37:20,491 - INFO -  * Restarting with stat
+2025-09-14 15:37:20,669 - WARNING -  * Debugger is active!
+2025-09-14 15:37:20,673 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 15:37:30,981 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-14 15:37:30,987 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-14 15:37:31,013 - INFO -  * Restarting with stat
+2025-09-14 15:37:31,019 - INFO -  * Restarting with stat
+2025-09-14 15:37:31,208 - WARNING -  * Debugger is active!
+2025-09-14 15:37:31,208 - WARNING -  * Debugger is active!
+2025-09-14 15:37:31,212 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 15:37:31,212 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 15:43:07,461 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:07] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 15:43:08,634 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:08] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 15:43:20,681 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:20] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 15:43:25,091 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:25] "GET /orders/?page=3&status= HTTP/1.1" 200 -
+2025-09-14 15:43:26,810 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:26] "GET /orders/?page=2&status= HTTP/1.1" 200 -
+2025-09-14 15:43:28,275 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:28] "GET /orders/?page=1&status= HTTP/1.1" 200 -
+2025-09-14 15:43:32,520 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:32] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 15:43:41,021 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:41] "GET /orders/?page=1&status= HTTP/1.1" 200 -
+2025-09-14 15:43:44,358 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:44] "GET /orders/?status=active HTTP/1.1" 200 -
+2025-09-14 15:43:46,511 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:46] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 15:43:47,950 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:47] "GET /orders/?status=cancelled HTTP/1.1" 200 -
+2025-09-14 15:43:50,170 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:50] "GET /orders/?status=completed HTTP/1.1" 200 -
+2025-09-14 15:43:52,839 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:52] "GET /orders/?status=active HTTP/1.1" 200 -
+2025-09-14 15:43:54,218 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:54] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 15:43:57,823 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:57] "GET /orders/?status=active HTTP/1.1" 200 -
+2025-09-14 15:43:59,694 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:59] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 15:44:03,014 - INFO - 127.0.0.1 - - [14/Sep/2025 15:44:03] "GET /orders/?status=active HTTP/1.1" 200 -
