@@ -489,3 +489,26 @@
 2025-09-14 19:01:06,949 - INFO - 127.0.0.1 - - [14/Sep/2025 19:01:06] "GET /orders/export HTTP/1.1" 200 -
 2025-09-14 19:03:58,548 - INFO - 127.0.0.1 - - [14/Sep/2025 19:03:58] "GET /orders/?status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
 2025-09-14 19:22:28,222 - INFO - 127.0.0.1 - - [14/Sep/2025 19:22:28] "GET /orders/?status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 19:23:00,149 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:00] "GET /orders/?status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 19:23:02,956 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:02] "GET /orders/?status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 19:23:05,616 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:05] "GET /orders/?page=2&status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 19:23:07,122 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:07] "GET /orders/?page=5&status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 19:23:08,375 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:08] "GET /orders/?page=8&status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 19:23:09,532 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:09] "GET /orders/?page=11&status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 19:23:12,777 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:12] "GET /orders/?page=1&status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 19:23:15,917 - INFO - Quote模型已成功导入并缓存，耗时: 0.0000秒
+2025-09-14 19:23:15,932 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:15] "GET /orders/30 HTTP/1.1" 200 -
+2025-09-14 19:23:24,549 - INFO - 订单 RX250914028 价格协商：原报价 366016.62，确认价格 366000.0，供应商ID: 1
+2025-09-14 19:23:24,559 - INFO - 订单 RX250914028 已完成，选择供应商ID: 1，缓存命中率: 50.0%
+2025-09-14 19:23:24,561 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:24] "[32mPOST /orders/30/select-supplier HTTP/1.1[0m" 302 -
+2025-09-14 19:23:24,569 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:24] "GET /orders/30 HTTP/1.1" 200 -
+2025-09-14 19:23:28,861 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:28] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 19:23:33,246 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:33] "GET /orders/85 HTTP/1.1" 200 -
+2025-09-14 19:23:42,235 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:42] "GET /orders/30 HTTP/1.1" 200 -
+2025-09-14 19:23:45,017 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:45] "GET /orders/30 HTTP/1.1" 200 -
+2025-09-14 19:23:50,545 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:50] "GET /orders/30 HTTP/1.1" 200 -
+2025-09-14 19:23:57,338 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:57] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 19:23:58,531 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:58] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 19:23:59,127 - INFO - 127.0.0.1 - - [14/Sep/2025 19:23:59] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 19:33:20,258 - INFO - 127.0.0.1 - - [14/Sep/2025 19:33:20] "GET /orders/30 HTTP/1.1" 200 -
+2025-09-14 19:33:21,855 - INFO - 127.0.0.1 - - [14/Sep/2025 19:33:21] "GET /orders/ HTTP/1.1" 200 -
