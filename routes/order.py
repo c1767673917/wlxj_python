@@ -329,19 +329,38 @@ def select_supplier(order_id):
 @order_bp.route('/<int:order_id>/cancel', methods=['POST'])
 @login_required
 def cancel(order_id):
-    """取消订单"""
-    query = Order.query.filter_by(id=order_id)
-    order = business_type_filter(query, Order).first_or_404()
-    
-    if order.status != 'active':
-        flash('只能取消活跃状态的订单', 'error')
-        return redirect(url_for('order.detail', order_id=order.id))
-    
-    order.status = 'cancelled'
-    db.session.commit()
-    
-    flash('订单已取消', 'success')
-    return redirect(url_for('order.index'))
+    """删除订单 - 物理删除订单及相关数据"""
+    try:
+        # 获取订单并验证权限
+        query = Order.query.filter_by(id=order_id)
+        order = business_type_filter(query, Order).first_or_404()
+        
+        # 验证订单状态 - 已完成订单不能删除
+        if order.status == 'completed':
+            flash('已完成的订单无法删除', 'error')
+            return redirect(url_for('order.detail', order_id=order.id))
+        
+        # 记录删除前的信息用于日志
+        order_no = order.order_no
+        order_goods = order.goods[:50]  # 截取前50个字符
+        quote_count = order.get_quote_count()
+        order_status = order.status
+        
+        # 物理删除订单（级联删除Quote记录）
+        db.session.delete(order)
+        db.session.commit()
+        
+        # 记录删除操作日志
+        logging.info(f"订单删除成功: {order_no}, 状态: {order_status}, 货物: {order_goods}, 报价数: {quote_count}, 操作用户: {current_user.id}")
+        
+        flash(f'订单 {order_no} 已成功删除', 'success')
+        return redirect(url_for('order.index'))
+        
+    except Exception as e:
+        db.session.rollback()
+        logging.error(f"删除订单失败 (订单ID: {order_id}): {str(e)}")
+        flash('删除订单失败，请稍后重试', 'error')
+        return redirect(url_for('order.detail', order_id=order_id))
 
 @order_bp.route('/<int:order_id>/add-suppliers', methods=['GET', 'POST'])
 @login_required
