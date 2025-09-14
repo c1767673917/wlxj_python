@@ -834,3 +834,122 @@ def notify_suppliers(order, suppliers):
         logging.error(f"通知失败的供应商: {', '.join(failed_suppliers)}")
     
     return success_count, failed_suppliers
+
+@order_bp.route('/export')
+@login_required
+def export_orders():
+    """导出订单列表为Excel文件"""
+    try:
+        import openpyxl
+        from openpyxl.styles import Font, PatternFill, Alignment
+        from io import BytesIO
+        from flask import send_file
+        
+        # 复用现有筛选逻辑
+        status = request.args.get('status', '').strip()
+        start_date = request.args.get('start_date', '').strip()
+        end_date = request.args.get('end_date', '').strip()
+        keyword = request.args.get('keyword', '').strip()
+        
+        # 构建查询 - 复用index()方法的筛选逻辑
+        query = Order.query
+        query = business_type_filter(query, Order)
+        
+        # 状态筛选
+        if status and status in ['active', 'completed', 'cancelled']:
+            query = query.filter_by(status=status)
+        
+        # 应用日期筛选
+        query = apply_date_filter(query, start_date, end_date)
+        
+        # 应用关键词搜索
+        query = apply_keyword_search(query, keyword)
+        
+        # 获取所有符合条件的订单
+        orders = query.order_by(Order.created_at.desc()).all()
+        
+        if not orders:
+            flash('没有符合条件的订单可以导出', 'warning')
+            return redirect(url_for('order.index', status=status, start_date=start_date, end_date=end_date, keyword=keyword))
+        
+        # 创建Excel工作簿
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "订单列表"
+        
+        # 设置标题样式
+        header_font = Font(bold=True, color="FFFFFF")
+        header_fill = PatternFill(start_color="366092", end_color="366092", fill_type="solid")
+        header_alignment = Alignment(horizontal="center", vertical="center")
+        
+        # 设置表头
+        headers = ['订单号', '货物信息', '收货地址', '仓库', '报价数', '最低价/中标价', '供应商名称', '创建时间']
+        for col, header in enumerate(headers, 1):
+            cell = ws.cell(row=1, column=col, value=header)
+            cell.font = header_font
+            cell.fill = header_fill
+            cell.alignment = header_alignment
+        
+        # 填充数据
+        for row, order in enumerate(orders, 2):
+            ws.cell(row=row, column=1, value=order.order_no)
+            ws.cell(row=row, column=2, value=order.goods)
+            ws.cell(row=row, column=3, value=order.delivery_address)
+            ws.cell(row=row, column=4, value=order.warehouse)
+            ws.cell(row=row, column=5, value=order.get_quote_count())
+            
+            # 价格逻辑：已完成订单显示中标价，进行中订单显示最低价
+            if order.status == 'completed' and order.selected_price:
+                price_value = f"¥{order.selected_price:.2f}"
+            elif order.status == 'active':
+                lowest_quote = order.get_lowest_quote()
+                price_value = f"¥{lowest_quote.price:.2f}" if lowest_quote else "-"
+            else:
+                price_value = "-"
+            ws.cell(row=row, column=6, value=price_value)
+            
+            # 供应商名称：已完成订单显示中标供应商，其他显示"-"
+            supplier_name = order.selected_supplier.name if order.selected_supplier else "-"
+            ws.cell(row=row, column=7, value=supplier_name)
+            
+            ws.cell(row=row, column=8, value=order.created_at.strftime('%Y-%m-%d %H:%M'))
+        
+        # 自动调整列宽
+        for column in ws.columns:
+            max_length = 0
+            column_letter = column[0].column_letter
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(str(cell.value))
+                except:
+                    pass
+            adjusted_width = min(max_length + 2, 50)
+            ws.column_dimensions[column_letter].width = adjusted_width
+        
+        # 生成文件名
+        import datetime
+        current_date = datetime.datetime.now().strftime('%y-%m-%d')
+        filename = f"订单{current_date}.xlsx"
+        
+        # 保存到内存
+        excel_buffer = BytesIO()
+        wb.save(excel_buffer)
+        excel_buffer.seek(0)
+        
+        # 记录导出信息
+        logging.info(f"Excel导出成功: 用户{current_user.id}, 导出{len(orders)}条记录, 文件名:{filename}")
+        
+        # 返回文件
+        return send_file(
+            excel_buffer,
+            as_attachment=True,
+            download_name=filename,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        
+    except Exception as e:
+        logging.error(f"Excel导出失败: {str(e)}")
+        logging.error(f"错误详情: {traceback.format_exc()}")
+        flash('Excel导出失败，请稍后重试', 'error')
+        return redirect(url_for('order.index'))
