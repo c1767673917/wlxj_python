@@ -100,6 +100,7 @@
                         <th>状态</th>
                         <th>报价数</th>
                         <th>最低价</th>
+                        <th>供应商</th>
                         <th>创建时间</th>
                         <th>操作</th>
                     </tr>
@@ -147,6 +148,24 @@
                             {% elif order.status == 'completed' %}
                                 {% if order.selected_price %}
                                     <span class="text-primary fw-bold">￥{{ "%.2f"|format(order.selected_price) }}</span>
+                                {% else %}
+                                    <small class="text-muted">-</small>
+                                {% endif %}
+                            {% else %}
+                                <small class="text-muted">-</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if order.status == 'active' %}
+                                {% set lowest_quote = order.get_lowest_quote() %}
+                                {% if lowest_quote and lowest_quote.supplier %}
+                                    <span class="text-success">{{ lowest_quote.supplier.name }}</span>
+                                {% else %}
+                                    <small class="text-muted">-</small>
+                                {% endif %}
+                            {% elif order.status == 'completed' %}
+                                {% if order.selected_supplier %}
+                                    <span class="text-primary">{{ order.selected_supplier.name }}</span>
                                 {% else %}
                                     <small class="text-muted">-</small>
                                 {% endif %}

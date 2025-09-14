@@ -21,6 +21,16 @@
         .main-content {
             min-height: calc(100vh - 56px);
         }
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+        }
+        .navbar-nav .nav-link:hover {
+            color: rgba(255, 255, 255, 1) !important;
+        }
+        .navbar-nav .nav-link.active {
+            color: #fff !important;
+            font-weight: bold;
+        }
         .card-stats {
             border-left: 4px solid #007bff;
         }
@@ -49,7 +59,31 @@
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <!-- 顶部导航栏保持简洁，主要功能通过侧边栏访问 -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">
+                            <i class="fas fa-home me-1"></i>首页
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('order.index') }}">
+                            <i class="fas fa-clipboard-list me-1"></i>我的订单
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('order.create') }}">
+                            <i class="fas fa-plus-circle me-1"></i>创建订单
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('supplier.index') }}">
+                            <i class="fas fa-users me-1"></i>供应商管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('quote.index') }}">
+                            <i class="fas fa-chart-line me-1"></i>报价对比
+                        </a>
+                    </li>
                 </ul>
                 
                 <ul class="navbar-nav">
@@ -77,39 +111,13 @@
     <div class="container-fluid">
         <div class="row">
             {% if current_user.is_authenticated %}
-            <!-- 侧边栏 -->
+            <!-- 侧边栏（仅保留管理员功能） -->
+            {% if current_user.is_admin() %}
             <nav class="col-md-2 d-none d-md-block sidebar">
                 <div class="position-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ url_for('dashboard') }}">
-                                <i class="fas fa-home me-2"></i>首页
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('order.index') }}">
-                                <i class="fas fa-clipboard-list me-2"></i>我的订单
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('order.create') }}">
-                                <i class="fas fa-plus-circle me-2"></i>创建订单
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('supplier.index') }}">
-                                <i class="fas fa-users me-2"></i>供应商管理
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('quote.index') }}">
-                                <i class="fas fa-chart-line me-2"></i>报价对比
-                            </a>
-                        </li>
-                        {% if current_user.is_admin() %}
-                        <li class="nav-item">
-                            <hr>
-                            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-2 mb-1 text-muted">
                                 <span>系统管理</span>
                             </h6>
                         </li>
@@ -118,13 +126,16 @@
                                 <i class="fas fa-database me-2"></i>备份管理
                             </a>
                         </li>
-                        {% endif %}
                     </ul>
                 </div>
             </nav>
             
             <!-- 主内容区 -->
             <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4 main-content">
+            {% else %}
+            <!-- 普通用户无侧边栏，全宽显示 -->
+            <main class="col-12 main-content">
+            {% endif %}
             {% else %}
             <main class="col-12 main-content">
             {% endif %}
@@ -176,6 +187,17 @@
                     bsAlert.close();
                 }
             }, 5000);
+        });
+        
+        // 导航栏激活状态处理
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+        
+        navLinks.forEach(function(link) {
+            const href = link.getAttribute('href');
+            if (href && (currentPath === href || (currentPath.startsWith(href) && href !== '/'))) {
+                link.classList.add('active');
+            }
         });
     });
     </script>

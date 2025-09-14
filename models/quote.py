@@ -14,6 +14,8 @@ class Quote(db.Model):
     remarks = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
+    # 关联关系 - backref已在Supplier模型中定义，这里不需要重复
+    
     def __repr__(self):
         return f'<Quote {self.id}: {self.price}>'
     

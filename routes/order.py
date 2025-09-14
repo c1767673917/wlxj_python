@@ -908,8 +908,14 @@ def export_orders():
                 price_value = "-"
             ws.cell(row=row, column=6, value=price_value)
             
-            # 供应商名称：已完成订单显示中标供应商，其他显示"-"
-            supplier_name = order.selected_supplier.name if order.selected_supplier else "-"
+            # 供应商名称：已完成订单显示中标供应商，进行中订单显示最低价供应商
+            if order.status == 'completed' and order.selected_supplier:
+                supplier_name = order.selected_supplier.name
+            elif order.status == 'active':
+                lowest_quote = order.get_lowest_quote()
+                supplier_name = lowest_quote.supplier.name if lowest_quote and lowest_quote.supplier else "-"
+            else:
+                supplier_name = "-"
             ws.cell(row=row, column=7, value=supplier_name)
             
             ws.cell(row=row, column=8, value=order.created_at.strftime('%Y-%m-%d %H:%M'))
