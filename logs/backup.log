@@ -610,3 +610,81 @@
 2025-09-14 21:40:41,022 - INFO - 127.0.0.1 - - [14/Sep/2025 21:40:41] "GET /portal/quotes HTTP/1.1" 200 -
 2025-09-14 21:42:21,968 - INFO - 127.0.0.1 - - [14/Sep/2025 21:42:21] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
 2025-09-14 21:42:24,273 - INFO - 127.0.0.1 - - [14/Sep/2025 21:42:24] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 21:47:06,576 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-14 21:47:06,603 - INFO -  * Restarting with stat
+2025-09-14 21:47:06,857 - WARNING -  * Debugger is active!
+2025-09-14 21:47:06,861 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 21:47:12,062 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://198.18.0.1:5002
+2025-09-14 21:47:12,062 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-14 21:47:12,062 - INFO -  * Restarting with stat
+2025-09-14 21:47:12,240 - WARNING -  * Debugger is active!
+2025-09-14 21:47:12,246 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 21:47:37,507 - INFO - 127.0.0.1 - - [14/Sep/2025 21:47:37] "[32mGET / HTTP/1.1[0m" 302 -
+2025-09-14 21:47:37,513 - INFO - 127.0.0.1 - - [14/Sep/2025 21:47:37] "GET /login HTTP/1.1" 200 -
+2025-09-14 21:48:05,633 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-14 21:48:05,658 - INFO -  * Restarting with stat
+2025-09-14 21:48:05,842 - WARNING -  * Debugger is active!
+2025-09-14 21:48:05,847 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 22:00:40,282 - INFO - 127.0.0.1 - - [14/Sep/2025 22:00:40] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 22:02:55,635 - INFO - 127.0.0.1 - - [14/Sep/2025 22:02:55] "[33mGET /portal/order/30 HTTP/1.1[0m" 404 -
+2025-09-14 22:02:58,660 - INFO - 127.0.0.1 - - [14/Sep/2025 22:02:58] "[33mGET /portal/order/30 HTTP/1.1[0m" 404 -
+2025-09-14 22:03:01,528 - INFO - 127.0.0.1 - - [14/Sep/2025 22:03:01] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 22:03:02,020 - INFO - 127.0.0.1 - - [14/Sep/2025 22:03:02] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 22:03:03,298 - INFO - 127.0.0.1 - - [14/Sep/2025 22:03:03] "[33mGET /portal/order/41 HTTP/1.1[0m" 404 -
+2025-09-14 22:03:05,571 - INFO - 127.0.0.1 - - [14/Sep/2025 22:03:05] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 22:03:08,366 - INFO - 127.0.0.1 - - [14/Sep/2025 22:03:08] "GET /portal/order/5 HTTP/1.1" 200 -
+2025-09-14 22:03:12,010 - INFO - 127.0.0.1 - - [14/Sep/2025 22:03:12] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 22:03:14,213 - INFO - 127.0.0.1 - - [14/Sep/2025 22:03:14] "[33mGET /portal/order/30 HTTP/1.1[0m" 404 -
+2025-09-14 22:09:00,981 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-14 22:09:01,011 - INFO -  * Restarting with stat
+2025-09-14 22:09:01,274 - WARNING -  * Debugger is active!
+2025-09-14 22:09:01,278 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 22:09:08,535 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://198.18.0.1:5002
+2025-09-14 22:09:08,536 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-14 22:09:08,536 - INFO -  * Restarting with stat
+2025-09-14 22:09:08,726 - WARNING -  * Debugger is active!
+2025-09-14 22:09:08,729 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 22:09:27,257 - INFO - 127.0.0.1 - - [14/Sep/2025 22:09:27] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 22:09:28,604 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/app.py', reloading
+2025-09-14 22:09:28,630 - INFO -  * Restarting with stat
+2025-09-14 22:09:28,818 - WARNING -  * Debugger is active!
+2025-09-14 22:09:28,822 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 22:20:08,844 - INFO - Quote模型已成功导入并缓存，耗时: 0.0001秒
+2025-09-14 22:20:08,882 - INFO - 127.0.0.1 - - [14/Sep/2025 22:20:08] "GET /orders/85 HTTP/1.1" 200 -
+2025-09-14 22:20:12,782 - INFO - 127.0.0.1 - - [14/Sep/2025 22:20:12] "GET /dashboard HTTP/1.1" 200 -
+2025-09-14 22:20:13,813 - INFO - 127.0.0.1 - - [14/Sep/2025 22:20:13] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 22:20:16,935 - INFO - 127.0.0.1 - - [14/Sep/2025 22:20:16] "GET /orders/85 HTTP/1.1" 200 -
+2025-09-14 22:21:35,341 - INFO - 127.0.0.1 - - [14/Sep/2025 22:21:35] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 22:22:35,296 - INFO - Excel导出成功: 用户2, 导出101条记录, 文件名:订单25-09-14.xlsx
+2025-09-14 22:22:35,297 - INFO - 127.0.0.1 - - [14/Sep/2025 22:22:35] "GET /orders/export HTTP/1.1" 200 -
+2025-09-14 22:22:58,278 - INFO - 127.0.0.1 - - [14/Sep/2025 22:22:58] "[33mGET /apple-touch-icon-precomposed.png HTTP/1.1[0m" 404 -
+2025-09-14 22:22:58,279 - INFO - 127.0.0.1 - - [14/Sep/2025 22:22:58] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-14 22:22:58,280 - INFO - 127.0.0.1 - - [14/Sep/2025 22:22:58] "[33mGET /apple-touch-icon-precomposed.png HTTP/1.1[0m" 404 -
+2025-09-14 22:22:58,281 - INFO - 127.0.0.1 - - [14/Sep/2025 22:22:58] "[33mGET /apple-touch-icon.png HTTP/1.1[0m" 404 -
+2025-09-14 22:22:58,281 - INFO - 127.0.0.1 - - [14/Sep/2025 22:22:58] "[33mGET /apple-touch-icon.png HTTP/1.1[0m" 404 -
+2025-09-14 22:22:58,282 - INFO - 127.0.0.1 - - [14/Sep/2025 22:22:58] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-14 22:22:58,316 - INFO - 127.0.0.1 - - [14/Sep/2025 22:22:58] "[32mGET /orders/ HTTP/1.1[0m" 302 -
+2025-09-14 22:22:58,319 - INFO - 127.0.0.1 - - [14/Sep/2025 22:22:58] "GET /login?next=/orders/ HTTP/1.1" 200 -
+2025-09-14 22:22:58,321 - INFO - 127.0.0.1 - - [14/Sep/2025 22:22:58] "GET /login?next=/orders/ HTTP/1.1" 200 -
+2025-09-14 22:32:39,664 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/supplier_portal.py', reloading
+2025-09-14 22:32:39,701 - INFO -  * Restarting with stat
+2025-09-14 22:32:40,082 - WARNING -  * Debugger is active!
+2025-09-14 22:32:40,087 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 22:40:41,692 - INFO - 127.0.0.1 - - [14/Sep/2025 22:40:41] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 22:49:33,194 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/supplier_portal.py', reloading
+2025-09-14 22:49:33,230 - INFO -  * Restarting with stat
+2025-09-14 22:49:33,592 - WARNING -  * Debugger is active!
+2025-09-14 22:49:33,597 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 22:50:33,090 - INFO - 127.0.0.1 - - [14/Sep/2025 22:50:33] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 22:50:41,742 - INFO - 127.0.0.1 - - [14/Sep/2025 22:50:41] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 22:50:53,764 - INFO - 127.0.0.1 - - [14/Sep/2025 22:50:53] "GET /portal/quotes?status=&start_date=&end_date=&keyword=&per_page=50 HTTP/1.1" 200 -
+2025-09-14 22:51:00,524 - INFO - 127.0.0.1 - - [14/Sep/2025 22:51:00] "GET /portal/quotes?status=&start_date=&end_date=&keyword=&per_page=20 HTTP/1.1" 200 -
+2025-09-14 22:51:06,106 - INFO - 127.0.0.1 - - [14/Sep/2025 22:51:06] "GET /portal/quotes?status=&start_date=&end_date=&keyword=&per_page=10 HTTP/1.1" 200 -
+2025-09-14 22:51:20,985 - INFO - 127.0.0.1 - - [14/Sep/2025 22:51:20] "GET /portal/quotes?status=&start_date=2025-09-14&end_date=2025-09-14&keyword=&per_page=10 HTTP/1.1" 200 -
+2025-09-14 22:51:25,702 - INFO - 127.0.0.1 - - [14/Sep/2025 22:51:25] "GET /portal/quotes?status=&start_date=2025-09-01&end_date=2025-09-14&keyword=&per_page=10 HTTP/1.1" 200 -

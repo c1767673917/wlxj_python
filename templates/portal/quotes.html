@@ -21,7 +21,7 @@
         <div class="card text-center border-primary">
             <div class="card-body">
                 <i class="fas fa-list fa-2x text-primary mb-2"></i>
-                <h4 class="card-title text-primary">{{ quotes|length }}</h4>
+                <h4 class="card-title text-primary">{{ quotes.total if quotes.items else quotes|length }}</h4>
                 <p class="card-text text-muted">总报价数</p>
             </div>
         </div>
@@ -31,7 +31,8 @@
             <div class="card-body">
                 <i class="fas fa-trophy fa-2x text-success mb-2"></i>
                 <h4 class="card-title text-success">
-                    {{ quotes|selectattr('order.selected_supplier_id', 'equalto', supplier.id)|list|length }}
+                    {% set quote_list = quotes.items if quotes.items else quotes %}
+                    {{ quote_list|selectattr('order.selected_supplier_id', 'equalto', supplier.id)|list|length }}
                 </h4>
                 <p class="card-text text-muted">中标数量</p>
             </div>
@@ -42,7 +43,8 @@
             <div class="card-body">
                 <i class="fas fa-clock fa-2x text-warning mb-2"></i>
                 <h4 class="card-title text-warning">
-                    {{ quotes|selectattr('order.status', 'equalto', 'active')|list|length }}
+                    {% set quote_list = quotes.items if quotes.items else quotes %}
+                    {{ quote_list|selectattr('order.status', 'equalto', 'active')|list|length }}
                 </h4>
                 <p class="card-text text-muted">待定订单</p>
             </div>
@@ -53,8 +55,10 @@
             <div class="card-body">
                 <i class="fas fa-percentage fa-2x text-info mb-2"></i>
                 <h4 class="card-title text-info">
-                    {% if quotes|length > 0 %}
-                        {{ "%.1f"|format((quotes|selectattr('order.selected_supplier_id', 'equalto', supplier.id)|list|length / quotes|length * 100)) }}%
+                    {% set quote_list = quotes.items if quotes.items else quotes %}
+                    {% set total_count = quote_list|length %}
+                    {% if total_count > 0 %}
+                        {{ "%.1f"|format((quote_list|selectattr('order.selected_supplier_id', 'equalto', supplier.id)|list|length / total_count * 100)) }}%
                     {% else %}
                         0%
                     {% endif %}
@@ -65,31 +69,115 @@
     </div>
 </div>
 
+<!-- 筛选栏 -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" id="quoteFilterForm">
+            <div class="row g-3">
+                <!-- 订单状态筛选 -->
+                <div class="col-md-3">
+                    <label for="status" class="form-label">订单状态</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">全部状态</option>
+                        <option value="active" {{ 'selected' if status == 'active' }}>进行中</option>
+                        <option value="completed" {{ 'selected' if status == 'completed' }}>已完成</option>
+                        <option value="cancelled" {{ 'selected' if status == 'cancelled' }}>已取消</option>
+                    </select>
+                </div>
+                
+                <!-- 日期范围筛选 -->
+                <div class="col-md-4">
+                    <label class="form-label">订单日期范围</label>
+                    <div class="input-group">
+                        <input type="date" class="form-control" id="start_date" name="start_date" 
+                               value="{{ start_date }}" placeholder="开始日期">
+                        <span class="input-group-text">至</span>
+                        <input type="date" class="form-control" id="end_date" name="end_date" 
+                               value="{{ end_date }}" placeholder="结束日期">
+                    </div>
+                </div>
+                
+                <!-- 关键词搜索 -->
+                <div class="col-md-5">
+                    <label for="keyword" class="form-label">关键词搜索</label>
+                    <input type="text" class="form-control" id="keyword" name="keyword" 
+                           value="{{ keyword }}" placeholder="订单号/仓库/地址/货物信息">
+                </div>
+            </div>
+            
+            <!-- 快捷日期选项和操作按钮 -->
+            <div class="row g-2 mt-2 align-items-end">
+                <div class="col-md-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small">快捷选择:</span>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setQuickDate('today')">
+                            <i class="fas fa-calendar-day me-1"></i>今天
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setQuickDate('this_month')">
+                            <i class="fas fa-calendar-alt me-1"></i>本月
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small">每页条数:</span>
+                        <select class="form-select form-select-sm" name="per_page" style="width: auto;">
+                            <option value="10" {{ 'selected' if per_page == 10 }}>10</option>
+                            <option value="20" {{ 'selected' if per_page == 20 }}>20</option>
+                            <option value="50" {{ 'selected' if per_page == 50 }}>50</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="submit" class="btn btn-outline-dark">
+                            <i class="fas fa-search me-1"></i>搜索
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="resetFilters()">
+                            <i class="fas fa-undo me-1"></i>重置
+                        </button>
+                        <button type="button" class="btn btn-outline-success" onclick="exportQuotes()" title="导出Excel">
+                            <i class="fas fa-file-excel me-1"></i>导出Excel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- 报价列表 -->
 <div class="card">
     <div class="card-header">
         <h5 class="card-title mb-0">
             <i class="fas fa-list me-2"></i>报价历史
+            {% if quotes.items %}
+                ({{ quotes.total }})
+            {% elif quotes %}
+                ({{ quotes|length }})
+            {% endif %}
         </h5>
     </div>
     <div class="card-body">
-        {% if quotes %}
+        {% set quote_list = quotes.items if quotes.items else quotes %}
+        {% if quote_list %}
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead class="table-light">
                     <tr>
-                        <th>订单号</th>
-                        <th>货物信息</th>
-                        <th>报价金额</th>
-                        <th>交期</th>
-                        <th>订单状态</th>
-                        <th>报价状态</th>
-                        <th>报价时间</th>
-                        <th>操作</th>
+                        <th style="width: 12%;">订单号</th>
+                        <th style="width: 20%;">货物信息</th>
+                        <th style="width: 18%;">收货地址</th>
+                        <th style="width: 12%;">报价金额</th>
+                        <th style="width: 8%;">交期</th>
+                        <th style="width: 8%;">订单状态</th>
+                        <th style="width: 10%;">报价状态</th>
+                        <th style="width: 8%;">报价时间</th>
+                        <th style="width: 4%;">操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for quote in quotes %}
+                    {% for quote in quote_list %}
                     <tr {% if quote.order.selected_supplier_id == supplier.id %}class="table-success"{% endif %}>
                         <td>
                             <a href="{{ url_for('portal.order_detail', order_id=quote.order.id) }}" 
@@ -98,8 +186,13 @@
                             </a>
                         </td>
                         <td>
-                            <div class="text-truncate" style="max-width: 200px;" title="{{ quote.order.goods }}">
+                            <div class="text-truncate" style="max-width: 160px;" title="{{ quote.order.goods }}">
                                 {{ quote.order.goods }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-truncate" style="max-width: 140px;" title="{{ quote.order.delivery_address }}">
+                                {{ quote.order.delivery_address }}
                             </div>
                         </td>
                         <td>
@@ -111,12 +204,10 @@
                                             {{ quote.price|format_price }}
                                         </span>
                                         <strong class="text-success fs-5">{{ quote.order.selected_price|format_price }}</strong>
-                                        <small class="d-block text-success">最终成交价</small>
                                     </div>
                                 {% else %}
                                     <!-- 价格一致时只显示一个价格 -->
                                     <strong class="text-success fs-5">{{ quote.price|format_price }}</strong>
-                                    <small class="d-block text-success">成交价</small>
                                 {% endif %}
                             {% else %}
                                 <!-- 未中标或未确定价格：显示原始报价 -->
@@ -140,13 +231,6 @@
                                 <span class="badge bg-success">
                                     <i class="fas fa-trophy me-1"></i>已中标
                                 </span>
-                                {% if quote.order.selected_price and quote.order.selected_price|float != 0 and quote.order.selected_price|float != quote.price|float %}
-                                    <div class="mt-1">
-                                        <small class="text-success d-block">
-                                            <i class="fas fa-handshake me-1"></i>价格已协商
-                                        </small>
-                                    </div>
-                                {% endif %}
                             {% elif quote.order.status == 'completed' %}
                                 <span class="badge bg-secondary">
                                     <i class="fas fa-times me-1"></i>未中标
@@ -185,22 +269,85 @@
                 </tbody>
             </table>
         </div>
+        
+        <!-- 分页控件 -->
+        {% if quotes.items and quotes.pages > 1 %}
+        <nav class="mt-3">
+            <ul class="pagination justify-content-center mb-0">
+                {% if quotes.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('portal.my_quotes', page=quotes.prev_num, status=status, start_date=start_date, end_date=end_date, keyword=keyword, per_page=per_page) }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                
+                {% for page_num in quotes.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num != quotes.page %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('portal.my_quotes', page=page_num, status=status, start_date=start_date, end_date=end_date, keyword=keyword, per_page=per_page) }}">
+                                    {{ page_num }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if quotes.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('portal.my_quotes', page=quotes.next_num, status=status, start_date=start_date, end_date=end_date, keyword=keyword, per_page=per_page) }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        
         {% else %}
         <div class="text-center py-5">
             <i class="fas fa-chart-line fa-5x text-muted mb-3"></i>
-            <h4 class="text-muted">还没有报价记录</h4>
-            <p class="text-muted mb-4">当您提交第一个报价后，记录将显示在这里</p>
-            <a href="{{ url_for('portal.supplier_portal', access_code=session.get('access_code', '')) }}" 
-               class="btn btn-primary">
-                <i class="fas fa-home me-2"></i>返回首页查看待报价订单
-            </a>
+            <h4 class="text-muted">
+                {% if status or start_date or end_date or keyword %}
+                    没有找到符合条件的报价
+                {% else %}
+                    还没有报价记录
+                {% endif %}
+            </h4>
+            <p class="text-muted mb-4">
+                {% if status or start_date or end_date or keyword %}
+                    尝试更改筛选条件或查看所有报价
+                {% else %}
+                    当您提交第一个报价后，记录将显示在这里
+                {% endif %}
+            </p>
+            <div class="d-flex justify-content-center gap-2">
+                {% if status or start_date or end_date or keyword %}
+                    <a href="{{ url_for('portal.my_quotes') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-list me-1"></i>查看所有报价
+                    </a>
+                {% endif %}
+                <a href="{{ url_for('portal.supplier_portal', access_code=session.get('access_code', '')) }}" 
+                   class="btn btn-primary">
+                    <i class="fas fa-home me-2"></i>返回首页查看待报价订单
+                </a>
+            </div>
         </div>
         {% endif %}
     </div>
 </div>
 
 <!-- 业绩分析 -->
-{% if quotes %}
+{% if quote_list %}
 <div class="row mt-4">
     <div class="col-md-6">
         <div class="card">
@@ -225,7 +372,7 @@
                 </h5>
             </div>
             <div class="card-body">
-                {% set prices = quotes|map(attribute='price')|map('safe_number', 0)|list %}
+                {% set prices = quote_list|map(attribute='price')|map('safe_number', 0)|list %}
                 {% if prices and prices|length > 0 %}
                 <div class="row text-center">
                     <div class="col-4">
@@ -256,11 +403,11 @@
                 
                 <div class="row text-center">
                     <div class="col-6">
-                        <h5 class="text-info">{{ quotes|selectattr('order.status', 'equalto', 'active')|list|length }}</h5>
+                        <h5 class="text-info">{{ quote_list|selectattr('order.status', 'equalto', 'active')|list|length }}</h5>
                         <small class="text-muted">进行中订单</small>
                     </div>
                     <div class="col-6">
-                        <h5 class="text-warning">{{ quotes|selectattr('order.status', 'equalto', 'completed')|list|length }}</h5>
+                        <h5 class="text-warning">{{ quote_list|selectattr('order.status', 'equalto', 'completed')|list|length }}</h5>
                         <small class="text-muted">已完成订单</small>
                     </div>
                 </div>
@@ -269,4 +416,281 @@
     </div>
 </div>
 {% endif %}
+
+<script>
+// 工具函数：格式化本地日期为YYYY-MM-DD格式
+function formatLocalDate(date) {
+    try {
+        if (!date || !(date instanceof Date)) {
+            console.error('formatLocalDate: 无效的日期参数', date);
+            return null;
+        }
+        
+        if (isNaN(date.getTime())) {
+            console.error('formatLocalDate: 无效的日期对象', date);
+            return null;
+        }
+        
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        
+        const dateString = `${year}-${month}-${day}`;
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        
+        if (!dateRegex.test(dateString)) {
+            console.error('formatLocalDate: 生成的日期格式不正确', dateString);
+            return null;
+        }
+        
+        return dateString;
+    } catch (error) {
+        console.error('formatLocalDate: 格式化日期时发生错误', error);
+        return null;
+    }
+}
+
+// 工具函数：验证日期范围
+function validateDateRange(startDate, endDate) {
+    try {
+        if (!startDate || !endDate) {
+            return { valid: true, message: '' };
+        }
+        
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+            return { valid: false, message: '日期格式无效，请选择正确的日期' };
+        }
+        
+        if (start > end) {
+            return { valid: false, message: '开始日期不能大于结束日期' };
+        }
+        
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays > 365) {
+            return { valid: false, message: '日期范围不能超过1年，请缩小范围' };
+        }
+        
+        return { valid: true, message: '' };
+    } catch (error) {
+        console.error('validateDateRange: 验证日期范围时发生错误', error);
+        return { valid: false, message: '日期验证失败，请重新选择' };
+    }
+}
+
+// 显示错误消息
+function showDateError(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-warning alert-dismissible fade show mt-2';
+    alertDiv.innerHTML = `
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    const filterForm = document.getElementById('quoteFilterForm');
+    filterForm.parentNode.insertBefore(alertDiv, filterForm.nextSibling);
+    
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
+
+// 快捷日期设置
+function setQuickDate(option) {
+    try {
+        const today = new Date();
+        let startDate, endDate;
+        
+        if (isNaN(today.getTime())) {
+            console.error('setQuickDate: 系统日期无效');
+            showDateError('系统日期异常，请手动输入日期');
+            return;
+        }
+        
+        switch (option) {
+            case 'today':
+                startDate = endDate = formatLocalDate(today);
+                break;
+                
+            case 'this_month':
+                const currentYear = today.getFullYear();
+                const currentMonth = today.getMonth();
+                const monthStart = new Date(currentYear, currentMonth, 1);
+                
+                if (isNaN(monthStart.getTime())) {
+                    console.error('setQuickDate: 无法创建月初日期', currentYear, currentMonth);
+                    showDateError('无法设置本月日期，请手动输入');
+                    return;
+                }
+                
+                startDate = formatLocalDate(monthStart);
+                endDate = formatLocalDate(today);
+                break;
+                
+            default:
+                console.error('setQuickDate: 不支持的选项', option);
+                showDateError('不支持的日期选项');
+                return;
+        }
+        
+        if (!startDate || !endDate) {
+            console.error('setQuickDate: 日期格式化失败', option, startDate, endDate);
+            showDateError('日期设置失败，请手动输入日期');
+            return;
+        }
+        
+        const validation = validateDateRange(startDate, endDate);
+        if (!validation.valid) {
+            console.error('setQuickDate: 日期范围验证失败', validation.message);
+            showDateError(validation.message);
+            return;
+        }
+        
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+        
+        if (!startDateInput || !endDateInput) {
+            console.error('setQuickDate: 找不到日期输入元素');
+            showDateError('页面错误，请刷新后重试');
+            return;
+        }
+        
+        startDateInput.value = startDate;
+        endDateInput.value = endDate;
+        
+        startDateInput.dispatchEvent(new Event('change'));
+        endDateInput.dispatchEvent(new Event('change'));
+        
+        console.log(`快捷日期设置成功: ${option}, ${startDate} 到 ${endDate}`);
+        
+    } catch (error) {
+        console.error('setQuickDate: 设置快捷日期时发生错误', error);
+        showDateError('日期设置失败，请手动输入日期');
+    }
+}
+
+// 重置筛选条件
+function resetFilters() {
+    try {
+        document.getElementById('quoteFilterForm').reset();
+        window.location.href = '{{ url_for("portal.my_quotes") }}';
+    } catch (error) {
+        console.error('resetFilters: 重置筛选条件时发生错误', error);
+        window.location.href = '{{ url_for("portal.my_quotes") }}';
+    }
+}
+
+// Excel导出功能
+function exportQuotes() {
+    try {
+        const form = document.getElementById('quoteFilterForm');
+        const formData = new FormData(form);
+        const params = new URLSearchParams();
+        
+        for (let [key, value] of formData.entries()) {
+            if (value.trim() !== '' && key !== 'per_page' && key !== 'page') {
+                params.append(key, value);
+            }
+        }
+        
+        const exportUrl = '{{ url_for("portal.export_quotes") }}?' + params.toString();
+        
+        const exportButton = event.target.closest('button');
+        const originalHtml = exportButton.innerHTML;
+        exportButton.disabled = true;
+        exportButton.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>导出中...';
+        
+        const downloadLink = document.createElement('a');
+        downloadLink.href = exportUrl;
+        downloadLink.style.display = 'none';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        
+        setTimeout(() => {
+            exportButton.disabled = false;
+            exportButton.innerHTML = originalHtml;
+            document.body.removeChild(downloadLink);
+        }, 2000);
+        
+    } catch (error) {
+        console.error('导出Excel时发生错误', error);
+        const exportButton = event.target.closest('button');
+        exportButton.disabled = false;
+        exportButton.innerHTML = '<i class="fas fa-file-excel me-1"></i>导出Excel';
+        showDateError('导出失败，请稍后重试');
+    }
+}
+
+// 初始化日期验证
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+        
+        if (startDateInput && endDateInput) {
+            function validateCurrentDates() {
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+                
+                if (startDate && endDate) {
+                    const validation = validateDateRange(startDate, endDate);
+                    if (!validation.valid) {
+                        showDateError(validation.message);
+                        return false;
+                    }
+                }
+                return true;
+            }
+            
+            startDateInput.addEventListener('change', validateCurrentDates);
+            endDateInput.addEventListener('change', validateCurrentDates);
+            
+            const today = new Date();
+            const maxDate = formatLocalDate(today);
+            const minDate = new Date(today.getFullYear() - 5, 0, 1);
+            const minDateStr = formatLocalDate(minDate);
+            
+            if (maxDate && minDateStr) {
+                startDateInput.setAttribute('max', maxDate);
+                endDateInput.setAttribute('max', maxDate);
+                startDateInput.setAttribute('min', minDateStr);
+                endDateInput.setAttribute('min', minDateStr);
+            }
+        }
+    } catch (error) {
+        console.error('初始化日期验证时发生错误', error);
+    }
+});
+
+// 表单提交时验证日期
+document.getElementById('quoteFilterForm').addEventListener('submit', function(e) {
+    try {
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+        
+        const validation = validateDateRange(startDate, endDate);
+        if (!validation.valid) {
+            e.preventDefault();
+            showDateError(validation.message);
+            return false;
+        }
+        
+        const url = new URL(window.location);
+        url.searchParams.delete('page');
+        window.history.replaceState({}, '', url);
+        
+        return true;
+    } catch (error) {
+        console.error('表单提交验证时发生错误', error);
+        return true;
+    }
+});
+</script>
+
 {% endblock %}
