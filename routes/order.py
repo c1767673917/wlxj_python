@@ -2,7 +2,8 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from flask_login import login_required, current_user
 from models import db, Order, Supplier, order_suppliers
 from utils.auth import business_type_filter
-from datetime import datetime
+from datetime import datetime, date
+from sqlalchemy import or_, func
 import requests
 import json
 import logging
@@ -17,20 +18,136 @@ order_bp = Blueprint('order', __name__, url_prefix='/orders')
 @order_bp.route('/')
 @login_required
 def index():
-    """订单列表页面"""
-    page = request.args.get('page', 1, type=int)
-    status = request.args.get('status', '')
+    """订单列表页面 - 支持日期和关键词筛选，增强错误处理"""
+    try:
+        # 安全地获取参数，设置合理的默认值
+        page = request.args.get('page', 1, type=int)
+        if page < 1:
+            page = 1
+        elif page > 1000:  # 防止恶意的过大页码
+            page = 1000
+            
+        status = request.args.get('status', '').strip()
+        start_date = request.args.get('start_date', '').strip()
+        end_date = request.args.get('end_date', '').strip()
+        keyword = request.args.get('keyword', '').strip()
+        date_quick = request.args.get('date_quick', '').strip()
+        
+        # 验证状态参数
+        valid_statuses = ['', 'active', 'completed', 'cancelled']
+        if status not in valid_statuses:
+            logging.warning(f"用户提供了无效的状态参数: {status}")
+            status = ''
+        
+        # 限制关键词长度，防止过长的搜索字符串
+        if keyword and len(keyword) > 100:
+            logging.warning(f"用户提供了过长的关键词: {len(keyword)}字符")
+            keyword = keyword[:100]
+            flash('搜索关键词过长，已自动截取前100个字符', 'warning')
+        
+        # 处理快捷日期选项
+        if date_quick:
+            quick_start, quick_end = process_quick_date(date_quick)
+            if quick_start and quick_end:
+                start_date, end_date = quick_start, quick_end
+                logging.debug(f"应用快捷日期选项: {date_quick} -> {start_date} to {end_date}")
+            else:
+                logging.warning(f"快捷日期选项处理失败: {date_quick}")
+                flash('快捷日期设置失败，请手动选择日期', 'warning')
+        
+        # 构建查询
+        query = Order.query
+        query = business_type_filter(query, Order)
+        
+        # 状态筛选
+        if status:
+            query = query.filter_by(status=status)
+            logging.debug(f"应用状态筛选: {status}")
+        
+        # 日期范围筛选 - 使用增强的错误处理
+        try:
+            query = apply_date_filter(query, start_date, end_date)
+        except Exception as e:
+            logging.error(f"日期筛选处理失败: {str(e)}")
+            flash('日期筛选处理失败，显示所有订单', 'error')
+            # 重置日期参数，避免继续错误
+            start_date = end_date = ''
+        
+        # 关键词搜索 - 使用增强的错误处理
+        try:
+            query = apply_keyword_search(query, keyword)
+        except Exception as e:
+            logging.error(f"关键词搜索处理失败: {str(e)}")
+            flash('搜索功能暂时不可用，显示所有订单', 'error')
+            keyword = ''
+        
+        # 执行分页查询，增加异常处理
+        try:
+            orders = query.order_by(Order.created_at.desc()).paginate(
+                page=page, per_page=10, error_out=False)
+            
+            # 检查分页结果是否有效
+            if orders.total == 0 and (status or start_date or end_date or keyword):
+                logging.info(f"筛选条件未找到结果 - 状态:{status}, 日期:{start_date}-{end_date}, 关键词:{keyword}")
+            elif orders.total > 0:
+                logging.debug(f"查询完成，找到{orders.total}条记录，显示第{page}页")
+                
+        except Exception as e:
+            logging.error(f"分页查询执行失败: {str(e)}")
+            flash('查询失败，请稍后重试', 'error')
+            # 回退到简单查询
+            try:
+                orders = Order.query.filter(
+                    business_type_filter(Order.query, Order).statement.whereclause
+                ).order_by(Order.created_at.desc()).paginate(
+                    page=1, per_page=10, error_out=False)
+            except Exception as fallback_error:
+                logging.error(f"回退查询也失败: {str(fallback_error)}")
+                # 创建空的分页对象
+                from flask_sqlalchemy import Pagination
+                orders = type('MockPagination', (), {
+                    'items': [], 'total': 0, 'pages': 0, 
+                    'has_prev': False, 'has_next': False,
+                    'prev_num': None, 'next_num': None,
+                    'page': 1, 'per_page': 10,
+                    'iter_pages': lambda: []
+                })()
+        
+        return render_template('orders/index.html', 
+                             orders=orders, 
+                             status=status,
+                             start_date=start_date,
+                             end_date=end_date,
+                             keyword=keyword,
+                             date_quick=date_quick)
     
-    query = Order.query
-    query = business_type_filter(query, Order)
-    
-    if status:
-        query = query.filter_by(status=status)
-    
-    orders = query.order_by(Order.created_at.desc()).paginate(
-        page=page, per_page=10, error_out=False)
-    
-    return render_template('orders/index.html', orders=orders, status=status)
+    except Exception as e:
+        logging.error(f"订单列表页面发生未知错误: {str(e)}")
+        logging.error(f"错误详情: {traceback.format_exc()}")
+        flash('页面加载失败，请刷新页面重试', 'error')
+        
+        # 返回最基本的页面
+        try:
+            basic_orders = Order.query.order_by(Order.created_at.desc()).limit(10).all()
+            # 构造基础分页对象
+            orders = type('BasicPagination', (), {
+                'items': basic_orders, 'total': len(basic_orders), 'pages': 1,
+                'has_prev': False, 'has_next': False,
+                'prev_num': None, 'next_num': None,
+                'page': 1, 'per_page': 10,
+                'iter_pages': lambda: [1]
+            })()
+            
+            return render_template('orders/index.html', 
+                                 orders=orders, 
+                                 status='',
+                                 start_date='',
+                                 end_date='',
+                                 keyword='',
+                                 date_quick='')
+        except Exception as final_error:
+            logging.error(f"基础回退也失败: {str(final_error)}")
+            return "系统错误，请联系管理员", 500
 
 @order_bp.route('/new', methods=['GET', 'POST'])
 @login_required
@@ -451,6 +568,193 @@ def reset_selection(order_id):
         logging.error(f"取消供应商选择失败 (订单ID: {order_id}): {str(e)}")
         flash('操作失败，请稍后重试', 'error')
         return redirect(url_for('order.detail', order_id=order_id))
+
+def process_quick_date(date_quick):
+    """处理快捷日期选项 - 增强版本，支持错误处理和边缘情况"""
+    try:
+        today = date.today()
+        
+        # 验证系统日期是否正常
+        if not today or today.year < 2020 or today.year > 2050:
+            logging.error(f"系统日期异常: {today}")
+            return '', ''
+        
+        if date_quick == 'today':
+            date_str = today.strftime('%Y-%m-%d')
+            return date_str, date_str
+        elif date_quick == 'this_month':
+            try:
+                # 处理本月起始日期，考虑各种边缘情况
+                start = today.replace(day=1)
+                
+                # 验证生成的日期是否有效
+                if start > today:
+                    logging.error(f"月初日期大于当前日期: start={start}, today={today}")
+                    return '', ''
+                
+                start_str = start.strftime('%Y-%m-%d')
+                end_str = today.strftime('%Y-%m-%d')
+                
+                # 二次验证字符串格式
+                import re
+                date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+                if not date_pattern.match(start_str) or not date_pattern.match(end_str):
+                    logging.error(f"日期格式异常: start={start_str}, end={end_str}")
+                    return '', ''
+                
+                return start_str, end_str
+            except ValueError as e:
+                logging.error(f"创建月初日期失败: {str(e)}")
+                return '', ''
+        else:
+            logging.warning(f"不支持的快捷日期选项: {date_quick}")
+            return '', ''
+            
+    except Exception as e:
+        logging.error(f"处理快捷日期选项时发生错误: {str(e)}")
+        return '', ''
+
+def apply_date_filter(query, start_date, end_date):
+    """应用日期范围筛选 - 增强版本，支持全面的验证和错误处理"""
+    import re
+    from datetime import timedelta
+    
+    start_dt = None
+    end_dt = None
+    
+    # 日期格式验证正则表达式
+    date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+    
+    # 处理开始日期
+    if start_date:
+        start_date = start_date.strip()
+        
+        if not start_date:
+            # 空字符串，跳过处理
+            pass
+        elif not date_pattern.match(start_date):
+            logging.warning(f"开始日期格式无效: {start_date}")
+            flash('开始日期格式无效，请使用YYYY-MM-DD格式', 'error')
+            return query
+        else:
+            try:
+                start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+                
+                # 验证日期合理性
+                current_year = datetime.now().year
+                if start_dt.year < 2020 or start_dt.year > current_year + 1:
+                    logging.warning(f"开始日期超出合理范围: {start_date}")
+                    flash('开始日期超出有效范围，请选择2020年到明年之间的日期', 'error')
+                    return query
+                
+                # 检查是否是未来日期
+                if start_dt.date() > date.today():
+                    logging.info(f"用户选择了未来的开始日期: {start_date}")
+                    flash('开始日期不能是未来日期', 'warning')
+                
+                query = query.filter(Order.created_at >= start_dt)
+                logging.debug(f"应用开始日期筛选: {start_date}")
+                
+            except ValueError as e:
+                logging.error(f"解析开始日期失败: {start_date}, 错误: {str(e)}")
+                flash('开始日期无效，请检查日期是否存在（如2月30日）', 'error')
+                return query
+            except Exception as e:
+                logging.error(f"处理开始日期时发生未知错误: {str(e)}")
+                flash('处理开始日期时发生错误，请重新选择', 'error')
+                return query
+    
+    # 处理结束日期
+    if end_date:
+        end_date = end_date.strip()
+        
+        if not end_date:
+            # 空字符串，跳过处理
+            pass
+        elif not date_pattern.match(end_date):
+            logging.warning(f"结束日期格式无效: {end_date}")
+            flash('结束日期格式无效，请使用YYYY-MM-DD格式', 'error')
+            return query
+        else:
+            try:
+                end_dt = datetime.strptime(end_date, '%Y-%m-%d')
+                
+                # 验证日期合理性
+                current_year = datetime.now().year
+                if end_dt.year < 2020 or end_dt.year > current_year + 1:
+                    logging.warning(f"结束日期超出合理范围: {end_date}")
+                    flash('结束日期超出有效范围，请选择2020年到明年之间的日期', 'error')
+                    return query
+                
+                # 设置为当天的最后一刻
+                end_dt = end_dt.replace(hour=23, minute=59, second=59, microsecond=999999)
+                query = query.filter(Order.created_at <= end_dt)
+                logging.debug(f"应用结束日期筛选: {end_date}")
+                
+            except ValueError as e:
+                logging.error(f"解析结束日期失败: {end_date}, 错误: {str(e)}")
+                flash('结束日期无效，请检查日期是否存在（如2月30日）', 'error')
+                return query
+            except Exception as e:
+                logging.error(f"处理结束日期时发生未知错误: {str(e)}")
+                flash('处理结束日期时发生错误，请重新选择', 'error')
+                return query
+    
+    # 验证日期范围逻辑
+    if start_dt and end_dt:
+        if start_dt.date() > end_dt.date():
+            logging.info(f"用户输入了无效的日期范围: {start_date} > {end_date}")
+            flash('开始日期不能大于结束日期，请重新选择', 'error')
+            # 返回空结果集但保持查询结构
+            return query.filter(Order.id == None)
+        
+        # 检查日期范围是否过大（超过2年）
+        date_diff = end_dt.date() - start_dt.date()
+        if date_diff.days > 730:  # 2年
+            logging.warning(f"用户选择了过大的日期范围: {date_diff.days}天")
+            flash('日期范围不能超过2年，请缩小查询范围', 'warning')
+            # 不阻止查询，但给出警告
+        
+        logging.info(f"日期范围筛选: {start_date} 到 {end_date} ({date_diff.days}天)")
+    
+    return query
+
+def apply_keyword_search(query, keyword):
+    """应用关键词搜索 - 支持订单号、仓库、地址、货物、价格、供应商名称的模糊搜索"""
+    if not keyword:
+        return query
+    
+    conditions = [
+        Order.order_no.ilike(f'%{keyword}%'),
+        Order.warehouse.ilike(f'%{keyword}%'),
+        Order.delivery_address.ilike(f'%{keyword}%'),
+        Order.goods.ilike(f'%{keyword}%'),
+        func.date(Order.created_at).like(f'%{keyword}%')
+    ]
+    
+    # 价格搜索优化 - 精确匹配
+    try:
+        price_value = float(keyword)
+        # 搜索中标价格（已完成订单）
+        conditions.append(Order.selected_price == price_value)
+        
+        # 优化最低报价搜索 - 使用JOIN避免子查询性能问题
+        Quote = Order._get_quote_model()
+        price_match_orders = db.session.query(Order.id).join(Quote).filter(
+            Quote.price == price_value
+        ).subquery()
+        conditions.append(Order.id.in_(price_match_orders))
+        
+    except (ValueError, TypeError):
+        # 忽略非数字关键词的价格搜索
+        pass
+    
+    # 供应商名称搜索 - 仅搜索已完成订单的中标供应商
+    conditions.append(
+        Order.selected_supplier.has(Supplier.name.ilike(f'%{keyword}%'))
+    )
+    
+    return query.filter(or_(*conditions))
 
 def notify_suppliers(order, suppliers):
     """通知供应商新订单 - 增强错误处理和重试机制"""

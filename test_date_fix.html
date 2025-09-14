@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>日期范围修复验证测试</title>
+</head>
+<body>
+    <h1>日期范围修复验证测试</h1>
+    <p>今天日期：<span id="today"></span></p>
+    <p>本月1号：<span id="monthStart"></span></p>
+    
+    <h2>修复前的实现（有时区问题）</h2>
+    <p>今天范围：<span id="oldToday"></span></p>
+    <p>本月范围：<span id="oldThisMonth"></span></p>
+    
+    <h2>修复后的实现</h2>
+    <p>今天范围：<span id="newToday"></span></p>
+    <p>本月范围：<span id="newThisMonth"></span></p>
+    
+    <h2>验证结果</h2>
+    <div id="result"></div>
+
+    <script>
+        // 显示当前实际日期
+        const now = new Date();
+        document.getElementById('today').textContent = now.toDateString();
+        document.getElementById('monthStart').textContent = new Date(now.getFullYear(), now.getMonth(), 1).toDateString();
+
+        // 修复前的实现（有时区问题的版本）
+        function oldSetQuickDate(option) {
+            const today = new Date();
+            let startDate, endDate;
+            
+            if (option === 'today') {
+                startDate = endDate = today.toISOString().split('T')[0];
+            } else if (option === 'this_month') {
+                const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+                startDate = monthStart.toISOString().split('T')[0];
+                endDate = today.toISOString().split('T')[0];
+            }
+            
+            return { startDate, endDate };
+        }
+
+        // 修复后的实现
+        function newSetQuickDate(option) {
+            const today = new Date();
+            let startDate, endDate;
+            
+            // 使用本地时间格式化日期，避免时区问题
+            function formatLocalDate(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            
+            if (option === 'today') {
+                startDate = endDate = formatLocalDate(today);
+            } else if (option === 'this_month') {
+                const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+                startDate = formatLocalDate(monthStart);
+                endDate = formatLocalDate(today);
+            }
+            
+            return { startDate, endDate };
+        }
+
+        // 测试并显示结果
+        const oldTodayResult = oldSetQuickDate('today');
+        const oldThisMonthResult = oldSetQuickDate('this_month');
+        const newTodayResult = newSetQuickDate('today');
+        const newThisMonthResult = newSetQuickDate('this_month');
+
+        document.getElementById('oldToday').textContent = `${oldTodayResult.startDate} 至 ${oldTodayResult.endDate}`;
+        document.getElementById('oldThisMonth').textContent = `${oldThisMonthResult.startDate} 至 ${oldThisMonthResult.endDate}`;
+        document.getElementById('newToday').textContent = `${newTodayResult.startDate} 至 ${newTodayResult.endDate}`;
+        document.getElementById('newThisMonth').textContent = `${newThisMonthResult.startDate} 至 ${newThisMonthResult.endDate}`;
+
+        // 验证结果
+        let resultHtml = '<h3>验证结果：</h3>';
+        
+        // 验证今天
+        if (newTodayResult.startDate === newTodayResult.endDate) {
+            resultHtml += '<p>✅ 今天功能：正确（开始日期等于结束日期）</p>';
+        } else {
+            resultHtml += '<p>❌ 今天功能：错误（开始日期应该等于结束日期）</p>';
+        }
+
+        // 验证本月
+        const expectedMonthStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
+        const expectedToday = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+        
+        if (newThisMonthResult.startDate === expectedMonthStart && newThisMonthResult.endDate === expectedToday) {
+            resultHtml += '<p>✅ 本月功能：正确（从本月1号到今天）</p>';
+        } else {
+            resultHtml += '<p>❌ 本月功能：错误</p>';
+            resultHtml += `<p>期望：${expectedMonthStart} 至 ${expectedToday}</p>`;
+            resultHtml += `<p>实际：${newThisMonthResult.startDate} 至 ${newThisMonthResult.endDate}</p>`;
+        }
+
+        // 验证修复效果
+        if (oldThisMonthResult.startDate !== newThisMonthResult.startDate || oldThisMonthResult.endDate !== newThisMonthResult.endDate) {
+            resultHtml += '<p>✅ 时区问题已修复：新旧实现结果不同，说明修复生效</p>';
+        } else {
+            resultHtml += '<p>⚠️ 时区问题可能未修复：新旧实现结果相同</p>';
+        }
+
+        document.getElementById('result').innerHTML = resultHtml;
+    </script>
+</body>
+</html>

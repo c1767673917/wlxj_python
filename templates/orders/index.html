@@ -17,17 +17,64 @@
 <!-- 筛选栏 -->
 <div class="card mb-4">
     <div class="card-body">
-        <div class="row g-3">
-            <div class="col-md-4">
-                <label for="status" class="form-label">订单状态</label>
-                <select class="form-select" id="status" name="status" onchange="autoFilter()">
-                    <option value="">全部状态</option>
-                    <option value="active" {{ 'selected' if status == 'active' }}>进行中</option>
-                    <option value="completed" {{ 'selected' if status == 'completed' }}>已完成</option>
-                    <option value="cancelled" {{ 'selected' if status == 'cancelled' }}>已取消</option>
-                </select>
+        <form method="GET" id="filterForm">
+            <div class="row g-3">
+                <!-- 订单状态筛选 -->
+                <div class="col-md-3">
+                    <label for="status" class="form-label">订单状态</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">全部状态</option>
+                        <option value="active" {{ 'selected' if status == 'active' }}>进行中</option>
+                        <option value="completed" {{ 'selected' if status == 'completed' }}>已完成</option>
+                        <option value="cancelled" {{ 'selected' if status == 'cancelled' }}>已取消</option>
+                    </select>
+                </div>
+                
+                <!-- 日期范围筛选 -->
+                <div class="col-md-4">
+                    <label class="form-label">日期范围</label>
+                    <div class="input-group">
+                        <input type="date" class="form-control" id="start_date" name="start_date" 
+                               value="{{ start_date }}" placeholder="开始日期">
+                        <span class="input-group-text">至</span>
+                        <input type="date" class="form-control" id="end_date" name="end_date" 
+                               value="{{ end_date }}" placeholder="结束日期">
+                    </div>
+                </div>
+                
+                <!-- 关键词搜索 -->
+                <div class="col-md-5">
+                    <label for="keyword" class="form-label">关键词搜索</label>
+                    <input type="text" class="form-control" id="keyword" name="keyword" 
+                           value="{{ keyword }}" placeholder="订单号/仓库/地址/货物/价格/供应商">
+                </div>
             </div>
-        </div>
+            
+            <!-- 快捷日期选项和操作按钮 -->
+            <div class="row g-2 mt-2 align-items-end">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small">快捷选择:</span>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setQuickDate('today')">
+                            <i class="fas fa-calendar-day me-1"></i>今天
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setQuickDate('this_month')">
+                            <i class="fas fa-calendar-alt me-1"></i>本月
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search me-1"></i>搜索
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="resetFilters()">
+                            <i class="fas fa-undo me-1"></i>重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -142,7 +189,7 @@
             <ul class="pagination justify-content-center mb-0">
                 {% if orders.has_prev %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ url_for('order.index', page=orders.prev_num, status=status) }}">
+                        <a class="page-link" href="{{ url_for('order.index', page=orders.prev_num, status=status, start_date=start_date, end_date=end_date, keyword=keyword) }}">
                             <i class="fas fa-chevron-left"></i>
                         </a>
                     </li>
@@ -152,7 +199,7 @@
                     {% if page_num %}
                         {% if page_num != orders.page %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ url_for('order.index', page=page_num, status=status) }}">
+                                <a class="page-link" href="{{ url_for('order.index', page=page_num, status=status, start_date=start_date, end_date=end_date, keyword=keyword) }}">
                                     {{ page_num }}
                                 </a>
                             </li>
@@ -170,7 +217,7 @@
                 
                 {% if orders.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ url_for('order.index', page=orders.next_num, status=status) }}">
+                        <a class="page-link" href="{{ url_for('order.index', page=orders.next_num, status=status, start_date=start_date, end_date=end_date, keyword=keyword) }}">
                             <i class="fas fa-chevron-right"></i>
                         </a>
                     </li>
@@ -184,21 +231,21 @@
 <div class="text-center py-5">
     <i class="fas fa-clipboard-list fa-5x text-muted mb-3"></i>
     <h4 class="text-muted">
-        {% if status %}
-            没有找到 "{{ {'active': '进行中', 'completed': '已完成', 'cancelled': '已取消'}[status] }}" 状态的订单
+        {% if status or start_date or end_date or keyword %}
+            没有找到符合条件的订单
         {% else %}
             还没有订单
         {% endif %}
     </h4>
     <p class="text-muted mb-4">
-        {% if status %}
+        {% if status or start_date or end_date or keyword %}
             尝试更改筛选条件或创建新订单
         {% else %}
             创建您的第一个询价订单开始使用系统
         {% endif %}
     </p>
     <div class="d-flex justify-content-center gap-2">
-        {% if status %}
+        {% if status or start_date or end_date or keyword %}
             <a href="{{ url_for('order.index') }}" class="btn btn-outline-secondary">
                 <i class="fas fa-list me-1"></i>查看全部订单
             </a>
@@ -246,30 +293,295 @@
 </div>
 
 <script>
-function deleteOrder(orderId, orderNo) {
-    document.getElementById('orderNo').textContent = orderNo;
-    document.getElementById('deleteForm').action = `{{ url_for('order.cancel', order_id=0) }}`.replace('0', orderId);
-    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+// 工具函数：格式化本地日期为YYYY-MM-DD格式，避免时区问题
+function formatLocalDate(date) {
+    try {
+        // 验证输入参数
+        if (!date || !(date instanceof Date)) {
+            console.error('formatLocalDate: 无效的日期参数', date);
+            return null;
+        }
+        
+        // 检查是否为有效日期
+        if (isNaN(date.getTime())) {
+            console.error('formatLocalDate: 无效的日期对象', date);
+            return null;
+        }
+        
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        
+        // 验证生成的日期字符串格式
+        const dateString = `${year}-${month}-${day}`;
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        
+        if (!dateRegex.test(dateString)) {
+            console.error('formatLocalDate: 生成的日期格式不正确', dateString);
+            return null;
+        }
+        
+        return dateString;
+    } catch (error) {
+        console.error('formatLocalDate: 格式化日期时发生错误', error);
+        return null;
+    }
 }
 
-function autoFilter() {
-    const statusSelect = document.getElementById('status');
-    const selectedStatus = statusSelect.value;
-    
-    // 构建新的URL
-    const currentUrl = new URL(window.location);
-    
-    if (selectedStatus) {
-        currentUrl.searchParams.set('status', selectedStatus);
-    } else {
-        currentUrl.searchParams.delete('status');
+// 工具函数：验证日期范围是否合理
+function validateDateRange(startDate, endDate) {
+    try {
+        if (!startDate || !endDate) {
+            return { valid: true, message: '' }; // 允许部分日期为空
+        }
+        
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        
+        // 检查日期是否有效
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+            return { valid: false, message: '日期格式无效，请选择正确的日期' };
+        }
+        
+        // 检查开始日期是否大于结束日期
+        if (start > end) {
+            return { valid: false, message: '开始日期不能大于结束日期' };
+        }
+        
+        // 检查日期范围是否过大（超过2年）
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays > 730) { // 2年
+            return { valid: false, message: '日期范围不能超过2年，请缩小范围' };
+        }
+        
+        return { valid: true, message: '' };
+    } catch (error) {
+        console.error('validateDateRange: 验证日期范围时发生错误', error);
+        return { valid: false, message: '日期验证失败，请重新选择' };
     }
-    
-    // 重置页码到第一页
-    currentUrl.searchParams.delete('page');
-    
-    // 跳转到新URL
-    window.location.href = currentUrl.toString();
 }
+
+// 工具函数：显示错误消息
+function showDateError(message) {
+    // 创建临时错误提示
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-warning alert-dismissible fade show mt-2';
+    alertDiv.innerHTML = `
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    // 插入到筛选表单后
+    const filterForm = document.getElementById('filterForm');
+    filterForm.parentNode.insertBefore(alertDiv, filterForm.nextSibling);
+    
+    // 5秒后自动移除
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
+
+function deleteOrder(orderId, orderNo) {
+    try {
+        document.getElementById('orderNo').textContent = orderNo;
+        document.getElementById('deleteForm').action = `{{ url_for('order.cancel', order_id=0) }}`.replace('0', orderId);
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    } catch (error) {
+        console.error('deleteOrder: 显示删除对话框时发生错误', error);
+        alert('操作失败，请刷新页面后重试');
+    }
+}
+
+// 快捷日期设置 - 增强版本，支持错误处理和边缘情况
+function setQuickDate(option) {
+    try {
+        const today = new Date();
+        let startDate, endDate;
+        
+        // 检查当前日期是否有效
+        if (isNaN(today.getTime())) {
+            console.error('setQuickDate: 系统日期无效');
+            showDateError('系统日期异常，请手动输入日期');
+            return;
+        }
+        
+        // 处理不同的快捷选项
+        switch (option) {
+            case 'today':
+                startDate = endDate = formatLocalDate(today);
+                break;
+                
+            case 'this_month':
+                // 处理本月日期，考虑跨年等边缘情况
+                const currentYear = today.getFullYear();
+                const currentMonth = today.getMonth();
+                
+                // 创建月初日期
+                const monthStart = new Date(currentYear, currentMonth, 1);
+                
+                // 验证月初日期是否有效
+                if (isNaN(monthStart.getTime())) {
+                    console.error('setQuickDate: 无法创建月初日期', currentYear, currentMonth);
+                    showDateError('无法设置本月日期，请手动输入');
+                    return;
+                }
+                
+                startDate = formatLocalDate(monthStart);
+                endDate = formatLocalDate(today);
+                break;
+                
+            default:
+                console.error('setQuickDate: 不支持的选项', option);
+                showDateError('不支持的日期选项');
+                return;
+        }
+        
+        // 验证格式化结果
+        if (!startDate || !endDate) {
+            console.error('setQuickDate: 日期格式化失败', option, startDate, endDate);
+            showDateError('日期设置失败，请手动输入日期');
+            return;
+        }
+        
+        // 验证日期范围
+        const validation = validateDateRange(startDate, endDate);
+        if (!validation.valid) {
+            console.error('setQuickDate: 日期范围验证失败', validation.message);
+            showDateError(validation.message);
+            return;
+        }
+        
+        // 获取日期输入元素
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+        
+        if (!startDateInput || !endDateInput) {
+            console.error('setQuickDate: 找不到日期输入元素');
+            showDateError('页面错误，请刷新后重试');
+            return;
+        }
+        
+        // 设置日期值
+        startDateInput.value = startDate;
+        endDateInput.value = endDate;
+        
+        // 触发变更事件，确保其他脚本能够响应
+        startDateInput.dispatchEvent(new Event('change'));
+        endDateInput.dispatchEvent(new Event('change'));
+        
+        console.log(`快捷日期设置成功: ${option}, ${startDate} 到 ${endDate}`);
+        
+    } catch (error) {
+        console.error('setQuickDate: 设置快捷日期时发生错误', error);
+        showDateError('日期设置失败，请手动输入日期');
+    }
+}
+
+// 重置筛选条件
+function resetFilters() {
+    try {
+        document.getElementById('filterForm').reset();
+        window.location.href = '{{ url_for("order.index") }}';
+    } catch (error) {
+        console.error('resetFilters: 重置筛选条件时发生错误', error);
+        // 回退方案：直接跳转到首页
+        window.location.href = '{{ url_for("order.index") }}';
+    }
+}
+
+// 扩展自动筛选功能（保持向后兼容）
+function autoFilter() {
+    try {
+        // 在提交前验证日期
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+        
+        const validation = validateDateRange(startDate, endDate);
+        if (!validation.valid) {
+            showDateError(validation.message);
+            return false;
+        }
+        
+        document.getElementById('filterForm').submit();
+    } catch (error) {
+        console.error('autoFilter: 自动筛选时发生错误', error);
+        document.getElementById('filterForm').submit(); // 回退到直接提交
+    }
+}
+
+// 初始化日期验证
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+        
+        if (startDateInput && endDateInput) {
+            // 添加日期变更监听器
+            function validateCurrentDates() {
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+                
+                if (startDate && endDate) {
+                    const validation = validateDateRange(startDate, endDate);
+                    if (!validation.valid) {
+                        // 显示内联错误提示
+                        showDateError(validation.message);
+                        return false;
+                    }
+                }
+                return true;
+            }
+            
+            startDateInput.addEventListener('change', validateCurrentDates);
+            endDateInput.addEventListener('change', validateCurrentDates);
+            
+            // 限制日期选择范围（防止选择过于久远的日期）
+            const today = new Date();
+            const maxDate = formatLocalDate(today);
+            const minDate = new Date(today.getFullYear() - 5, 0, 1); // 5年前
+            const minDateStr = formatLocalDate(minDate);
+            
+            if (maxDate && minDateStr) {
+                startDateInput.setAttribute('max', maxDate);
+                endDateInput.setAttribute('max', maxDate);
+                startDateInput.setAttribute('min', minDateStr);
+                endDateInput.setAttribute('min', minDateStr);
+            }
+        }
+    } catch (error) {
+        console.error('初始化日期验证时发生错误', error);
+    }
+});
+
+// 表单提交时清理页码参数和验证日期
+document.getElementById('filterForm').addEventListener('submit', function(e) {
+    try {
+        // 验证日期范围
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+        
+        const validation = validateDateRange(startDate, endDate);
+        if (!validation.valid) {
+            e.preventDefault(); // 阻止表单提交
+            showDateError(validation.message);
+            return false;
+        }
+        
+        // 移除现有的page参数，确保搜索从第一页开始
+        const url = new URL(window.location);
+        url.searchParams.delete('page');
+        window.history.replaceState({}, '', url);
+        
+        return true;
+    } catch (error) {
+        console.error('表单提交验证时发生错误', error);
+        // 发生错误时允许表单正常提交，由后端处理
+        return true;
+    }
+});
 </script>
 {% endblock %}

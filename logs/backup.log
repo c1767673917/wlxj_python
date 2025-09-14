@@ -385,3 +385,89 @@
 2025-09-14 15:43:57,823 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:57] "GET /orders/?status=active HTTP/1.1" 200 -
 2025-09-14 15:43:59,694 - INFO - 127.0.0.1 - - [14/Sep/2025 15:43:59] "GET /orders/ HTTP/1.1" 200 -
 2025-09-14 15:44:03,014 - INFO - 127.0.0.1 - - [14/Sep/2025 15:44:03] "GET /orders/?status=active HTTP/1.1" 200 -
+2025-09-14 15:46:37,246 - INFO - Quote模型已成功导入并缓存，耗时: 0.0001秒
+2025-09-14 15:46:37,281 - INFO - 127.0.0.1 - - [14/Sep/2025 15:46:37] "GET /orders/30 HTTP/1.1" 200 -
+2025-09-14 15:48:42,322 - INFO - 127.0.0.1 - - [14/Sep/2025 15:48:42] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 16:07:35,068 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-14 16:07:35,097 - INFO -  * Restarting with stat
+2025-09-14 16:07:35,373 - WARNING -  * Debugger is active!
+2025-09-14 16:07:35,378 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 16:07:53,351 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-14 16:07:53,377 - INFO -  * Restarting with stat
+2025-09-14 16:07:53,557 - WARNING -  * Debugger is active!
+2025-09-14 16:07:53,561 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 16:09:43,155 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-14 16:09:43,180 - INFO -  * Restarting with stat
+2025-09-14 16:09:43,366 - WARNING -  * Debugger is active!
+2025-09-14 16:09:43,370 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 16:13:38,901 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-14 16:13:38,925 - INFO -  * Restarting with stat
+2025-09-14 16:13:39,125 - WARNING -  * Debugger is active!
+2025-09-14 16:13:39,129 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 16:13:47,664 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-14 16:13:47,691 - INFO -  * Restarting with stat
+2025-09-14 16:13:47,872 - WARNING -  * Debugger is active!
+2025-09-14 16:13:47,876 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 16:16:10,550 - INFO - 127.0.0.1 - - [14/Sep/2025 16:16:10] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 16:16:12,664 - INFO - 127.0.0.1 - - [14/Sep/2025 16:16:12] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 16:16:27,212 - INFO - 127.0.0.1 - - [14/Sep/2025 16:16:27] "GET /orders/?status=&start_date=2025-09-09&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 16:16:33,498 - INFO - 127.0.0.1 - - [14/Sep/2025 16:16:33] "GET /orders/?status=&start_date=2025-09-15&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 16:16:37,532 - INFO - 127.0.0.1 - - [14/Sep/2025 16:16:37] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 16:19:15,621 - INFO - 127.0.0.1 - - [14/Sep/2025 16:19:15] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 16:19:26,663 - INFO - 127.0.0.1 - - [14/Sep/2025 16:19:26] "GET /orders/?status=&start_date=&end_date=&keyword=满特 HTTP/1.1" 200 -
+2025-09-14 16:19:30,652 - INFO - 127.0.0.1 - - [14/Sep/2025 16:19:30] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 16:19:35,160 - INFO - 127.0.0.1 - - [14/Sep/2025 16:19:35] "GET /orders/?status=&start_date=&end_date=&keyword=广州 HTTP/1.1" 200 -
+2025-09-14 16:19:40,574 - INFO - 127.0.0.1 - - [14/Sep/2025 16:19:40] "GET /orders/?status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 16:19:43,914 - INFO - 127.0.0.1 - - [14/Sep/2025 16:19:43] "GET /orders/?status=&start_date=&end_date=&keyword=RX250914028 HTTP/1.1" 200 -
+2025-09-14 16:19:45,093 - INFO - 127.0.0.1 - - [14/Sep/2025 16:19:45] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 16:19:49,344 - INFO - 127.0.0.1 - - [14/Sep/2025 16:19:49] "GET /orders/?status=&start_date=&end_date=&keyword=厦门港保税仓%09 HTTP/1.1" 200 -
+2025-09-14 16:19:51,132 - INFO - 127.0.0.1 - - [14/Sep/2025 16:19:51] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 16:19:55,784 - INFO - 127.0.0.1 - - [14/Sep/2025 16:19:55] "GET /orders/?status=&start_date=&end_date=&keyword=￥374619.29 HTTP/1.1" 200 -
+2025-09-14 16:20:00,389 - INFO - Quote模型已成功导入并缓存，耗时: 0.0001秒
+2025-09-14 16:20:00,404 - INFO - 127.0.0.1 - - [14/Sep/2025 16:20:00] "GET /orders/?status=&start_date=&end_date=&keyword=374619.29 HTTP/1.1" 200 -
+2025-09-14 16:20:02,915 - INFO - 127.0.0.1 - - [14/Sep/2025 16:20:02] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 16:20:06,561 - INFO - 127.0.0.1 - - [14/Sep/2025 16:20:06] "GET /orders/?status=&start_date=&end_date=&keyword=2025-09-14 HTTP/1.1" 200 -
+2025-09-14 16:20:08,757 - INFO - 127.0.0.1 - - [14/Sep/2025 16:20:08] "GET /orders/?status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 16:20:13,444 - INFO - 127.0.0.1 - - [14/Sep/2025 16:20:13] "GET /orders/85 HTTP/1.1" 200 -
+2025-09-14 16:20:22,028 - INFO - 127.0.0.1 - - [14/Sep/2025 16:20:22] "GET /orders/?status=&start_date=&end_date=&keyword=大广 HTTP/1.1" 200 -
+2025-09-14 16:20:24,809 - INFO - 127.0.0.1 - - [14/Sep/2025 16:20:24] "GET /orders/73 HTTP/1.1" 200 -
+2025-09-14 16:20:54,833 - INFO - 127.0.0.1 - - [14/Sep/2025 16:20:54] "GET /orders/?status=&start_date=&end_date=&keyword=大广 HTTP/1.1" 200 -
+2025-09-14 16:26:10,065 - INFO - 127.0.0.1 - - [14/Sep/2025 16:26:10] "GET /orders/?status=&start_date=&end_date=&keyword=大广 HTTP/1.1" 200 -
+2025-09-14 16:35:02,943 - INFO - 127.0.0.1 - - [14/Sep/2025 16:35:02] "GET /orders/?status=&start_date=&end_date=&keyword=大广 HTTP/1.1" 200 -
+2025-09-14 16:35:15,084 - INFO - 127.0.0.1 - - [14/Sep/2025 16:35:15] "GET /orders/?status=&start_date=2025-08-31&end_date=2025-09-14&keyword=大广 HTTP/1.1" 200 -
+2025-09-14 16:45:24,543 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-14 18:00:31,113 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://198.18.0.1:5001
+2025-09-14 18:00:31,114 - INFO - [33mPress CTRL+C to quit[0m
+2025-09-14 18:00:31,114 - INFO -  * Restarting with stat
+2025-09-14 18:00:31,293 - WARNING -  * Debugger is active!
+2025-09-14 18:00:31,298 - INFO -  * Debugger PIN: 190-428-606
+2025-09-14 18:00:33,494 - INFO - 日期范围筛选: 2025-08-31 到 2025-09-14 (14天)
+2025-09-14 18:00:33,527 - INFO - 127.0.0.1 - - [14/Sep/2025 18:00:33] "GET /orders/?status=&start_date=2025-08-31&end_date=2025-09-14&keyword=大广 HTTP/1.1" 200 -
+2025-09-14 18:00:40,849 - INFO - 127.0.0.1 - - [14/Sep/2025 18:00:40] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 18:00:42,461 - INFO - 127.0.0.1 - - [14/Sep/2025 18:00:42] "GET /dashboard HTTP/1.1" 200 -
+2025-09-14 18:00:43,263 - INFO - 127.0.0.1 - - [14/Sep/2025 18:00:43] "GET /dashboard HTTP/1.1" 200 -
+2025-09-14 18:00:44,787 - INFO - 127.0.0.1 - - [14/Sep/2025 18:00:44] "GET /dashboard HTTP/1.1" 200 -
+2025-09-14 18:00:45,273 - INFO - 127.0.0.1 - - [14/Sep/2025 18:00:45] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 18:00:45,720 - INFO - 127.0.0.1 - - [14/Sep/2025 18:00:45] "GET /orders/new HTTP/1.1" 200 -
+2025-09-14 18:00:46,506 - INFO - 127.0.0.1 - - [14/Sep/2025 18:00:46] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 18:00:58,949 - INFO - 127.0.0.1 - - [14/Sep/2025 18:00:58] "GET /orders/?page=5&status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 18:01:00,640 - INFO - 127.0.0.1 - - [14/Sep/2025 18:01:00] "GET /orders/?page=7&status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 18:01:01,876 - INFO - 127.0.0.1 - - [14/Sep/2025 18:01:01] "GET /orders/?page=6&status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 18:02:10,490 - INFO - 127.0.0.1 - - [14/Sep/2025 18:02:10] "GET /orders/?status=active&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 18:02:14,412 - INFO - 127.0.0.1 - - [14/Sep/2025 18:02:14] "GET /orders/?status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 18:02:15,057 - INFO - 127.0.0.1 - - [14/Sep/2025 18:02:15] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 18:02:19,738 - INFO - 127.0.0.1 - - [14/Sep/2025 18:02:19] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 18:02:39,257 - INFO - 127.0.0.1 - - [14/Sep/2025 18:02:39] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 18:02:43,408 - INFO - 127.0.0.1 - - [14/Sep/2025 18:02:43] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-14 18:02:44,269 - INFO - 127.0.0.1 - - [14/Sep/2025 18:02:44] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-14 18:25:01,737 - INFO - 127.0.0.1 - - [14/Sep/2025 18:25:01] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 18:25:16,571 - INFO - 日期范围筛选: 2025-08-01 到 2025-09-10 (40天)
+2025-09-14 18:25:16,581 - INFO - 127.0.0.1 - - [14/Sep/2025 18:25:16] "GET /orders/?status=&start_date=2025-08-01&end_date=2025-09-10&keyword= HTTP/1.1" 200 -
+2025-09-14 18:25:25,475 - INFO - 127.0.0.1 - - [14/Sep/2025 18:25:25] "GET /orders/ HTTP/1.1" 200 -
+2025-09-14 18:25:27,426 - INFO - 127.0.0.1 - - [14/Sep/2025 18:25:27] "GET /orders/?page=5&status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 18:25:30,136 - INFO - 127.0.0.1 - - [14/Sep/2025 18:25:30] "GET /orders/?page=11&status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 18:25:32,102 - INFO - 127.0.0.1 - - [14/Sep/2025 18:25:32] "GET /orders/?page=1&status=&start_date=&end_date=&keyword= HTTP/1.1" 200 -
+2025-09-14 18:25:36,306 - INFO - 127.0.0.1 - - [14/Sep/2025 18:25:36] "GET /orders/ HTTP/1.1" 200 -
