@@ -3,6 +3,210 @@
 {% block title %}我的报价 - {{ supplier.name }} - 供应商门户{% endblock %}
 
 {% block content %}
+
+<style>
+/* 统计卡片水平布局 - 图标+文字+数据在一行 */
+
+/* 桌面端默认样式 */
+.stats-row {
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+
+.stat-card .card-body {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stat-left {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+    margin-right: 0.75rem;
+    width: 2rem;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.stat-number {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+    min-width: 3rem;
+    text-align: right;
+}
+
+/* 移动端优化 - 2x2水平紧凑布局 */
+@media (max-width: 768px) {
+    .stats-row {
+        margin-bottom: 0.5rem;
+        margin-left: -0.125rem;
+        margin-right: -0.125rem;
+    }
+    
+    .stat-card {
+        margin-bottom: 0.3rem;
+        border-radius: 5px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .stat-card .card-body {
+        padding: 0.35rem 0.4rem;
+        min-height: auto;
+    }
+    
+    .stat-icon {
+        font-size: 0.8rem;
+        margin-right: 0.3rem;
+        width: 0.8rem;
+        flex-shrink: 0;
+    }
+    
+    .stat-label {
+        font-size: 0.65rem;
+        font-weight: 500;
+        line-height: 1.1;
+    }
+    
+    .stat-number {
+        font-size: 1rem;
+        font-weight: 700;
+        min-width: 1.2rem;
+    }
+    
+    /* 移动端统计卡片2x2网格 */
+    .stats-mobile-col {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding-left: 0.125rem;
+        padding-right: 0.125rem;
+    }
+}
+
+/* 超小屏幕进一步压缩 - 保持2x2 */
+@media (max-width: 480px) {
+    .stat-card .card-body {
+        padding: 0.25rem 0.3rem;
+    }
+    
+    .stat-icon {
+        font-size: 0.7rem;
+        margin-right: 0.25rem;
+        width: 0.7rem;
+    }
+    
+    .stat-label {
+        font-size: 0.6rem;
+        line-height: 1;
+        font-weight: 600;
+    }
+    
+    .stat-number {
+        font-size: 0.9rem;
+        min-width: 1rem;
+        font-weight: 800;
+    }
+    
+    .stats-row {
+        margin-bottom: 0.4rem;
+        margin-left: -0.1rem;
+        margin-right: -0.1rem;
+    }
+    
+    .stat-card {
+        margin-bottom: 0.2rem;
+        border-radius: 4px;
+    }
+    
+    .stats-mobile-col {
+        padding-left: 0.1rem;
+        padding-right: 0.1rem;
+    }
+}
+
+/* 极小屏幕 - 终极紧凑2x2 */
+@media (max-width: 375px) {
+    .stat-card .card-body {
+        padding: 0.2rem 0.25rem;
+    }
+    
+    .stat-icon {
+        font-size: 0.65rem;
+        margin-right: 0.2rem;
+        width: 0.65rem;
+    }
+    
+    .stat-label {
+        font-size: 0.55rem;
+        font-weight: 600;
+        line-height: 0.9;
+    }
+    
+    .stat-number {
+        font-size: 0.8rem;
+        font-weight: 800;
+        min-width: 0.8rem;
+    }
+    
+    .stats-row {
+        margin-bottom: 0.3rem;
+        margin-left: -0.075rem;
+        margin-right: -0.075rem;
+    }
+    
+    .stat-card {
+        margin-bottom: 0.15rem;
+        border-radius: 3px;
+    }
+    
+    .stats-mobile-col {
+        padding-left: 0.075rem;
+        padding-right: 0.075rem;
+    }
+}
+
+/* 中等屏幕保持2x2布局 */
+@media (min-width: 768px) and (max-width: 992px) {
+    .stats-mobile-col {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .stat-card .card-body {
+        padding: 0.75rem;
+    }
+    
+    .stat-icon {
+        font-size: 1.2rem;
+        margin-right: 0.6rem;
+    }
+    
+    .stat-label {
+        font-size: 0.85rem;
+    }
+    
+    .stat-number {
+        font-size: 1.4rem;
+    }
+}
+</style>
+
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>
         <i class="fas fa-chart-line me-2"></i>我的报价
@@ -15,46 +219,55 @@
     </div>
 </div>
 
-<!-- 统计概览 -->
-<div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card text-center border-primary">
+<!-- 统计概览 - 水平布局 -->
+<div class="row stats-row mb-4">
+    <div class="col-md-3 col-6 stats-mobile-col">
+        <div class="card stat-card border-primary">
             <div class="card-body">
-                <i class="fas fa-list fa-2x text-primary mb-2"></i>
-                <h4 class="card-title text-primary">{{ quotes.total if quotes.items else quotes|length }}</h4>
-                <p class="card-text text-muted">总报价数</p>
+                <div class="stat-left">
+                    <i class="fas fa-list stat-icon text-primary"></i>
+                    <span class="stat-label text-muted">总报价数</span>
+                </div>
+                <div class="stat-number text-primary">{{ quotes.total if quotes.items else quotes|length }}</div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center border-success">
+    <div class="col-md-3 col-6 stats-mobile-col">
+        <div class="card stat-card border-success">
             <div class="card-body">
-                <i class="fas fa-trophy fa-2x text-success mb-2"></i>
-                <h4 class="card-title text-success">
+                <div class="stat-left">
+                    <i class="fas fa-trophy stat-icon text-success"></i>
+                    <span class="stat-label text-muted">中标数量</span>
+                </div>
+                <div class="stat-number text-success">
                     {% set quote_list = quotes.items if quotes.items else quotes %}
                     {{ quote_list|selectattr('order.selected_supplier_id', 'equalto', supplier.id)|list|length }}
-                </h4>
-                <p class="card-text text-muted">中标数量</p>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center border-warning">
+    <div class="col-md-3 col-6 stats-mobile-col">
+        <div class="card stat-card border-warning">
             <div class="card-body">
-                <i class="fas fa-clock fa-2x text-warning mb-2"></i>
-                <h4 class="card-title text-warning">
+                <div class="stat-left">
+                    <i class="fas fa-clock stat-icon text-warning"></i>
+                    <span class="stat-label text-muted">待定订单</span>
+                </div>
+                <div class="stat-number text-warning">
                     {% set quote_list = quotes.items if quotes.items else quotes %}
                     {{ quote_list|selectattr('order.status', 'equalto', 'active')|list|length }}
-                </h4>
-                <p class="card-text text-muted">待定订单</p>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center border-info">
+    <div class="col-md-3 col-6 stats-mobile-col">
+        <div class="card stat-card border-info">
             <div class="card-body">
-                <i class="fas fa-percentage fa-2x text-info mb-2"></i>
-                <h4 class="card-title text-info">
+                <div class="stat-left">
+                    <i class="fas fa-percentage stat-icon text-info"></i>
+                    <span class="stat-label text-muted">中标率</span>
+                </div>
+                <div class="stat-number text-info">
                     {% set quote_list = quotes.items if quotes.items else quotes %}
                     {% set total_count = quote_list|length %}
                     {% if total_count > 0 %}
@@ -62,8 +275,7 @@
                     {% else %}
                         0%
                     {% endif %}
-                </h4>
-                <p class="card-text text-muted">中标率</p>
+                </div>
             </div>
         </div>
     </div>
