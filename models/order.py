@@ -3,6 +3,8 @@ import logging
 import time
 import threading
 import uuid
+from typing import List, Optional, Dict, Any, Tuple
+from decimal import Decimal
 from . import db
 
 # 订单供应商关联表 - 添加级联删除
@@ -98,7 +100,7 @@ class Order(db.Model):
         cls._cache_stats = {'hits': 0, 'misses': 0, 'import_time': None}
         logging.info("Quote模型缓存统计信息已重置")
     
-    def generate_order_no(self):
+    def generate_order_no(self) -> str:
         """生成订单号 - RX+yymmdd+3位数流水号格式"""
         if not self.id:
             raise ValueError("订单ID不能为空，请先保存订单")
@@ -140,7 +142,7 @@ class Order(db.Model):
         return f'RX{date_str}{new_seq:03d}'
     
     @staticmethod
-    def generate_temp_order_no():
+    def generate_temp_order_no() -> str:
         """生成临时订单号（用于初始化）- 使用新的RX格式但带TEMP前缀"""
         from datetime import datetime
         import uuid
@@ -150,7 +152,7 @@ class Order(db.Model):
         unique_suffix = str(uuid.uuid4())[:3].upper()
         return f'TEMP{timestamp}{unique_suffix}'
     
-    def get_lowest_quote(self):
+    def get_lowest_quote(self) -> Optional['Quote']:
         """
         获取最低报价
         优先使用relationship关系，提升性能并减少数据库查询
@@ -169,7 +171,7 @@ class Order(db.Model):
             logging.error(f"获取最低报价时发生错误 (订单ID: {self.id}): {str(e)}")
             return None
     
-    def get_quote_count(self):
+    def get_quote_count(self) -> int:
         """
         获取报价数量
         优先使用relationship关系，提升性能
@@ -187,7 +189,7 @@ class Order(db.Model):
             logging.error(f"获取报价数量时发生错误 (订单ID: {self.id}): {str(e)}")
             return 0
     
-    def get_quotes_summary(self):
+    def get_quotes_summary(self) -> Dict[str, Any]:
         """
         获取报价摘要信息
         返回包含最低价格、报价数量等信息的字典
@@ -218,7 +220,7 @@ class Order(db.Model):
             }
     
     @staticmethod
-    def generate_unique_order_no(max_retries=5):
+    def generate_unique_order_no(max_retries: int = 5) -> str:
         """生成唯一订单号（带重试机制）- 使用RX+yymmdd+3位数流水号格式"""
         from datetime import datetime
         from sqlalchemy import func, and_
@@ -276,7 +278,7 @@ class Order(db.Model):
         
         raise Exception("生成唯一订单号失败")
     
-    def validate_order_data(self):
+    def validate_order_data(self) -> List[str]:
         """验证订单数据"""
         errors = []
         
@@ -298,7 +300,7 @@ class Order(db.Model):
             
         return errors
 
-    def reset_to_active(self):
+    def reset_to_active(self) -> bool:
         """将已完成的订单重新激活为进行中状态"""
         if self.status != 'completed':
             raise ValueError("只能重新激活已完成的订单")

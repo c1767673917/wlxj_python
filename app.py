@@ -1,13 +1,47 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from config import Config
+from config import get_config
+from utils.env_validator import validate_startup_environment
 import os
 import logging
 
+# 环境验证 - 在应用初始化前进行
+try:
+    is_valid, errors, warnings = validate_startup_environment()
+    if not is_valid:
+        logging.error("环境配置验证失败，请检查配置后重启应用")
+        for error in errors:
+            print(f"ERROR: {error}")
+        if os.environ.get('FLASK_ENV') == 'production':
+            exit(1)  # 生产环境配置错误直接退出
+except Exception as e:
+    logging.error(f"环境验证过程出错: {str(e)}")
+    if os.environ.get('FLASK_ENV') == 'production':
+        raise
+
 # Flask应用初始化
 app = Flask(__name__)
-app.config.from_object(Config)
+
+# 根据环境加载配置
+config_class = get_config()
+app.config.from_object(config_class)
+
+# 配置应用日志
+if hasattr(config_class, 'LOGGING_CONFIG'):
+    import logging.config
+    logging.config.dictConfig(config_class.LOGGING_CONFIG)
+else:
+    # 基础日志配置
+    log_level = getattr(logging, app.config.get('LOG_LEVEL', 'INFO'))
+    logging.basicConfig(
+        level=log_level,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler(app.config.get('LOG_FILE', 'logs/app.log')),
+            logging.StreamHandler()
+        ]
+    )
 
 # 数据库初始化
 from models import db

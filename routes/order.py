@@ -11,6 +11,7 @@ import traceback
 import time
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from requests.exceptions import RequestException, Timeout, ConnectionError
+from utils.error_codes import ErrorCode, ErrorHandler, ErrorResponseHelper
 
 # 创建蓝图
 order_bp = Blueprint('order', __name__, url_prefix='/orders')
@@ -81,10 +82,19 @@ def index():
             flash('搜索功能暂时不可用，显示所有订单', 'error')
             keyword = ''
         
-        # 执行分页查询，增加异常处理
+        # 执行分页查询，增加异常处理和性能监控
         try:
+            # 查询性能监控
+            start_time = time.time()
+            
             orders = query.order_by(Order.created_at.desc()).paginate(
                 page=page, per_page=10, error_out=False)
+            
+            # 性能监控和日志记录
+            query_time = time.time() - start_time
+            if query_time > 1.0:  # 查询时间超过1秒记录警告
+                logging.warning(f"慢查询检测: 订单列表查询耗时 {query_time:.2f}秒")
+            logging.debug(f"订单列表查询耗时: {query_time:.3f}秒")
             
             # 检查分页结果是否有效
             if orders.total == 0 and (status or start_date or end_date or keyword):
@@ -172,16 +182,27 @@ def create():
             else:
                 business_type = current_user.business_type
             
-            # 数据验证
-            if not all([warehouse, goods, delivery_address]):
-                flash('请填写所有必填字段', 'error')
-                # 根据业务类型获取供应商
+            # 数据验证 - 使用统一错误码
+            if not warehouse:
+                ErrorResponseHelper.flash_error_message(ErrorCode.VAL_001, "仓库信息")
+                query = Supplier.query.filter_by(business_type=business_type)
+                suppliers = query.all() if current_user.is_admin() else business_type_filter(Supplier.query, Supplier).all()
+                return render_template('orders/create.html', suppliers=suppliers)
+                
+            if not goods:
+                ErrorResponseHelper.flash_error_message(ErrorCode.VAL_001, "货物信息")
+                query = Supplier.query.filter_by(business_type=business_type)
+                suppliers = query.all() if current_user.is_admin() else business_type_filter(Supplier.query, Supplier).all()
+                return render_template('orders/create.html', suppliers=suppliers)
+                
+            if not delivery_address:
+                ErrorResponseHelper.flash_error_message(ErrorCode.VAL_001, "收货地址")
                 query = Supplier.query.filter_by(business_type=business_type)
                 suppliers = query.all() if current_user.is_admin() else business_type_filter(Supplier.query, Supplier).all()
                 return render_template('orders/create.html', suppliers=suppliers)
             
             if not supplier_ids:
-                flash('请至少选择一个供应商', 'error')
+                ErrorResponseHelper.flash_error_message(ErrorCode.VAL_001, "请至少选择一个供应商")
                 # 根据业务类型获取供应商
                 query = Supplier.query.filter_by(business_type=business_type)
                 suppliers = query.all() if current_user.is_admin() else business_type_filter(Supplier.query, Supplier).all()
@@ -190,7 +211,7 @@ def create():
             # 验证供应商ID是否有效
             supplier_ids = [int(sid) for sid in supplier_ids if sid.isdigit()]
             if not supplier_ids:
-                flash('选择的供应商无效', 'error')
+                ErrorResponseHelper.flash_error_message(ErrorCode.VAL_008, "供应商ID格式无效")
                 query = Supplier.query.filter_by(business_type=business_type)
                 suppliers = query.all() if current_user.is_admin() else business_type_filter(Supplier.query, Supplier).all()
                 return render_template('orders/create.html', suppliers=suppliers)
@@ -255,21 +276,19 @@ def create():
             
         except IntegrityError as e:
             db.session.rollback()
-            logging.error(f"订单创建失败 - 数据完整性错误: {str(e)}")
-            flash('订单创建失败：数据冲突，请重试', 'error')
+            error_response, _ = ErrorHandler.handle_database_error(e)
+            ErrorResponseHelper.flash_error_message((error_response["error_code"], error_response["error_message"]))
         except SQLAlchemyError as e:
             db.session.rollback()
-            logging.error(f"订单创建失败 - 数据库错误: {str(e)}")
-            flash('订单创建失败：数据库错误，请稍后重试', 'error')
+            ErrorResponseHelper.flash_error_message(ErrorCode.SYS_002, "数据库操作失败，请稍后重试")
         except ValueError as e:
             db.session.rollback()
-            logging.error(f"订单创建失败 - 数据验证错误: {str(e)}")
-            flash(f'订单创建失败：{str(e)}', 'error')
+            ErrorResponseHelper.flash_error_message(ErrorCode.VAL_003, str(e))
         except Exception as e:
             db.session.rollback()
             logging.error(f"订单创建失败 - 未知错误: {str(e)}")
             logging.error(f"错误详情: {traceback.format_exc()}")
-            flash('订单创建失败：系统错误，请联系管理员', 'error')
+            ErrorResponseHelper.flash_error_message(ErrorCode.SYS_005, "系统异常，请联系管理员")
         
         # 出错时返回表单
         try:
@@ -838,12 +857,14 @@ def notify_suppliers(order, suppliers):
 @order_bp.route('/export')
 @login_required
 def export_orders():
-    """导出订单列表为Excel文件"""
+    """导出订单列表为Excel文件 - 增强安全版本"""
     try:
         import openpyxl
         from openpyxl.styles import Font, PatternFill, Alignment
         from io import BytesIO
         from flask import send_file
+        import tempfile
+        from utils.file_security import FileSecurity, file_security_check
         
         # 复用现有筛选逻辑
         status = request.args.get('status', '').strip()
@@ -871,6 +892,10 @@ def export_orders():
         if not orders:
             flash('没有符合条件的订单可以导出', 'warning')
             return redirect(url_for('order.index', status=status, start_date=start_date, end_date=end_date, keyword=keyword))
+        
+        # 检查数据量大小，如果超过1000条给出警告
+        if len(orders) > 1000:
+            logging.warning(f"用户{current_user.id}导出大量数据: {len(orders)}条记录")
         
         # 创建Excel工作簿
         wb = openpyxl.Workbook()
@@ -933,18 +958,43 @@ def export_orders():
             adjusted_width = min(max_length + 2, 50)
             ws.column_dimensions[column_letter].width = adjusted_width
         
-        # 生成文件名
+        # 生成安全的文件名
         import datetime
         current_date = datetime.datetime.now().strftime('%y-%m-%d')
-        filename = f"订单{current_date}.xlsx"
+        raw_filename = f"订单{current_date}.xlsx"
+        filename = FileSecurity.get_safe_filename(raw_filename)
         
-        # 保存到内存
-        excel_buffer = BytesIO()
-        wb.save(excel_buffer)
-        excel_buffer.seek(0)
+        # 生成临时文件进行安全验证
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx') as tmp_file:
+            wb.save(tmp_file.name)
+            tmp_file_path = tmp_file.name
+        
+        # 文件安全验证
+        is_valid, message = FileSecurity.validate_export_file(tmp_file_path)
+        if not is_valid:
+            os.unlink(tmp_file_path)  # 删除临时文件
+            error_response, _ = ErrorHandler.handle_file_security_error(message, filename)
+            ErrorResponseHelper.flash_error_message((error_response["error_code"], error_response["error_message"]))
+            return redirect(url_for('order.index'))
+        
+        # 读取文件内容到内存
+        with open(tmp_file_path, 'rb') as f:
+            file_content = f.read()
+        
+        # 清理临时文件
+        os.unlink(tmp_file_path)
+        
+        # 最终安全检查
+        if len(file_content) > FileSecurity.MAX_FILE_SIZE:
+            logging.error(f"导出文件过大: {len(file_content)}字节")
+            ErrorResponseHelper.flash_error_message(ErrorCode.SEC_005, f"文件大小{len(file_content)}字节")
+            return redirect(url_for('order.index'))
+        
+        # 创建内存文件对象
+        excel_buffer = BytesIO(file_content)
         
         # 记录导出信息
-        logging.info(f"Excel导出成功: 用户{current_user.id}, 导出{len(orders)}条记录, 文件名:{filename}")
+        logging.info(f"Excel导出成功: 用户{current_user.id}, 导出{len(orders)}条记录, 文件大小:{len(file_content)}字节")
         
         # 返回文件
         return send_file(

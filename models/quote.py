@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional, Dict, Any, Tuple
 from . import db
 import logging
 from decimal import Decimal
@@ -19,11 +20,11 @@ class Quote(db.Model):
     def __repr__(self):
         return f'<Quote {self.id}: {self.price}>'
     
-    def format_price(self):
+    def format_price(self) -> str:
         """格式化价格显示"""
         return f'¥{self.price:,.2f}'
     
-    def get_price_decimal(self):
+    def get_price_decimal(self) -> Decimal:
         """获取Decimal类型的价格，确保类型安全"""
         from decimal import Decimal, InvalidOperation
         import logging
@@ -46,7 +47,7 @@ class Quote(db.Model):
             logging.error(f"Failed to convert price to Decimal for Quote {self.id}: {e}")
             return Decimal('0')
             
-    def get_price_float(self):
+    def get_price_float(self) -> float:
         """获取float类型的价格，用于模板显示和计算"""
         try:
             decimal_price = self.get_price_decimal()
@@ -55,7 +56,7 @@ class Quote(db.Model):
             logging.error(f"Failed to convert price to float for Quote {self.id}: {e}")
             return 0.0
             
-    def format_price_safe(self, currency='¥'):
+    def format_price_safe(self, currency: str = '¥') -> str:
         """安全的价格格式化方法"""
         try:
             price_float = self.get_price_float()
@@ -64,7 +65,7 @@ class Quote(db.Model):
             logging.error(f"Failed to format price for Quote {self.id}: {e}")
             return f"{currency}0.00"
             
-    def get_price_change_info(self, new_price):
+    def get_price_change_info(self, new_price: float) -> Optional[Dict[str, Any]]:
         """获取价格变动信息"""
         try:
             current_price = self.get_price_float()
@@ -86,7 +87,7 @@ class Quote(db.Model):
             logging.error(f"Failed to calculate price change for Quote {self.id}: {e}")
             return None
             
-    def validate_price(self):
+    def validate_price(self) -> Tuple[bool, str]:
         """验证价格的有效性"""
         from decimal import Decimal
         

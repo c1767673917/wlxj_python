@@ -945,3 +945,146 @@
 2025-09-15 16:45:07,474 - INFO - 127.0.0.1 - - [15/Sep/2025 16:45:07] "GET /orders/ HTTP/1.1" 200 -
 2025-09-15 16:45:08,263 - INFO - 127.0.0.1 - - [15/Sep/2025 16:45:08] "GET /quotes/ HTTP/1.1" 200 -
 2025-09-15 16:45:11,834 - INFO - 127.0.0.1 - - [15/Sep/2025 16:45:11] "GET /dashboard HTTP/1.1" 200 -
+2025-09-16 11:09:21,217 - INFO - 127.0.0.1 - - [16/Sep/2025 11:09:21] "GET /dashboard HTTP/1.1" 200 -
+2025-09-16 11:09:27,120 - INFO - 127.0.0.1 - - [16/Sep/2025 11:09:27] "GET /dashboard HTTP/1.1" 200 -
+2025-09-16 11:09:27,793 - INFO - 127.0.0.1 - - [16/Sep/2025 11:09:27] "GET /orders/ HTTP/1.1" 200 -
+2025-09-16 11:09:33,279 - INFO - 127.0.0.1 - - [16/Sep/2025 11:09:33] "GET /orders/new HTTP/1.1" 200 -
+2025-09-16 11:09:34,382 - INFO - 127.0.0.1 - - [16/Sep/2025 11:09:34] "GET /orders/ HTTP/1.1" 200 -
+2025-09-16 11:09:36,130 - INFO - Quote模型已成功导入并缓存，耗时: 0.0001秒
+2025-09-16 11:09:36,171 - INFO - 127.0.0.1 - - [16/Sep/2025 11:09:36] "GET /orders/106 HTTP/1.1" 200 -
+2025-09-16 11:09:43,058 - INFO - 订单 RX250915001 价格协商：原报价 1.0，确认价格 999.0，供应商ID: 1
+2025-09-16 11:09:43,065 - INFO - 订单 RX250915001 已完成，选择供应商ID: 1，缓存命中率: 50.0%
+2025-09-16 11:09:43,066 - INFO - 127.0.0.1 - - [16/Sep/2025 11:09:43] "[32mPOST /orders/106/select-supplier HTTP/1.1[0m" 302 -
+2025-09-16 11:09:43,073 - INFO - 127.0.0.1 - - [16/Sep/2025 11:09:43] "GET /orders/106 HTTP/1.1" 200 -
+2025-09-16 11:09:47,324 - INFO - 127.0.0.1 - - [16/Sep/2025 11:09:47] "GET /suppliers/ HTTP/1.1" 200 -
+2025-09-16 11:09:49,715 - INFO - 127.0.0.1 - - [16/Sep/2025 11:09:49] "GET /suppliers/1/details HTTP/1.1" 200 -
+2025-09-16 11:09:55,714 - INFO - 127.0.0.1 - - [16/Sep/2025 11:09:55] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-16 11:10:00,635 - INFO - 127.0.0.1 - - [16/Sep/2025 11:10:00] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-16 11:10:02,655 - INFO - 127.0.0.1 - - [16/Sep/2025 11:10:02] "GET /portal/supplier/R_6klAbvkoVb5VETS42TvSOpYDupQ1jtsk13EeMYwys HTTP/1.1" 200 -
+2025-09-16 11:10:04,848 - INFO - 127.0.0.1 - - [16/Sep/2025 11:10:04] "GET /portal/quotes HTTP/1.1" 200 -
+2025-09-16 11:10:38,278 - INFO - 127.0.0.1 - - [16/Sep/2025 11:10:38] "GET /portal/quotes?page=2&status=&start_date=&end_date=&keyword=&per_page=10 HTTP/1.1" 200 -
+2025-09-16 11:10:41,913 - INFO - 127.0.0.1 - - [16/Sep/2025 11:10:41] "GET /portal/quotes?page=1&status=&start_date=&end_date=&keyword=&per_page=10 HTTP/1.1" 200 -
+2025-09-16 13:12:49,819 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-16 13:12:49,965 - INFO -  * Restarting with stat
+2025-09-16 13:12:50,752 - WARNING -  * Debugger is active!
+2025-09-16 13:12:50,764 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:13:56,022 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-16 13:13:56,120 - INFO -  * Restarting with stat
+2025-09-16 13:13:56,632 - WARNING -  * Debugger is active!
+2025-09-16 13:13:56,643 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:13:59,873 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-16 13:13:59,946 - INFO -  * Restarting with stat
+2025-09-16 13:14:00,447 - WARNING -  * Debugger is active!
+2025-09-16 13:14:00,457 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:14:10,373 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-16 13:14:10,465 - INFO -  * Restarting with stat
+2025-09-16 13:14:10,984 - WARNING -  * Debugger is active!
+2025-09-16 13:14:10,992 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:14:26,140 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-16 13:14:26,229 - INFO -  * Restarting with stat
+2025-09-16 13:14:26,755 - WARNING -  * Debugger is active!
+2025-09-16 13:14:26,767 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:16:06,763 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-16 13:16:06,835 - INFO -  * Restarting with stat
+2025-09-16 13:16:07,506 - WARNING -  * Debugger is active!
+2025-09-16 13:16:07,517 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:16:21,324 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-16 13:16:21,396 - INFO -  * Restarting with stat
+2025-09-16 13:16:21,914 - WARNING -  * Debugger is active!
+2025-09-16 13:16:21,924 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:16:31,683 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-16 13:16:31,784 - INFO -  * Restarting with stat
+2025-09-16 13:16:32,318 - WARNING -  * Debugger is active!
+2025-09-16 13:16:32,329 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:16:46,204 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-16 13:16:46,287 - INFO -  * Restarting with stat
+2025-09-16 13:16:46,807 - WARNING -  * Debugger is active!
+2025-09-16 13:16:46,818 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:16:56,668 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-16 13:16:56,741 - INFO -  * Restarting with stat
+2025-09-16 13:16:57,264 - WARNING -  * Debugger is active!
+2025-09-16 13:16:57,275 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:17:03,176 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/routes/order.py', reloading
+2025-09-16 13:17:03,273 - INFO -  * Restarting with stat
+2025-09-16 13:17:03,788 - WARNING -  * Debugger is active!
+2025-09-16 13:17:03,799 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:17:30,951 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-16 13:17:31,026 - INFO -  * Restarting with stat
+2025-09-16 13:17:31,551 - WARNING -  * Debugger is active!
+2025-09-16 13:17:31,560 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:17:38,810 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-16 13:17:38,872 - INFO -  * Restarting with stat
+2025-09-16 13:17:39,402 - WARNING -  * Debugger is active!
+2025-09-16 13:17:39,414 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:17:42,612 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-16 13:17:42,682 - INFO -  * Restarting with stat
+2025-09-16 13:17:43,200 - WARNING -  * Debugger is active!
+2025-09-16 13:17:43,210 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:17:46,531 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-16 13:17:46,603 - INFO -  * Restarting with stat
+2025-09-16 13:17:47,104 - WARNING -  * Debugger is active!
+2025-09-16 13:17:47,112 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:17:53,024 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-16 13:17:53,109 - INFO -  * Restarting with stat
+2025-09-16 13:17:53,635 - WARNING -  * Debugger is active!
+2025-09-16 13:17:53,644 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:17:56,935 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-16 13:17:57,028 - INFO -  * Restarting with stat
+2025-09-16 13:17:57,534 - WARNING -  * Debugger is active!
+2025-09-16 13:17:57,541 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:18:03,522 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-16 13:18:03,625 - INFO -  * Restarting with stat
+2025-09-16 13:18:04,158 - WARNING -  * Debugger is active!
+2025-09-16 13:18:04,169 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:18:07,421 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-16 13:18:07,489 - INFO -  * Restarting with stat
+2025-09-16 13:18:08,001 - WARNING -  * Debugger is active!
+2025-09-16 13:18:08,008 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:18:12,533 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/order.py', reloading
+2025-09-16 13:18:12,630 - INFO -  * Restarting with stat
+2025-09-16 13:18:13,142 - WARNING -  * Debugger is active!
+2025-09-16 13:18:13,150 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:18:20,441 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/quote.py', reloading
+2025-09-16 13:18:20,511 - INFO -  * Restarting with stat
+2025-09-16 13:18:21,036 - WARNING -  * Debugger is active!
+2025-09-16 13:18:21,046 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:18:28,237 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/quote.py', reloading
+2025-09-16 13:18:28,317 - INFO -  * Restarting with stat
+2025-09-16 13:18:28,861 - WARNING -  * Debugger is active!
+2025-09-16 13:18:28,869 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:18:33,377 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/quote.py', reloading
+2025-09-16 13:18:33,487 - INFO -  * Restarting with stat
+2025-09-16 13:18:34,001 - WARNING -  * Debugger is active!
+2025-09-16 13:18:34,011 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:18:37,276 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/quote.py', reloading
+2025-09-16 13:18:37,349 - INFO -  * Restarting with stat
+2025-09-16 13:18:37,873 - WARNING -  * Debugger is active!
+2025-09-16 13:18:37,885 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:18:45,134 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/quote.py', reloading
+2025-09-16 13:18:45,248 - INFO -  * Restarting with stat
+2025-09-16 13:18:45,767 - WARNING -  * Debugger is active!
+2025-09-16 13:18:45,778 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:18:55,764 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/quote.py', reloading
+2025-09-16 13:18:55,862 - INFO -  * Restarting with stat
+2025-09-16 13:18:56,370 - WARNING -  * Debugger is active!
+2025-09-16 13:18:56,378 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:19:02,288 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/quote.py', reloading
+2025-09-16 13:19:02,379 - INFO -  * Restarting with stat
+2025-09-16 13:19:02,904 - WARNING -  * Debugger is active!
+2025-09-16 13:19:02,912 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:19:11,452 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/supplier.py', reloading
+2025-09-16 13:19:11,534 - INFO -  * Restarting with stat
+2025-09-16 13:19:12,055 - WARNING -  * Debugger is active!
+2025-09-16 13:19:12,066 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:19:19,310 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/models/supplier.py', reloading
+2025-09-16 13:19:19,379 - INFO -  * Restarting with stat
+2025-09-16 13:19:19,899 - WARNING -  * Debugger is active!
+2025-09-16 13:19:19,908 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:22:17,979 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/config.py', reloading
+2025-09-16 13:22:18,060 - INFO -  * Restarting with stat
+2025-09-16 13:22:18,732 - WARNING -  * Debugger is active!
+2025-09-16 13:22:18,743 - INFO -  * Debugger PIN: 190-428-606
+2025-09-16 13:22:32,664 - INFO -  * Detected change in '/Users/lichuansong/Desktop/projects/wlxj_python/config.py', reloading
+2025-09-16 13:22:32,751 - INFO -  * Restarting with stat
+2025-09-16 13:22:47,552 - INFO -  * Restarting with stat
+2025-09-16 13:22:55,369 - INFO -  * Restarting with stat

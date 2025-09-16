@@ -1,5 +1,6 @@
 from datetime import datetime
 import secrets
+from typing import List, Optional, Dict, Any
 from . import db
 
 class Supplier(db.Model):
@@ -19,6 +20,6 @@ class Supplier(db.Model):
     def __repr__(self):
         return f'<Supplier {self.name}>'
     
-    def generate_access_url(self):
+    def generate_access_url(self) -> str:
         from flask import url_for
         return url_for('supplier_portal', access_code=self.access_code, _external=True)
