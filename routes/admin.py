@@ -31,8 +31,18 @@ def index():
     }
     
     # 备份统计
-    backup_manager = BackupManager()
-    backup_stats = backup_manager.get_backup_stats()
+    try:
+        backup_manager = BackupManager()
+        backup_stats = backup_manager.get_backup_stats()
+    except Exception as e:
+        logger.warning(f"获取备份统计失败: {str(e)}")
+        backup_stats = {
+            'total_backups': 0,
+            'total_size': 0,
+            'oldest_backup': None,
+            'newest_backup': None,
+            'compressed_count': 0
+        }
     
     return render_template('admin/index.html', stats=stats, backup_stats=backup_stats)
 
@@ -41,30 +51,51 @@ def index():
 @admin_required
 def backup_management():
     """备份管理页面"""
-    backup_manager = BackupManager()
+    try:
+        backup_manager = BackupManager()
+        
+        # 获取备份列表
+        backups = backup_manager.list_backups()
+        
+        # 获取备份统计
+        stats = backup_manager.get_backup_stats()
+        
+        return render_template('admin/backup.html', backups=backups, stats=stats)
     
-    # 获取备份列表
-    backups = backup_manager.list_backups()
-    
-    # 获取备份统计
-    stats = backup_manager.get_backup_stats()
-    
-    return render_template('admin/backup.html', backups=backups, stats=stats)
+    except Exception as e:
+        flash(f'备份系统初始化失败: {str(e)}', 'error')
+        logger.error(f"备份管理页面加载失败: {str(e)}")
+        # 返回空数据的模板，防止页面完全崩溃
+        return render_template('admin/backup.html', backups=[], stats={
+            'total_backups': 0,
+            'total_size': 0,
+            'oldest_backup': None,
+            'newest_backup': None,
+            'compressed_count': 0
+        })
 
 @admin_bp.route('/backup/create', methods=['POST'])
 @login_required
 @admin_required
 def create_backup():
     """创建备份"""
-    backup_manager = BackupManager()
+    try:
+        backup_manager = BackupManager()
+        
+        compress = request.form.get('compress', 'true') == 'true'
+        result, message = backup_manager.create_backup(compress=compress)
+        
+        if result:
+            flash(message, 'success')
+            logger.info(f"管理员 {current_user.username} 创建备份成功: {message}")
+        else:
+            flash(f'备份创建失败: {message}', 'error')
+            logger.error(f"管理员 {current_user.username} 创建备份失败: {message}")
     
-    compress = request.form.get('compress', 'true') == 'true'
-    backup_path = backup_manager.create_backup(compress=compress)
-    
-    if backup_path:
-        flash(f'备份创建成功: {backup_path.name}', 'success')
-    else:
-        flash('备份创建失败', 'error')
+    except Exception as e:
+        error_msg = f'备份系统初始化失败: {str(e)}'
+        flash(error_msg, 'error')
+        logger.error(f"管理员 {current_user.username} 备份操作异常: {error_msg}")
     
     return redirect(url_for('admin.backup_management'))
 
@@ -73,12 +104,18 @@ def create_backup():
 @admin_required
 def cleanup_backups():
     """清理旧备份"""
-    backup_manager = BackupManager()
+    try:
+        backup_manager = BackupManager()
+        
+        keep_days = request.form.get('keep_days', 7, type=int)
+        deleted_count = backup_manager.cleanup_old_backups(keep_days=keep_days)
+        
+        flash(f'清理完成，删除了 {deleted_count} 个旧备份文件', 'success')
+        logger.info(f"管理员 {current_user.username} 清理了 {deleted_count} 个旧备份文件")
+    except Exception as e:
+        flash(f'备份清理失败: {str(e)}', 'error')
+        logger.error(f"管理员 {current_user.username} 备份清理异常: {str(e)}")
     
-    keep_days = request.form.get('keep_days', 7, type=int)
-    deleted_count = backup_manager.cleanup_old_backups(keep_days=keep_days)
-    
-    flash(f'清理完成，删除了 {deleted_count} 个旧备份文件', 'success')
     return redirect(url_for('admin.backup_management'))
 
 @admin_bp.route('/backup/download/<filename>')
@@ -86,49 +123,71 @@ def cleanup_backups():
 @admin_required
 def download_backup(filename):
     """下载备份文件"""
-    backup_manager = BackupManager()
-    backup_path = backup_manager.backup_dir / filename
-    
-    if not backup_path.exists():
-        flash('备份文件不存在', 'error')
+    try:
+        backup_manager = BackupManager()
+        backup_path = backup_manager.backup_dir / filename
+        
+        if not backup_path.exists():
+            flash('备份文件不存在', 'error')
+            return redirect(url_for('admin.backup_management'))
+        
+        logger.info(f"管理员 {current_user.username} 下载备份文件: {filename}")
+        return send_file(backup_path, as_attachment=True)
+    except Exception as e:
+        flash(f'备份下载失败: {str(e)}', 'error')
+        logger.error(f"管理员 {current_user.username} 备份下载异常: {str(e)}")
         return redirect(url_for('admin.backup_management'))
-    
-    return send_file(backup_path, as_attachment=True)
 
 @admin_bp.route('/backup/verify/<filename>')
 @login_required
 @admin_required
 def verify_backup(filename):
     """验证备份文件"""
-    backup_manager = BackupManager()
-    
-    is_valid, message = backup_manager.verify_backup(filename)
-    
-    return jsonify({
-        'success': is_valid,
-        'message': message
-    })
+    try:
+        backup_manager = BackupManager()
+        
+        is_valid, message = backup_manager.verify_backup(filename)
+        
+        logger.info(f"管理员 {current_user.username} 验证备份文件: {filename}, 结果: {is_valid}")
+        
+        return jsonify({
+            'success': is_valid,
+            'message': message
+        })
+    except Exception as e:
+        error_msg = f'备份验证失败: {str(e)}'
+        logger.error(f"管理员 {current_user.username} 备份验证异常: {error_msg}")
+        return jsonify({
+            'success': False,
+            'message': error_msg
+        })
 
 @admin_bp.route('/backup/restore/<filename>', methods=['POST'])
 @login_required
 @admin_required
 def restore_backup(filename):
     """恢复备份"""
-    backup_manager = BackupManager()
-    
-    # 这是一个危险操作，需要额外确认
-    confirm = request.form.get('confirm') == 'true'
-    
-    if not confirm:
-        flash('请确认要执行恢复操作', 'warning')
-        return redirect(url_for('admin.backup_management'))
-    
-    success = backup_manager.restore_backup(filename)
-    
-    if success:
-        flash(f'备份恢复成功: {filename}', 'success')
-    else:
-        flash(f'备份恢复失败: {filename}', 'error')
+    try:
+        backup_manager = BackupManager()
+        
+        # 这是一个危险操作，需要额外确认
+        confirm = request.form.get('confirm') == 'true'
+        
+        if not confirm:
+            flash('请确认要执行恢复操作', 'warning')
+            return redirect(url_for('admin.backup_management'))
+        
+        success = backup_manager.restore_backup(filename)
+        
+        if success:
+            flash(f'备份恢复成功: {filename}', 'success')
+            logger.info(f"管理员 {current_user.username} 恢复备份成功: {filename}")
+        else:
+            flash(f'备份恢复失败: {filename}', 'error')
+            logger.error(f"管理员 {current_user.username} 恢复备份失败: {filename}")
+    except Exception as e:
+        flash(f'备份恢复异常: {str(e)}', 'error')
+        logger.error(f"管理员 {current_user.username} 备份恢复异常: {str(e)}")
     
     return redirect(url_for('admin.backup_management'))
 

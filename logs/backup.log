@@ -1088,3 +1088,22 @@
 2025-09-16 13:22:32,751 - INFO -  * Restarting with stat
 2025-09-16 13:22:47,552 - INFO -  * Restarting with stat
 2025-09-16 13:22:55,369 - INFO -  * Restarting with stat
+2025-09-17 14:51:01,510 - backup_manager - INFO - 找到数据库文件: /Users/lichuansong/Desktop/projects/wlxj_python/instance/database.db
+2025-09-17 14:51:09,245 - backup_manager - INFO - 找到数据库文件: /Users/lichuansong/Desktop/projects/wlxj_python/instance/database.db
+2025-09-17 14:51:09,245 - backup_manager - INFO - 开始备份数据库: /Users/lichuansong/Desktop/projects/wlxj_python/instance/database.db (大小: 77824 字节)
+2025-09-17 14:51:09,248 - backup_manager - INFO - 备份创建成功: database_backup_20250917_145109.db.gz (大小: 11482 字节)
+2025-09-17 14:51:21,598 - backup_manager - INFO - 找到数据库文件: /Users/lichuansong/Desktop/projects/wlxj_python/instance/database.db
+2025-09-17 14:52:25,115 - backup_manager - INFO - 找到数据库文件: /Users/lichuansong/Desktop/projects/wlxj_python/instance/database.db
+2025-09-17 14:52:25,116 - backup_manager - INFO - 开始备份数据库: /Users/lichuansong/Desktop/projects/wlxj_python/instance/database.db (大小: 77824 字节)
+2025-09-17 14:52:25,119 - backup_manager - INFO - 备份创建成功: database_backup_20250917_145225.db.gz (大小: 11482 字节)
+2025-09-17 14:52:25,119 - backup_manager - INFO - 开始备份数据库: /Users/lichuansong/Desktop/projects/wlxj_python/instance/database.db (大小: 77824 字节)
+2025-09-17 14:52:25,119 - backup_manager - INFO - 备份创建成功: database_backup_20250917_145225.db (大小: 77824 字节)
+2025-09-17 14:52:25,123 - backup_manager - ERROR - 数据库文件不存在: /non/existent/path.db
+2025-09-17 14:52:25,123 - backup_manager - INFO - 找到数据库文件: /Users/lichuansong/Desktop/projects/wlxj_python/instance/database.db
+2025-09-17 14:52:25,123 - backup_manager - ERROR - 备份目录创建或写入失败: test_readonly_backup, 错误: [Errno 13] Permission denied: 'test_readonly_backup/.write_test'
+2025-09-17 15:06:54,564 - backup_manager - INFO - [backup_manager_v2.py:382] - 备份目录已就绪: backup
+2025-09-17 15:06:57,661 - backup_manager - INFO - [backup_manager_v2.py:382] - 备份目录已就绪: backup
+2025-09-17 15:06:57,662 - backup_manager - INFO - [backup_manager_v2.py:471] - 开始备份数据库: /Users/lichuansong/Desktop/projects/wlxj_python/instance/database.db (大小: 77824 字节)
+2025-09-17 15:06:57,667 - backup_manager - INFO - [backup_manager_v2.py:500] - 备份创建成功: database_backup_20250917_150657.db.gz (大小: 11482 字节, 用时: 0.01秒)
+2025-09-17 15:06:57,675 - backup_manager - INFO - [backup_manager_v2.py:382] - 备份目录已就绪: backup
+2025-09-17 15:07:03,189 - backup_manager - INFO - [backup_manager_v2.py:382] - 备份目录已就绪: backup

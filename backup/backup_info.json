@@ -1,0 +1,33 @@
+{
+  "backups": [
+    {
+      "timestamp": "20250917_145109",
+      "filename": "database_backup_20250917_145109.db.gz",
+      "size": 11482,
+      "original_size": 77824,
+      "created_at": "2025-09-17T14:51:09.248220"
+    },
+    {
+      "timestamp": "20250917_145225",
+      "filename": "database_backup_20250917_145225.db.gz",
+      "size": 11482,
+      "original_size": 77824,
+      "created_at": "2025-09-17T14:52:25.118886"
+    },
+    {
+      "timestamp": "20250917_145225",
+      "filename": "database_backup_20250917_145225.db",
+      "size": 77824,
+      "original_size": 77824,
+      "created_at": "2025-09-17T14:52:25.119787"
+    },
+    {
+      "timestamp": "20250917_150657",
+      "filename": "database_backup_20250917_150657.db.gz",
+      "size": 11482,
+      "original_size": 77824,
+      "created_at": "2025-09-17T15:06:57.666573",
+      "compression_ratio": 0.14753803453947367
+    }
+  ]
+}

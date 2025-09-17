@@ -1,0 +1,12 @@
+{
+  "keep_days": 7,
+  "max_backup_files": 50,
+  "backup_dir": "backup",
+  "log_level": "INFO",
+  "log_dir": "logs",
+  "compress_backups": true,
+  "chunk_size": 65536,
+  "max_backup_size_mb": 1024,
+  "health_check_interval": 300,
+  "backup_schedule_hour": 2
+}

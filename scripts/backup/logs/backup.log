@@ -1,0 +1,23 @@
+2025-09-17 15:03:20,954 - backup_manager - INFO - [backup_manager_v2.py:382] - 备份目录已就绪: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmpnh4txpnz/backup
+2025-09-17 15:03:20,954 - backup_manager - INFO - [backup_manager_v2.py:471] - 开始备份数据库: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmpnh4txpnz/test.db (大小: 8192 字节)
+2025-09-17 15:03:20,955 - backup_manager - INFO - [backup_manager_v2.py:500] - 备份创建成功: database_backup_20250917_150320.db (大小: 8192 字节, 用时: 0.00秒)
+2025-09-17 15:03:20,955 - backup_manager - INFO - [backup_manager_v2.py:471] - 开始备份数据库: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmpnh4txpnz/test.db (大小: 8192 字节)
+2025-09-17 15:03:20,955 - backup_manager - INFO - [backup_manager_v2.py:500] - 备份创建成功: database_backup_20250917_150320.db.gz (大小: 376 字节, 用时: 0.00秒)
+2025-09-17 15:03:20,958 - backup_manager - INFO - [backup_manager_v2.py:705] - 当前数据库已备份到: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmpnh4txpnz/test.db.before_restore_20250917_150320
+2025-09-17 15:03:20,959 - backup_manager - INFO - [backup_manager_v2.py:716] - 备份恢复成功: database_backup_20250917_150320.db -> /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmpnh4txpnz/test.db
+2025-09-17 15:03:32,111 - backup_manager - INFO - [backup_manager_v2.py:382] - 备份目录已就绪: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmp7t8yzt4s/backup
+2025-09-17 15:03:32,111 - backup_manager - INFO - [backup_manager_v2.py:471] - 开始备份数据库: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmp7t8yzt4s/test.db (大小: 8192 字节)
+2025-09-17 15:03:32,111 - backup_manager - INFO - [backup_manager_v2.py:500] - 备份创建成功: database_backup_20250917_150332.db (大小: 8192 字节, 用时: 0.00秒)
+2025-09-17 15:03:32,111 - backup_manager - INFO - [backup_manager_v2.py:471] - 开始备份数据库: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmp7t8yzt4s/test.db (大小: 8192 字节)
+2025-09-17 15:03:32,112 - backup_manager - INFO - [backup_manager_v2.py:500] - 备份创建成功: database_backup_20250917_150332.db.gz (大小: 376 字节, 用时: 0.00秒)
+2025-09-17 15:03:32,114 - backup_manager - INFO - [backup_manager_v2.py:705] - 当前数据库已备份到: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmp7t8yzt4s/test.db.before_restore_20250917_150332
+2025-09-17 15:03:32,115 - backup_manager - INFO - [backup_manager_v2.py:716] - 备份恢复成功: database_backup_20250917_150332.db -> /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmp7t8yzt4s/test.db
+2025-09-17 15:04:34,380 - backup_manager - INFO - [backup_manager_v2.py:382] - 备份目录已就绪: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmp0d1owltb
+2025-09-17 15:04:34,385 - backup_manager - INFO - [backup_manager_v2.py:382] - 备份目录已就绪: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmpzfja2gfm
+2025-09-17 15:04:34,385 - backup_manager - INFO - [backup_manager_v2.py:471] - 开始备份数据库: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmpzfja2gfm/test.db (大小: 8192 字节)
+2025-09-17 15:04:34,386 - backup_manager - INFO - [backup_manager_v2.py:500] - 备份创建成功: database_backup_20250917_150434.db.gz (大小: 196 字节, 用时: 0.00秒)
+2025-09-17 15:04:34,389 - backup_manager - INFO - [backup_manager_v2.py:382] - 备份目录已就绪: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmpxnzxukzs
+2025-09-17 15:04:34,389 - backup_manager - INFO - [backup_manager_v2.py:471] - 开始备份数据库: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmpxnzxukzs/test.db (大小: 155648 字节)
+2025-09-17 15:04:34,390 - backup_manager - INFO - [backup_manager_v2.py:500] - 备份创建成功: database_backup_20250917_150434.db (大小: 155648 字节, 用时: 0.00秒)
+2025-09-17 15:04:34,390 - backup_manager - INFO - [backup_manager_v2.py:471] - 开始备份数据库: /var/folders/hx/0y3t9mhx1fjbfld_qdnx8n1h0000gn/T/tmpxnzxukzs/test.db (大小: 155648 字节)
+2025-09-17 15:04:34,411 - backup_manager - INFO - [backup_manager_v2.py:500] - 备份创建成功: database_backup_20250917_150434.db.gz (大小: 10299 字节, 用时: 0.02秒)
