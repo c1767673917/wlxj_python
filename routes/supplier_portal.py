@@ -2,12 +2,17 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from models import db, Supplier, Order, Quote
 from datetime import datetime, date
 from sqlalchemy import or_, func
+# Excel导出相关导入
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 from io import BytesIO
 import logging
 import traceback
 from functools import wraps
+import tempfile
+import os
+import psutil
+from utils.file_security import FileSecurity, file_security_check
 
 # 创建蓝图
 portal_bp = Blueprint('portal', __name__, url_prefix='/portal')
@@ -288,38 +293,46 @@ def logout():
     flash('您已安全退出', 'info')
     return redirect(url_for('index'))
 
-@portal_bp.route('/quotes/export')
-@require_supplier_login
-def export_quotes():
-    """导出筛选后的报价Excel"""
+# ====== 供应商报价Excel导出相关函数 ======
+
+def prepare_quotes_export_data(supplier_id, status, start_date, end_date, keyword):
+    """准备供应商报价导出数据"""
     try:
-        supplier_id = session['supplier_id']
         supplier = Supplier.query.get(supplier_id)
+        if not supplier:
+            return None, None, "供应商信息无效"
         
-        # 获取筛选参数
-        status = request.args.get('status', '').strip()
-        start_date = request.args.get('start_date', '').strip()
-        end_date = request.args.get('end_date', '').strip()
-        keyword = request.args.get('keyword', '').strip()
+        logging.info(f"供应商 {supplier_id} 开始报价导出准备")
+        logging.debug(f"供应商导出筛选条件: status={status}, start_date={start_date}, end_date={end_date}, keyword={keyword}")
         
         # 构建查询 - 复用筛选逻辑
+        query = build_quotes_query(supplier_id, status, start_date, end_date, keyword)
+        
+        # 获取总数量进行评估
+        total_count = query.count()
+        logging.info(f"供应商 {supplier_id} 查询到 {total_count} 个符合条件的报价")
+        
+        if total_count == 0:
+            return None, supplier, "没有符合条件的报价可以导出"
+        
+        # 内存监控
         try:
-            query = build_quotes_query(supplier_id, status, start_date, end_date, keyword)
+            process = psutil.Process()
+            memory_info = process.memory_info()
+            logging.debug(f"当前内存使用: {memory_info.rss/1024/1024:.2f}MB")
         except Exception as e:
-            logging.error(f"构建导出查询失败: {str(e)}")
-            flash('导出查询构建失败', 'error')
-            return redirect(url_for('portal.my_quotes'))
+            logging.warning(f"内存监控失败: {e}")
         
-        # 获取所有符合条件的报价
-        quotes = query.all()
+        return query, supplier, None
         
-        if not quotes:
-            flash('没有符合条件的报价可以导出', 'warning')
-            return redirect(url_for('portal.my_quotes', 
-                                  status=status, start_date=start_date, 
-                                  end_date=end_date, keyword=keyword))
-        
-        # 创建Excel工作簿
+    except Exception as e:
+        logging.error(f"供应商报价数据准备失败: {str(e)}")
+        return None, None, f"数据准备失败: {str(e)}"
+
+def create_quotes_excel_workbook(supplier):
+    """创建供应商报价Excel工作簿"""
+    try:
+        logging.debug("开始创建供应商报价Excel工作簿")
         wb = openpyxl.Workbook()
         ws = wb.active
         ws.title = f"{supplier.name}报价列表"
@@ -337,60 +350,212 @@ def export_quotes():
             cell.fill = header_fill
             cell.alignment = header_alignment
         
-        # 填充数据
-        for row, quote in enumerate(quotes, 2):
-            ws.cell(row=row, column=1, value=quote.order.order_no)
-            ws.cell(row=row, column=2, value=quote.order.goods)
-            ws.cell(row=row, column=3, value=quote.order.delivery_address)
-            ws.cell(row=row, column=4, value=quote.order.warehouse)
-            ws.cell(row=row, column=5, value=f"¥{quote.price:.2f}")
-            ws.cell(row=row, column=6, value=quote.delivery_time or '-')
-            
-            # 订单状态
-            status_map = {
-                'active': '进行中',
-                'completed': '已完成', 
-                'cancelled': '已取消'
-            }
-            ws.cell(row=row, column=7, value=status_map.get(quote.order.status, quote.order.status))
-            
-            # 报价状态
-            if quote.order.selected_supplier_id == supplier_id:
-                quote_status = '已中标'
-            elif quote.order.status == 'completed':
-                quote_status = '未中标'
-            elif quote.order.status == 'cancelled':
-                quote_status = '订单取消'
-            else:
-                quote_status = '待定'
-            ws.cell(row=row, column=8, value=quote_status)
-            
-            ws.cell(row=row, column=9, value=quote.created_at.strftime('%Y-%m-%d %H:%M'))
+        logging.debug("供应商报价表头设置完成")
+        return wb, ws, headers
         
-        # 自动调整列宽
-        for column in ws.columns:
-            max_length = 0
-            column_letter = column[0].column_letter
-            for cell in column:
+    except Exception as e:
+        logging.error(f"创建供应商报价Excel工作簿失败: {str(e)}")
+        raise
+
+def fill_quotes_excel_data(ws, query, supplier_id, batch_size=200):
+    """填充供应商报价数据 - 分批处理"""
+    try:
+        logging.debug("开始填充供应商报价数据")
+        
+        total_processed = 0
+        current_row = 2  # 从第二行开始
+        
+        # 分批处理数据
+        offset = 0
+        while True:
+            # 获取一批数据
+            batch_quotes = query.offset(offset).limit(batch_size).all()
+            
+            if not batch_quotes:
+                break
+                
+            logging.debug(f"处理供应商报价第 {offset//batch_size + 1} 批，{len(batch_quotes)} 条记录")
+            
+            # 处理当前批次的数据
+            for quote in batch_quotes:
                 try:
-                    if len(str(cell.value)) > max_length:
-                        max_length = len(str(cell.value))
-                except:
-                    pass
-            adjusted_width = min(max_length + 2, 50)
-            ws.column_dimensions[column_letter].width = adjusted_width
+                    # 基本信息
+                    ws.cell(row=current_row, column=1, value=quote.order.order_no if quote.order else "-")
+                    ws.cell(row=current_row, column=2, value=quote.order.goods if quote.order else "-")
+                    ws.cell(row=current_row, column=3, value=quote.order.delivery_address if quote.order else "-")
+                    ws.cell(row=current_row, column=4, value=quote.order.warehouse if quote.order else "-")
+                    
+                    # 报价信息
+                    try:
+                        price_str = f"￥{quote.price:.2f}" if quote.price else "-"
+                        ws.cell(row=current_row, column=5, value=price_str)
+                    except Exception as e:
+                        logging.warning(f"格式化报价金额失败: {e}")
+                        ws.cell(row=current_row, column=5, value="-")
+                    
+                    ws.cell(row=current_row, column=6, value=quote.delivery_time or '-')
+                    
+                    # 订单状态
+                    try:
+                        status_map = {
+                            'active': '进行中',
+                            'completed': '已完成', 
+                            'cancelled': '已取消'
+                        }
+                        order_status = status_map.get(quote.order.status, quote.order.status) if quote.order else "-"
+                        ws.cell(row=current_row, column=7, value=order_status)
+                    except Exception as e:
+                        logging.warning(f"获取订单状态失败: {e}")
+                        ws.cell(row=current_row, column=7, value="-")
+                    
+                    # 报价状态
+                    try:
+                        if quote.order and quote.order.selected_supplier_id == supplier_id:
+                            quote_status = '已中标'
+                        elif quote.order and quote.order.status == 'completed':
+                            quote_status = '未中标'
+                        elif quote.order and quote.order.status == 'cancelled':
+                            quote_status = '订单取消'
+                        else:
+                            quote_status = '待定'
+                        ws.cell(row=current_row, column=8, value=quote_status)
+                    except Exception as e:
+                        logging.warning(f"获取报价状态失败: {e}")
+                        ws.cell(row=current_row, column=8, value="-")
+                    
+                    # 创建时间
+                    try:
+                        created_time = quote.created_at.strftime('%Y-%m-%d %H:%M') if quote.created_at else "-"
+                        ws.cell(row=current_row, column=9, value=created_time)
+                    except Exception as e:
+                        logging.warning(f"格式化创建时间失败: {e}")
+                        ws.cell(row=current_row, column=9, value="-")
+                    
+                    current_row += 1
+                    total_processed += 1
+                    
+                except Exception as e:
+                    logging.error(f"处理报价数据时出错: {e}")
+                    # 继续处理下一个报价，而不是中断整个导出
+                    continue
+            
+            offset += batch_size
         
-        # 生成文件名
-        current_date = datetime.now().strftime('%Y%m%d')
-        filename = f"{supplier.name}报价列表_{current_date}.xlsx"
+        logging.debug(f"供应商报价数据填充完成，处理了 {total_processed} 条记录")
+        return total_processed
         
-        # 保存到内存
-        excel_buffer = BytesIO()
-        wb.save(excel_buffer)
-        excel_buffer.seek(0)
+    except Exception as e:
+        logging.error(f"供应商报价数据填充失败: {str(e)}")
+        raise
+
+def finalize_quotes_export(wb, supplier, total_records):
+    """完成供应商报价文件生成和验证"""
+    temp_file_path = None
+    try:
+        # 生成安全的文件名
+        current_date = datetime.now().strftime('%Y%m%d_%H%M%S')
+        raw_filename = f"{supplier.name}报价导出_{current_date}.xlsx"
+        filename = FileSecurity.get_safe_filename(raw_filename)
+        
+        logging.debug(f"生成供应商报价文件名: {filename}")
+        
+        # 保存到临时文件
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx') as tmp_file:
+            temp_file_path = tmp_file.name
+            wb.save(temp_file_path)
+        
+        logging.debug(f"供应商报价Excel文件保存到临时路径: {temp_file_path}")
+        
+        # 文件安全验证
+        is_valid, message = FileSecurity.validate_export_file(temp_file_path)
+        if not is_valid:
+            logging.error(f"供应商报价文件安全验证失败: {message}")
+            if temp_file_path and os.path.exists(temp_file_path):
+                os.unlink(temp_file_path)
+            return None, None, f"文件安全验证失败: {message}"
+        
+        # 读取文件内容到内存
+        try:
+            with open(temp_file_path, 'rb') as f:
+                file_content = f.read()
+            logging.debug(f"供应商报价文件内容读取成功，大小: {len(file_content)} bytes")
+        except Exception as e:
+            logging.error(f"读取供应商报价临时文件失败: {e}")
+            if temp_file_path and os.path.exists(temp_file_path):
+                os.unlink(temp_file_path)
+            return None, None, f"文件读取失败: {str(e)}"
+        
+        # 清理临时文件
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.unlink(temp_file_path)
+            temp_file_path = None
+        
+        # 最终安全检查
+        if len(file_content) > FileSecurity.MAX_FILE_SIZE:
+            logging.error(f"供应商报价导出文件过大: {len(file_content)}字节")
+            return None, None, f"导出文件过大: {len(file_content)}字节"
+        
+        # 创建内存文件对象
+        excel_buffer = BytesIO(file_content)
         
         # 记录导出信息
-        logging.info(f"供应商{supplier_id}Excel导出成功: 导出{len(quotes)}条记录, 文件名:{filename}")
+        logging.info(f"供应商{supplier.id}报价Excel导出成功: 导出{total_records}条记录, 文件大小:{len(file_content)}字节")
+        
+        return excel_buffer, filename, None
+        
+    except Exception as e:
+        # 确保临时文件被清理
+        if temp_file_path and os.path.exists(temp_file_path):
+            try:
+                os.unlink(temp_file_path)
+            except Exception:
+                pass
+        
+        logging.error(f"供应商报价文件生成失败: {str(e)}")
+        return None, None, f"文件生成失败: {str(e)}"
+
+@portal_bp.route('/quotes/export')
+@require_supplier_login
+@file_security_check
+def export_quotes():
+    """导出筛选后的报价Excel - 重构版本支持分批处理和性能优化"""
+    try:
+        supplier_id = session['supplier_id']
+        
+        # 获取筛选参数
+        status = request.args.get('status', '').strip()
+        start_date = request.args.get('start_date', '').strip()
+        end_date = request.args.get('end_date', '').strip()
+        keyword = request.args.get('keyword', '').strip()
+        
+        # 步骤1: 数据准备和查询
+        query, supplier, error_msg = prepare_quotes_export_data(supplier_id, status, start_date, end_date, keyword)
+        if error_msg:
+            flash(error_msg, 'warning')
+            return redirect(url_for('portal.my_quotes', 
+                                  status=status, start_date=start_date, 
+                                  end_date=end_date, keyword=keyword))
+        
+        # 步骤2: 创建Excel工作簿
+        wb, ws, headers = create_quotes_excel_workbook(supplier)
+        
+        # 步骤3: 数据填充（分批处理）
+        total_records = fill_quotes_excel_data(ws, query, supplier_id, batch_size=200)
+        
+        if total_records == 0:
+            flash('没有数据可导出', 'warning')
+            return redirect(url_for('portal.my_quotes', 
+                                  status=status, start_date=start_date, 
+                                  end_date=end_date, keyword=keyword))
+        
+        # 步骤4: 优化Excel格式
+        optimize_quotes_excel_formatting(ws)
+        
+        # 步骤5: 文件生成和验证
+        excel_buffer, filename, error_msg = finalize_quotes_export(wb, supplier, total_records)
+        if error_msg:
+            flash(f'Excel导出失败: {error_msg}', 'error')
+            return redirect(url_for('portal.my_quotes'))
         
         # 返回文件
         return send_file(
@@ -400,11 +565,41 @@ def export_quotes():
             mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
         
+    except ImportError as e:
+        logging.error(f"模块导入失败: {str(e)}")
+        logging.error(f"错误详情: {traceback.format_exc()}")
+        flash('系统组件加载失败，请联系管理员', 'error')
+        return redirect(url_for('portal.my_quotes'))
     except Exception as e:
         logging.error(f"供应商报价Excel导出失败: {str(e)}")
         logging.error(f"错误详情: {traceback.format_exc()}")
         flash('Excel导出失败，请稍后重试', 'error')
         return redirect(url_for('portal.my_quotes'))
+
+def optimize_quotes_excel_formatting(ws):
+    """优化供应商报价Excel格式"""
+    try:
+        logging.debug("开始优化供应商报价Excel格式")
+        
+        # 自动调整列宽
+        for column in ws.columns:
+            max_length = 0
+            column_letter = column[0].column_letter
+            for cell in column:
+                try:
+                    cell_value = str(cell.value) if cell.value is not None else ""
+                    if len(cell_value) > max_length:
+                        max_length = len(cell_value)
+                except Exception:
+                    continue
+            adjusted_width = min(max_length + 2, 50)
+            ws.column_dimensions[column_letter].width = adjusted_width
+        
+        logging.debug("供应商报价列宽调整完成")
+        
+    except Exception as e:
+        logging.warning(f"调整供应商报价列宽时出错: {e}")
+        # 列宽调整失败不影响导出
 
 def build_quotes_query(supplier_id, status=None, start_date=None, end_date=None, keyword=None):
     """构建报价查询条件"""

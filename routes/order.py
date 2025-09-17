@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, send_file
 from flask_login import login_required, current_user
 from models import db, Order, Supplier, order_suppliers
 from utils.auth import business_type_filter
@@ -12,6 +12,14 @@ import time
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from requests.exceptions import RequestException, Timeout, ConnectionError
 from utils.error_codes import ErrorCode, ErrorHandler, ErrorResponseHelper
+# Excel导出相关导入
+import openpyxl
+from openpyxl.styles import Font, PatternFill, Alignment
+from io import BytesIO
+import tempfile
+import os
+import psutil
+from utils.file_security import FileSecurity, file_security_check
 
 # 创建蓝图
 order_bp = Blueprint('order', __name__, url_prefix='/orders')
@@ -854,23 +862,13 @@ def notify_suppliers(order, suppliers):
     
     return success_count, failed_suppliers
 
-@order_bp.route('/export')
-@login_required
-def export_orders():
-    """导出订单列表为Excel文件 - 增强安全版本"""
+# ====== Excel导出相关函数 ======
+
+def prepare_export_data(status, start_date, end_date, keyword):
+    """数据准备和查询 - 支持分批处理和内存监控"""
     try:
-        import openpyxl
-        from openpyxl.styles import Font, PatternFill, Alignment
-        from io import BytesIO
-        from flask import send_file
-        import tempfile
-        from utils.file_security import FileSecurity, file_security_check
-        
-        # 复用现有筛选逻辑
-        status = request.args.get('status', '').strip()
-        start_date = request.args.get('start_date', '').strip()
-        end_date = request.args.get('end_date', '').strip()
-        keyword = request.args.get('keyword', '').strip()
+        logging.info(f"用户 {current_user.id} 开始导出准备")
+        logging.debug(f"导出筛选条件: status={status}, start_date={start_date}, end_date={end_date}, keyword={keyword}")
         
         # 构建查询 - 复用index()方法的筛选逻辑
         query = Order.query
@@ -886,18 +884,43 @@ def export_orders():
         # 应用关键词搜索
         query = apply_keyword_search(query, keyword)
         
-        # 获取所有符合条件的订单
-        orders = query.order_by(Order.created_at.desc()).all()
+        # 获取总数量进行内存评估
+        total_count = query.count()
+        logging.info(f"查询到 {total_count} 个符合条件的订单")
         
-        if not orders:
-            flash('没有符合条件的订单可以导出', 'warning')
-            return redirect(url_for('order.index', status=status, start_date=start_date, end_date=end_date, keyword=keyword))
+        if total_count == 0:
+            return None, "没有符合条件的订单可以导出"
         
-        # 检查数据量大小，如果超过1000条给出警告
-        if len(orders) > 1000:
-            logging.warning(f"用户{current_user.id}导出大量数据: {len(orders)}条记录")
+        # 大数据量检查和警告
+        if total_count > 1000:
+            logging.warning(f"用户{current_user.id}导出大量数据: {total_count}条记录")
         
-        # 创建Excel工作簿
+        # 内存监控
+        try:
+            process = psutil.Process()
+            memory_info = process.memory_info()
+            available_memory = psutil.virtual_memory().available
+            
+            # 估算所需内存(每条记录约10KB)
+            estimated_memory = total_count * 10 * 1024
+            
+            if estimated_memory > available_memory * 0.1:  # 超过可用内存的10%
+                logging.warning(f"导出数据量大，估算内存需求: {estimated_memory/1024/1024:.2f}MB")
+                
+            logging.debug(f"当前内存使用: {memory_info.rss/1024/1024:.2f}MB")
+        except Exception as e:
+            logging.warning(f"内存监控失败: {e}")
+        
+        return query.order_by(Order.created_at.desc()), None
+        
+    except Exception as e:
+        logging.error(f"数据准备失败: {str(e)}")
+        return None, f"数据准备失败: {str(e)}"
+
+def create_excel_workbook():
+    """创建Excel工作簿和设置样式"""
+    try:
+        logging.debug("开始创建Excel工作簿")
         wb = openpyxl.Workbook()
         ws = wb.active
         ws.title = "订单列表"
@@ -915,86 +938,231 @@ def export_orders():
             cell.fill = header_fill
             cell.alignment = header_alignment
         
-        # 填充数据
-        for row, order in enumerate(orders, 2):
-            ws.cell(row=row, column=1, value=order.order_no)
-            ws.cell(row=row, column=2, value=order.goods)
-            ws.cell(row=row, column=3, value=order.delivery_address)
-            ws.cell(row=row, column=4, value=order.warehouse)
-            ws.cell(row=row, column=5, value=order.get_quote_count())
-            
-            # 价格逻辑：已完成订单显示中标价，进行中订单显示最低价
-            if order.status == 'completed' and order.selected_price:
-                price_value = f"¥{order.selected_price:.2f}"
-            elif order.status == 'active':
-                lowest_quote = order.get_lowest_quote()
-                price_value = f"¥{lowest_quote.price:.2f}" if lowest_quote else "-"
-            else:
-                price_value = "-"
-            ws.cell(row=row, column=6, value=price_value)
-            
-            # 供应商名称：已完成订单显示中标供应商，进行中订单显示最低价供应商
-            if order.status == 'completed' and order.selected_supplier:
-                supplier_name = order.selected_supplier.name
-            elif order.status == 'active':
-                lowest_quote = order.get_lowest_quote()
-                supplier_name = lowest_quote.supplier.name if lowest_quote and lowest_quote.supplier else "-"
-            else:
-                supplier_name = "-"
-            ws.cell(row=row, column=7, value=supplier_name)
-            
-            ws.cell(row=row, column=8, value=order.created_at.strftime('%Y-%m-%d %H:%M'))
+        logging.debug("表头设置完成")
+        return wb, ws, headers
         
-        # 自动调整列宽
+    except Exception as e:
+        logging.error(f"创建Excel工作簿失败: {str(e)}")
+        raise
+
+def fill_excel_data(ws, query, batch_size=500):
+    """数据填充 - 分批处理以优化内存使用"""
+    try:
+        logging.debug("开始填充数据")
+        
+        total_processed = 0
+        current_row = 2  # 从第二行开始（第一行是表头）
+        
+        # 分批处理数据
+        offset = 0
+        while True:
+            # 获取一批数据
+            batch_orders = query.offset(offset).limit(batch_size).all()
+            
+            if not batch_orders:
+                break
+                
+            logging.debug(f"处理第 {offset//batch_size + 1} 批，{len(batch_orders)} 条记录")
+            
+            # 处理当前批次的数据
+            for order in batch_orders:
+                try:
+                    ws.cell(row=current_row, column=1, value=order.order_no)
+                    ws.cell(row=current_row, column=2, value=order.goods)
+                    ws.cell(row=current_row, column=3, value=order.delivery_address)
+                    ws.cell(row=current_row, column=4, value=order.warehouse)
+                    
+                    # 报价数量 - 增强错误处理
+                    try:
+                        quote_count = order.get_quote_count()
+                        ws.cell(row=current_row, column=5, value=quote_count)
+                    except Exception as e:
+                        logging.warning(f"获取订单 {order.order_no} 报价数量失败: {e}")
+                        ws.cell(row=current_row, column=5, value=0)
+                    
+                    # 价格逻辑：已完成订单显示中标价，进行中订单显示最低价
+                    try:
+                        if order.status == 'completed' and order.selected_price:
+                            price_value = f"￥{order.selected_price:.2f}"
+                        elif order.status == 'active':
+                            lowest_quote = order.get_lowest_quote()
+                            price_value = f"￥{lowest_quote.price:.2f}" if lowest_quote else "-"
+                        else:
+                            price_value = "-"
+                        ws.cell(row=current_row, column=6, value=price_value)
+                    except Exception as e:
+                        logging.warning(f"获取订单 {order.order_no} 价格信息失败: {e}")
+                        ws.cell(row=current_row, column=6, value="-")
+                    
+                    # 供应商名称：已完成订单显示中标供应商，进行中订单显示最低价供应商
+                    try:
+                        if order.status == 'completed' and order.selected_supplier:
+                            supplier_name = order.selected_supplier.name
+                        elif order.status == 'active':
+                            lowest_quote = order.get_lowest_quote()
+                            supplier_name = lowest_quote.supplier.name if lowest_quote and lowest_quote.supplier else "-"
+                        else:
+                            supplier_name = "-"
+                        ws.cell(row=current_row, column=7, value=supplier_name)
+                    except Exception as e:
+                        logging.warning(f"获取订单 {order.order_no} 供应商信息失败: {e}")
+                        ws.cell(row=current_row, column=7, value="-")
+                    
+                    ws.cell(row=current_row, column=8, value=order.created_at.strftime('%Y-%m-%d %H:%M'))
+                    
+                    current_row += 1
+                    total_processed += 1
+                    
+                except Exception as e:
+                    logging.error(f"处理订单 {order.order_no if hasattr(order, 'order_no') else 'unknown'} 数据时出错: {e}")
+                    # 继续处理下一个订单，而不是中断整个导出
+                    continue
+            
+            offset += batch_size
+            
+            # 内存监控（每处理一批后检查一次）
+            try:
+                process = psutil.Process()
+                memory_info = process.memory_info()
+                if memory_info.rss > 500 * 1024 * 1024:  # 超过500MB
+                    logging.warning(f"内存使用过高: {memory_info.rss/1024/1024:.2f}MB")
+            except Exception:
+                pass
+        
+        logging.debug(f"数据填充完成，处理了 {total_processed} 条记录")
+        return total_processed
+        
+    except Exception as e:
+        logging.error(f"数据填充失败: {str(e)}")
+        raise
+
+def optimize_excel_formatting(ws):
+    """优化Excel格式 - 自动调整列宽"""
+    try:
+        logging.debug("开始优化Excel格式")
+        
+        # 自动调整列宽 - 增强错误处理
         for column in ws.columns:
             max_length = 0
             column_letter = column[0].column_letter
             for cell in column:
                 try:
-                    if len(str(cell.value)) > max_length:
-                        max_length = len(str(cell.value))
-                except:
-                    pass
+                    cell_value = str(cell.value) if cell.value is not None else ""
+                    if len(cell_value) > max_length:
+                        max_length = len(cell_value)
+                except Exception:
+                    continue
             adjusted_width = min(max_length + 2, 50)
             ws.column_dimensions[column_letter].width = adjusted_width
         
+        logging.debug("列宽调整完成")
+        
+    except Exception as e:
+        logging.warning(f"调整列宽时出错: {e}")
+        # 列宽调整失败不影响导出
+
+def finalize_export(wb, total_records):
+    """文件生成和验证"""
+    temp_file_path = None
+    try:
         # 生成安全的文件名
-        import datetime
-        current_date = datetime.datetime.now().strftime('%y-%m-%d')
-        raw_filename = f"订单{current_date}.xlsx"
+        current_date = datetime.now().strftime('%Y%m%d_%H%M%S')
+        raw_filename = f"订单导出_{current_date}.xlsx"
         filename = FileSecurity.get_safe_filename(raw_filename)
+        
+        logging.debug(f"生成文件名: {filename}")
         
         # 生成临时文件进行安全验证
         with tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx') as tmp_file:
-            wb.save(tmp_file.name)
-            tmp_file_path = tmp_file.name
+            temp_file_path = tmp_file.name
+            wb.save(temp_file_path)
+        
+        logging.debug(f"Excel文件保存到临时路径: {temp_file_path}")
         
         # 文件安全验证
-        is_valid, message = FileSecurity.validate_export_file(tmp_file_path)
+        is_valid, message = FileSecurity.validate_export_file(temp_file_path)
         if not is_valid:
-            os.unlink(tmp_file_path)  # 删除临时文件
-            error_response, _ = ErrorHandler.handle_file_security_error(message, filename)
-            ErrorResponseHelper.flash_error_message((error_response["error_code"], error_response["error_message"]))
-            return redirect(url_for('order.index'))
+            logging.error(f"文件安全验证失败: {message}")
+            if temp_file_path and os.path.exists(temp_file_path):
+                os.unlink(temp_file_path)
+            return None, None, f"文件安全验证失败: {message}"
         
         # 读取文件内容到内存
-        with open(tmp_file_path, 'rb') as f:
-            file_content = f.read()
+        try:
+            with open(temp_file_path, 'rb') as f:
+                file_content = f.read()
+            logging.debug(f"文件内容读取成功，大小: {len(file_content)} bytes")
+        except Exception as e:
+            logging.error(f"读取临时文件失败: {e}")
+            if temp_file_path and os.path.exists(temp_file_path):
+                os.unlink(temp_file_path)
+            return None, None, f"文件读取失败: {str(e)}"
         
         # 清理临时文件
-        os.unlink(tmp_file_path)
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.unlink(temp_file_path)
+            temp_file_path = None
         
         # 最终安全检查
         if len(file_content) > FileSecurity.MAX_FILE_SIZE:
             logging.error(f"导出文件过大: {len(file_content)}字节")
-            ErrorResponseHelper.flash_error_message(ErrorCode.SEC_005, f"文件大小{len(file_content)}字节")
-            return redirect(url_for('order.index'))
+            return None, None, f"导出文件过大: {len(file_content)}字节"
         
         # 创建内存文件对象
         excel_buffer = BytesIO(file_content)
         
         # 记录导出信息
-        logging.info(f"Excel导出成功: 用户{current_user.id}, 导出{len(orders)}条记录, 文件大小:{len(file_content)}字节")
+        logging.info(f"Excel导出成功: 用户{current_user.id}, 导出{total_records}条记录, 文件大小:{len(file_content)}字节")
+        
+        return excel_buffer, filename, None
+        
+    except Exception as e:
+        # 确保临时文件被清理
+        if temp_file_path and os.path.exists(temp_file_path):
+            try:
+                os.unlink(temp_file_path)
+            except Exception:
+                pass
+        
+        logging.error(f"文件生成失败: {str(e)}")
+        return None, None, f"文件生成失败: {str(e)}"
+
+@order_bp.route('/export')
+@login_required
+@file_security_check
+def export_orders():
+    """导出订单列表为Excel文件 - 重构版本支持分批处理和性能优化"""
+    try:
+        # 获取筛选参数
+        status = request.args.get('status', '').strip()
+        start_date = request.args.get('start_date', '').strip()
+        end_date = request.args.get('end_date', '').strip()
+        keyword = request.args.get('keyword', '').strip()
+        
+        # 步骤1: 数据准备和查询
+        query, error_msg = prepare_export_data(status, start_date, end_date, keyword)
+        if error_msg:
+            flash(error_msg, 'warning')
+            return redirect(url_for('order.index', status=status, start_date=start_date, end_date=end_date, keyword=keyword))
+        
+        # 步骤2: 创建Excel工作簿
+        wb, ws, headers = create_excel_workbook()
+        
+        # 步骤3: 数据填充（分批处理）
+        total_records = fill_excel_data(ws, query, batch_size=500)
+        
+        if total_records == 0:
+            flash('没有数据可导出', 'warning')
+            return redirect(url_for('order.index', status=status, start_date=start_date, end_date=end_date, keyword=keyword))
+        
+        # 步骤4: 优化Excel格式
+        optimize_excel_formatting(ws)
+        
+        # 步骤5: 文件生成和验证
+        excel_buffer, filename, error_msg = finalize_export(wb, total_records)
+        if error_msg:
+            flash(f'Excel导出失败: {error_msg}', 'error')
+            return redirect(url_for('order.index'))
         
         # 返回文件
         return send_file(
@@ -1004,6 +1172,11 @@ def export_orders():
             mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
         
+    except ImportError as e:
+        logging.error(f"模块导入失败: {str(e)}")
+        logging.error(f"错误详情: {traceback.format_exc()}")
+        flash('系统组件加载失败，请联系管理员', 'error')
+        return redirect(url_for('order.index'))
     except Exception as e:
         logging.error(f"Excel导出失败: {str(e)}")
         logging.error(f"错误详情: {traceback.format_exc()}")
