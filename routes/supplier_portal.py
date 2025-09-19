@@ -185,6 +185,9 @@ def submit_quote(order_id):
 @require_supplier_login
 def my_quotes():
     """我的报价列表 - 支持筛选、搜索和分页"""
+    # 用于跟踪是否已经显示过用户提示，避免重复显示
+    flash_message_shown = False
+    
     try:
         supplier_id = session['supplier_id']
         supplier = Supplier.query.get(supplier_id)
@@ -218,6 +221,7 @@ def my_quotes():
             logging.warning(f"供应商提供了过长的关键词: {len(keyword)}字符")
             keyword = keyword[:100]
             flash('搜索关键词过长，已自动截取前100个字符', 'warning')
+            flash_message_shown = True
         
         # 处理快捷日期选项
         if date_quick:
@@ -228,13 +232,21 @@ def my_quotes():
             else:
                 logging.warning(f"快捷日期选项处理失败: {date_quick}")
                 flash('快捷日期设置失败，请手动选择日期', 'warning')
+                flash_message_shown = True
         
         # 构建查询
         try:
             query = build_quotes_query(supplier_id, status, start_date, end_date, keyword)
+        except ValueError as ve:
+            # 用户输入验证错误，显示友好提示
+            logging.warning(f"用户输入验证失败: {str(ve)}")
+            flash(f'筛选条件有误：{str(ve)}', 'warning')
+            flash_message_shown = True
+            query = Quote.query.filter_by(supplier_id=supplier_id)
         except Exception as e:
             logging.error(f"构建报价查询失败: {str(e)}")
             flash('查询条件处理失败，显示所有报价', 'error')
+            flash_message_shown = True
             query = Quote.query.filter_by(supplier_id=supplier_id)
         
         # 执行分页查询
@@ -243,30 +255,51 @@ def my_quotes():
                 page=page, per_page=per_page, error_out=False
             )
             
-            # 检查分页结果
-            if quotes.total == 0 and (status or start_date or end_date or keyword):
-                logging.info(f"供应商{supplier_id}筛选条件未找到结果 - 状态:{status}, 日期:{start_date}-{end_date}, 关键词:{keyword}")
-            elif quotes.total > 0:
+            # 检查分页结果并记录信息
+            if quotes.total == 0:
+                if status or start_date or end_date or keyword:
+                    logging.info(f"供应商{supplier_id}筛选条件未找到结果 - 状态:{status}, 日期:{start_date}-{end_date}, 关键词:{keyword}")
+                    # 只有在之前没有显示过其他消息时才显示搜索结果提示
+                    if not flash_message_shown:
+                        flash('未找到符合条件的报价，请尝试调整搜索条件', 'info')
+                        flash_message_shown = True
+                else:
+                    logging.info(f"供应商{supplier_id}暂无报价记录")
+            else:
                 logging.debug(f"供应商{supplier_id}查询完成，找到{quotes.total}条记录，显示第{page}页")
                 
         except Exception as e:
             logging.error(f"分页查询执行失败: {str(e)}")
-            flash('查询失败，请稍后重试', 'error')
-            # 回退到简单查询
+            logging.error(f"查询失败详情: {traceback.format_exc()}")
+            
+            # 尝试回退查询
             try:
+                # 尝试最简单的查询：只获取供应商的报价，降低复杂度
                 quotes = Quote.query.filter_by(supplier_id=supplier_id).order_by(
                     Quote.created_at.desc()).paginate(
-                    page=1, per_page=per_page, error_out=False)
+                    page=1, per_page=10, error_out=False)
+                
+                if quotes.total == 0:
+                    # 确实没有数据的情况
+                    if not flash_message_shown:
+                        flash('当前没有报价数据', 'info')
+                        flash_message_shown = True
+                else:
+                    # 有数据但查询参数可能有问题
+                    if not flash_message_shown:
+                        flash('已为您显示最新的报价记录', 'info')
+                        flash_message_shown = True
+                    
+                logging.info(f"供应商{supplier_id}使用简化查询成功，找到{quotes.total}条记录")
+                
             except Exception as fallback_error:
                 logging.error(f"回退查询也失败: {str(fallback_error)}")
-                # 创建空的分页对象
-                quotes = type('MockPagination', (), {
-                    'items': [], 'total': 0, 'pages': 0, 
-                    'has_prev': False, 'has_next': False,
-                    'prev_num': None, 'next_num': None,
-                    'page': 1, 'per_page': per_page,
-                    'iter_pages': lambda: []
-                })()
+                
+                # 最后的兜底方案：创建空的分页对象
+                quotes = create_mock_pagination_object(1, 10)
+                if not flash_message_shown:
+                    flash('系统暂时繁忙，请稍后再试', 'warning')
+                    flash_message_shown = True
         
         return render_template('portal/quotes.html', 
                              supplier=supplier, 
@@ -281,8 +314,46 @@ def my_quotes():
     except Exception as e:
         logging.error(f"供应商报价列表页面发生未知错误: {str(e)}")
         logging.error(f"错误详情: {traceback.format_exc()}")
-        flash('页面加载失败，请刷新页面重试', 'error')
-        return redirect(url_for('index'))
+        
+        # 只有在之前没有显示过其他消息时才显示紧急模式提示
+        try:
+            supplier_id = session.get('supplier_id')
+            supplier = Supplier.query.get(supplier_id) if supplier_id else None
+            
+            if supplier:
+                # 创建最基础的页面显示
+                quotes = create_mock_pagination_object(1, 10)
+                # 只有在没有其他flash消息时才显示紧急模式提示
+                if not flash_message_shown:
+                    flash('页面加载遇到问题，请稍后再试', 'warning')
+                
+                return render_template('portal/quotes.html', 
+                                     supplier=supplier, 
+                                     quotes=quotes,
+                                     status='',
+                                     start_date='',
+                                     end_date='',
+                                     keyword='',
+                                     date_quick='',
+                                     per_page=10)
+        except Exception as emergency_error:
+            logging.error(f"紧急模式也失败: {str(emergency_error)}")
+        
+        # 最终兜底：跳转到供应商门户
+        flash('页面加载失败，请重新进入系统', 'error')
+        try:
+            access_code = session.get('access_code', '')
+            if access_code:
+                return redirect(url_for('portal.supplier_portal', access_code=access_code))
+            else:
+                # 如果没有access_code，清理session并跳转到首页
+                session.clear()
+                flash('会话已过期，请重新访问', 'info')
+                return redirect(url_for('index'))
+        except Exception as redirect_error:
+            logging.error(f"错误页面跳转失败: {str(redirect_error)}")
+            session.clear()
+            return redirect(url_for('index'))
 
 @portal_bp.route('/logout')
 def logout():
@@ -635,7 +706,7 @@ def apply_quote_filters(query, status, start_date, end_date, keyword):
     return query
 
 def apply_quote_date_filter(query, start_date, end_date):
-    """应用报价日期范围筛选"""
+    """应用报价日期范围筛选 - 增强版本，提供更好的错误处理"""
     import re
     from datetime import timedelta
     
@@ -649,29 +720,41 @@ def apply_quote_date_filter(query, start_date, end_date):
     if start_date and start_date.strip():
         start_date = start_date.strip()
         if not date_pattern.match(start_date):
-            raise ValueError(f'开始日期格式无效: {start_date}')
+            raise ValueError(f'开始日期格式无效，请使用 YYYY-MM-DD 格式')
         
         try:
             start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+            # 验证日期的合理性
+            if start_dt.year < 2000 or start_dt.year > 2100:
+                raise ValueError('开始日期年份超出合理范围（2000-2100）')
             query = query.filter(Order.created_at >= start_dt)
             logging.debug(f"应用开始日期筛选: {start_date}")
         except ValueError as e:
-            raise ValueError(f'解析开始日期失败: {start_date}')
+            if "格式" in str(e) or "范围" in str(e):
+                raise e
+            else:
+                raise ValueError(f'开始日期无效：{start_date}，请检查日期是否存在')
     
     # 处理结束日期
     if end_date and end_date.strip():
         end_date = end_date.strip()
         if not date_pattern.match(end_date):
-            raise ValueError(f'结束日期格式无效: {end_date}')
+            raise ValueError(f'结束日期格式无效，请使用 YYYY-MM-DD 格式')
         
         try:
             end_dt = datetime.strptime(end_date, '%Y-%m-%d')
+            # 验证日期的合理性
+            if end_dt.year < 2000 or end_dt.year > 2100:
+                raise ValueError('结束日期年份超出合理范围（2000-2100）')
             # 设置为当天的最后一刻
             end_dt = end_dt.replace(hour=23, minute=59, second=59, microsecond=999999)
             query = query.filter(Order.created_at <= end_dt)
             logging.debug(f"应用结束日期筛选: {end_date}")
         except ValueError as e:
-            raise ValueError(f'解析结束日期失败: {end_date}')
+            if "格式" in str(e) or "范围" in str(e):
+                raise e
+            else:
+                raise ValueError(f'结束日期无效：{end_date}，请检查日期是否存在')
     
     # 验证日期范围
     if start_dt and end_dt:
@@ -681,27 +764,51 @@ def apply_quote_date_filter(query, start_date, end_date):
         date_diff = end_dt.date() - start_dt.date()
         if date_diff.days > 365:  # 1年
             logging.warning(f"供应商选择了过大的日期范围: {date_diff.days}天")
-            flash('选择的日期范围较大（超过1年），查询可能较慢，建议缩小范围', 'warning')
+            raise ValueError('选择的日期范围不能超过1年，请缩小查询范围')
     
     return query
 
 def apply_quote_keyword_search(query, keyword):
-    """应用关键词搜索 - 搜索订单号、仓库、收货地址、货物信息"""
+    """应用关键词搜索 - 搜索订单号、仓库、收货地址、货物信息，增强版本"""
     if not keyword or not keyword.strip():
         return query
     
     keyword = keyword.strip()
-    search_pattern = f"%{keyword}%"
     
-    # 多字段模糊匹配
-    conditions = [
-        Order.order_no.ilike(search_pattern),
-        Order.goods.ilike(search_pattern),
-        Order.delivery_address.ilike(search_pattern),
-        Order.warehouse.ilike(search_pattern)
-    ]
+    # 关键词长度验证
+    if len(keyword) > 100:
+        raise ValueError('搜索关键词长度不能超过100个字符')
     
-    return query.filter(or_(*conditions))
+    # 关键词内容验证 - 防止SQL注入等
+    import re
+    # 允许中文、英文、数字、常见符号
+    if not re.match(r'^[\w\u4e00-\u9fff\s\-_.,()（）【】\[\]]+$', keyword):
+        raise ValueError('搜索关键词包含不支持的字符，请使用中文、英文、数字或常见符号')
+    
+    # 过滤掉过短的关键词
+    if len(keyword) < 1:
+        return query
+    
+    # 如果关键词过短，给出提示但仍然搜索
+    if len(keyword) == 1:
+        logging.info(f"供应商使用了单字符搜索关键词: '{keyword}'")
+    
+    try:
+        search_pattern = f"%{keyword}%"
+        
+        # 多字段模糊匹配
+        conditions = [
+            Order.order_no.ilike(search_pattern),
+            Order.goods.ilike(search_pattern), 
+            Order.delivery_address.ilike(search_pattern),
+            Order.warehouse.ilike(search_pattern)
+        ]
+        
+        return query.filter(or_(*conditions))
+        
+    except Exception as e:
+        logging.error(f"关键词搜索应用失败: {e}")
+        raise ValueError('搜索关键词处理失败，请重新输入')
 
 def process_quote_quick_date(date_quick):
     """处理供应商报价快捷日期选项"""
@@ -729,3 +836,91 @@ def notify_buyer_new_quote(order, supplier, price):
     # 这里可以实现通知采购方的逻辑
     # 例如：发送邮件、系统内通知等
     pass
+
+def create_mock_pagination_object(page=1, per_page=10):
+    """创建完全兼容Flask-SQLAlchemy Pagination接口的Mock对象
+    
+    确保与模板中使用的所有Pagination属性和方法完全兼容
+    """
+    
+    class MockPagination:
+        """完全兼容的Pagination模拟对象"""
+        
+        def __init__(self, page=1, per_page=10):
+            # 基础分页属性
+            self.items = []
+            self.total = 0
+            self.pages = 0
+            self.page = page
+            self.per_page = per_page
+            
+            # 分页导航属性
+            self.has_prev = False
+            self.has_next = False
+            self.prev_num = None
+            self.next_num = None
+            
+            # 附加属性（确保完全兼容）
+            self.query = None
+            self.error_out = False
+            
+        def iter_pages(self, left_edge=2, left_current=2, right_current=3, right_edge=2):
+            """模拟分页页码迭代器，与Flask-SQLAlchemy完全兼容"""
+            return []
+            
+        def __iter__(self):
+            """支持直接迭代分页对象"""
+            return iter(self.items)
+            
+        def __len__(self):
+            """支持len()函数"""
+            return len(self.items)
+            
+        def __bool__(self):
+            """支持布尔值判断"""
+            return len(self.items) > 0
+            
+        def __nonzero__(self):
+            """Python 2兼容性"""
+            return self.__bool__()
+            
+        def __repr__(self):
+            """字符串表示"""
+            return f'<MockPagination page={self.page} total={self.total}>'
+            
+        # 兼容性方法：确保与真实Pagination对象的所有接口一致
+        @property 
+        def prev(self):
+            """前一页对象（为空）"""
+            return None
+            
+        @property
+        def next(self):
+            """下一页对象（为空）"""
+            return None
+    
+    try:
+        # 验证参数合法性
+        if page < 1:
+            page = 1
+        if per_page < 1:
+            per_page = 10
+            
+        mock_obj = MockPagination(page, per_page)
+        
+        logging.debug(f"创建MockPagination对象成功: page={page}, per_page={per_page}")
+        return mock_obj
+        
+    except Exception as e:
+        logging.error(f"创建MockPagination对象失败: {str(e)}")
+        # 返回最简单的备用对象
+        return type('FallbackPagination', (), {
+            'items': [], 'total': 0, 'pages': 0, 
+            'has_prev': False, 'has_next': False,
+            'prev_num': None, 'next_num': None,
+            'page': 1, 'per_page': 10,
+            'iter_pages': lambda: [],
+            '__iter__': lambda self: iter([]),
+            '__len__': lambda self: 0,
+            '__bool__': lambda self: False
+        })()
