@@ -80,11 +80,11 @@
                         </tr>
                         <tr>
                             <th>创建时间:</th>
-                            <td>{{ db_info.created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            <td>{{ db_info.created | beijing_time }}</td>
                         </tr>
                         <tr>
                             <th>最后修改:</th>
-                            <td>{{ db_info.modified.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            <td>{{ db_info.modified | beijing_time }}</td>
                         </tr>
                     </table>
                 {% else %}

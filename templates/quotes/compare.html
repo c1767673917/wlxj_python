@@ -35,7 +35,7 @@
             </div>
             <div class="col-md-6">
                 <p><strong>收货地址：</strong>{{ order.delivery_address|truncate(100) }}</p>
-                <p><strong>创建时间：</strong>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                <p><strong>创建时间：</strong>{{ order.created_at | beijing_time }}</p>
             </div>
         </div>
     </div>
@@ -156,7 +156,7 @@
                         </td>
                         <td>
                             <small class="text-muted">
-                                {{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}
+                                {{ quote.created_at | beijing_time }}
                             </small>
                         </td>
                         <td>
@@ -222,7 +222,7 @@
                         
                         <div class="mb-3">
                             <strong>报价时间：</strong>
-                            <small class="text-muted">{{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                            <small class="text-muted">{{ quote.created_at | beijing_time }}</small>
                         </div>
                         
                         {% if order.status == 'active' and not order.selected_supplier_id %}

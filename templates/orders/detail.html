@@ -50,7 +50,7 @@
                             </tr>
                             <tr>
                                 <td class="fw-bold">创建时间：</td>
-                                <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                <td>{{ order.created_at | beijing_time }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-bold">订单状态：</td>
@@ -163,7 +163,7 @@
                                 </td>
                                 <td>
                                     <small class="text-muted">
-                                        {{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}
+                                        {{ quote.created_at | beijing_time }}
                                     </small>
                                 </td>
                                 {% if order.status == 'active' %}
@@ -474,7 +474,7 @@
                                 <td class="fw-bold">报价时间</td>
                                 {% for quote in quotes %}
                                 <td class="text-center">
-                                    <small>{{ quote.created_at.strftime('%m-%d %H:%M') }}</small>
+                                    <small>{{ quote.created_at | beijing_time('%m-%d %H:%M') }}</small>
                                 </td>
                                 {% endfor %}
                             </tr>

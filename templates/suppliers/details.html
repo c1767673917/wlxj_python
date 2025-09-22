@@ -38,7 +38,7 @@
                             </tr>
                             <tr>
                                 <td class="fw-bold">创建时间：</td>
-                                <td>{{ supplier.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                <td>{{ supplier.created_at | beijing_time }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-bold">微信通知：</td>
@@ -97,7 +97,7 @@
                                     <span class="fw-bold text-primary">{{ quote.format_price() }}</span>
                                 </td>
                                 <td>{{ quote.delivery_time or '-' }}</td>
-                                <td>{{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ quote.created_at | beijing_time }}</td>
                                 <td>
                                     {% if quote.order.selected_supplier_id == supplier.id %}
                                         <span class="badge bg-success">已中标</span>
@@ -224,7 +224,7 @@
                         <div class="timeline-marker bg-primary"></div>
                         <div class="timeline-content">
                             <h6 class="mb-1">供应商创建</h6>
-                            <p class="text-muted small mb-0">{{ supplier.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                            <p class="text-muted small mb-0">{{ supplier.created_at | beijing_time }}</p>
                         </div>
                     </div>
                     <!-- 可以扩展更多操作记录 -->

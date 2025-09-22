@@ -4,6 +4,7 @@ from models import Order, Quote, Supplier
 from datetime import datetime, date, timedelta
 import logging
 import re
+from utils.beijing_time_helper import BeijingTimeHelper
 
 class QueryOptimizer:
     """查询优化工具类"""
@@ -207,7 +208,7 @@ class DateHelper:
             parsed_date = datetime.strptime(date_str, DateHelper.DATE_FORMAT)
             
             # 验证日期合理性
-            current_year = datetime.now().year
+            current_year = BeijingTimeHelper.now().year
             if parsed_date.year < 2020 or parsed_date.year > current_year + 1:
                 return False, "日期年份超出有效范围（2020-明年）"
             
@@ -267,7 +268,7 @@ class DateHelper:
         Returns:
             str: 相对时间描述
         """
-        now = datetime.now()
+        now = BeijingTimeHelper.now()
         diff = now - dt
         
         if diff.days > 0:

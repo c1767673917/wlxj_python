@@ -1,0 +1,10 @@
+2025-09-22 11:13:12,538 - INFO - 开始数据重置 - 北京时间: 2025-09-22 11:13
+2025-09-22 11:13:12,539 - INFO - 数据库备份已创建: /Users/lichuansong/Desktop/projects/wlxj_python/backup/database_backup_before_reset_20250922_111312.db
+2025-09-22 11:13:12,543 - INFO - 开始清理数据库数据...
+2025-09-22 11:13:12,543 - INFO - 清理 报价记录 (quotes): 244 条记录
+2025-09-22 11:13:12,543 - INFO - 清理 订单供应商关联 (order_suppliers): 6 条记录
+2025-09-22 11:13:12,544 - INFO - 清理 订单 (orders): 102 条记录
+2025-09-22 11:13:12,544 - INFO - 清理 供应商 (suppliers): 3 条记录
+2025-09-22 11:13:12,544 - INFO - 清理非管理员用户: 2 条记录
+2025-09-22 11:13:12,544 - ERROR - 数据库重置失败: no such table: sqlite_sequence
+2025-09-22 11:13:12,544 - ERROR - 数据重置失败: no such table: sqlite_sequence

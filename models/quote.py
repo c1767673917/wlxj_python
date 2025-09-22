@@ -3,6 +3,7 @@ from typing import Optional, Dict, Any, Tuple
 from . import db
 import logging
 from decimal import Decimal
+from utils.beijing_time_helper import BeijingTimeHelper
 
 class Quote(db.Model):
     __tablename__ = 'quotes'
@@ -13,7 +14,7 @@ class Quote(db.Model):
     price = db.Column(db.Numeric(10, 2), nullable=False)
     delivery_time = db.Column(db.String(50), nullable=True)
     remarks = db.Column(db.Text, nullable=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=BeijingTimeHelper.now)
     
     # 关联关系 - backref已在Supplier模型中定义，这里不需要重复
     

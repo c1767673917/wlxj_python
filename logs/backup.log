@@ -1107,3 +1107,4 @@
 2025-09-17 15:06:57,667 - backup_manager - INFO - [backup_manager_v2.py:500] - 备份创建成功: database_backup_20250917_150657.db.gz (大小: 11482 字节, 用时: 0.01秒)
 2025-09-17 15:06:57,675 - backup_manager - INFO - [backup_manager_v2.py:382] - 备份目录已就绪: backup
 2025-09-17 15:07:03,189 - backup_manager - INFO - [backup_manager_v2.py:382] - 备份目录已就绪: backup
+2025-09-22 11:51:59,366 - backup_manager - INFO - [backup_manager_v2.py:383] - 备份目录已就绪: backup

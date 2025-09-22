@@ -4,6 +4,7 @@ from models import db, Order, Supplier, order_suppliers
 from utils.auth import business_type_filter
 from datetime import datetime, date
 from sqlalchemy import or_, func
+from utils.beijing_time_helper import BeijingTimeHelper
 import requests
 import json
 import logging
@@ -668,7 +669,7 @@ def apply_date_filter(query, start_date, end_date):
                 start_dt = datetime.strptime(start_date, '%Y-%m-%d')
                 
                 # 验证日期合理性
-                current_year = datetime.now().year
+                current_year = BeijingTimeHelper.now().year
                 if start_dt.year < 2020 or start_dt.year > current_year + 1:
                     logging.warning(f"开始日期超出合理范围: {start_date}")
                     flash('开始日期超出有效范围，请选择2020年到明年之间的日期', 'error')
@@ -707,7 +708,7 @@ def apply_date_filter(query, start_date, end_date):
                 end_dt = datetime.strptime(end_date, '%Y-%m-%d')
                 
                 # 验证日期合理性
-                current_year = datetime.now().year
+                current_year = BeijingTimeHelper.now().year
                 if end_dt.year < 2020 or end_dt.year > current_year + 1:
                     logging.warning(f"结束日期超出合理范围: {end_date}")
                     flash('结束日期超出有效范围，请选择2020年到明年之间的日期', 'error')
@@ -1066,7 +1067,7 @@ def finalize_export(wb, total_records):
     temp_file_path = None
     try:
         # 生成安全的文件名
-        current_date = datetime.now().strftime('%Y%m%d_%H%M%S')
+        current_date = BeijingTimeHelper.get_backup_timestamp()
         raw_filename = f"订单导出_{current_date}.xlsx"
         filename = FileSecurity.get_safe_filename(raw_filename)
         

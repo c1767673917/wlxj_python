@@ -9,6 +9,7 @@ import os
 from datetime import datetime
 from flask import Flask, jsonify, request
 from pathlib import Path
+from utils.beijing_time_helper import BeijingTimeHelper
 
 try:
     from .backup_manager_v2 import BackupManager, get_logger
@@ -63,14 +64,14 @@ class BackupHealthAPI:
                     return jsonify({
                         'status': 'error',
                         'message': '备份管理器未初始化',
-                        'timestamp': datetime.now().isoformat()
+                        'timestamp': BeijingTimeHelper.now().isoformat()
                     }), 500
                 
                 health_status = self.backup_manager.get_health_status()
                 
                 # 添加API信息
                 health_status['api_version'] = '2.0'
-                health_status['timestamp'] = datetime.now().isoformat()
+                health_status['timestamp'] = BeijingTimeHelper.now().isoformat()
                 
                 # 根据状态返回适当的HTTP状态码
                 http_status = {
@@ -86,7 +87,7 @@ class BackupHealthAPI:
                 return jsonify({
                     'status': 'error',
                     'message': f'健康检查失败: {str(e)}',
-                    'timestamp': datetime.now().isoformat()
+                    'timestamp': BeijingTimeHelper.now().isoformat()
                 }), 500
         
         @self.app.route('/api/backup/stats', methods=['GET'])
@@ -102,7 +103,7 @@ class BackupHealthAPI:
                 
                 # 格式化统计信息
                 formatted_stats = self._format_stats(stats)
-                formatted_stats['timestamp'] = datetime.now().isoformat()
+                formatted_stats['timestamp'] = BeijingTimeHelper.now().isoformat()
                 
                 return jsonify(formatted_stats)
                 
@@ -149,14 +150,14 @@ class BackupHealthAPI:
                         'size_mb': round(backup['size'] / 1024 / 1024, 2),
                         'created_at': backup['created_at'].isoformat(),
                         'is_compressed': backup['is_compressed'],
-                        'age_hours': round((datetime.now() - backup['created_at']).total_seconds() / 3600, 1)
+                        'age_hours': round((BeijingTimeHelper.now() - backup['created_at']).total_seconds() / 3600, 1)
                     }
                     formatted_backups.append(formatted_backup)
                 
                 return jsonify({
                     'backups': formatted_backups,
                     'pagination': pagination_info,
-                    'timestamp': datetime.now().isoformat()
+                    'timestamp': BeijingTimeHelper.now().isoformat()
                 })
                 
             except Exception as e:
@@ -191,13 +192,13 @@ class BackupHealthAPI:
                         'message': message,
                         'backup_filename': backup_path.name,
                         'backup_size': backup_path.stat().st_size,
-                        'timestamp': datetime.now().isoformat()
+                        'timestamp': BeijingTimeHelper.now().isoformat()
                     })
                 else:
                     return jsonify({
                         'success': False,
                         'error': message,
-                        'timestamp': datetime.now().isoformat()
+                        'timestamp': BeijingTimeHelper.now().isoformat()
                     }), 400
                     
             except Exception as e:
@@ -205,7 +206,7 @@ class BackupHealthAPI:
                 return jsonify({
                     'success': False,
                     'error': f'创建备份失败: {str(e)}',
-                    'timestamp': datetime.now().isoformat()
+                    'timestamp': BeijingTimeHelper.now().isoformat()
                 }), 500
         
         @self.app.route('/api/backup/verify/<filename>', methods=['GET'])
@@ -223,7 +224,7 @@ class BackupHealthAPI:
                     'filename': filename,
                     'is_valid': is_valid,
                     'message': message,
-                    'timestamp': datetime.now().isoformat()
+                    'timestamp': BeijingTimeHelper.now().isoformat()
                 })
                 
             except Exception as e:
@@ -251,7 +252,7 @@ class BackupHealthAPI:
                     'success': True,
                     'deleted_count': deleted_count,
                     'message': f'成功清理了 {deleted_count} 个旧备份',
-                    'timestamp': datetime.now().isoformat()
+                    'timestamp': BeijingTimeHelper.now().isoformat()
                 })
                 
             except Exception as e:
@@ -259,7 +260,7 @@ class BackupHealthAPI:
                 return jsonify({
                     'success': False,
                     'error': f'清理备份失败: {str(e)}',
-                    'timestamp': datetime.now().isoformat()
+                    'timestamp': BeijingTimeHelper.now().isoformat()
                 }), 500
         
         @self.app.route('/api/backup/config', methods=['GET'])
@@ -269,7 +270,7 @@ class BackupHealthAPI:
                 config = get_backup_config()
                 
                 config_dict = config.to_dict()
-                config_dict['timestamp'] = datetime.now().isoformat()
+                config_dict['timestamp'] = BeijingTimeHelper.now().isoformat()
                 
                 return jsonify(config_dict)
                 
@@ -285,7 +286,7 @@ class BackupHealthAPI:
             return jsonify({
                 'status': 'ok',
                 'service': 'backup-api',
-                'timestamp': datetime.now().isoformat()
+                'timestamp': BeijingTimeHelper.now().isoformat()
             })
     
     def _format_stats(self, stats):
@@ -312,14 +313,14 @@ class BackupHealthAPI:
             formatted['oldest_backup'] = {
                 'filename': stats['oldest_backup']['filename'],
                 'created_at': stats['oldest_backup']['created_at'].isoformat(),
-                'age_days': (datetime.now() - stats['oldest_backup']['created_at']).days
+                'age_days': (BeijingTimeHelper.now() - stats['oldest_backup']['created_at']).days
             }
         
         if stats['newest_backup']:
             formatted['newest_backup'] = {
                 'filename': stats['newest_backup']['filename'],
                 'created_at': stats['newest_backup']['created_at'].isoformat(),
-                'age_hours': round((datetime.now() - stats['newest_backup']['created_at']).total_seconds() / 3600, 1)
+                'age_hours': round((BeijingTimeHelper.now() - stats['newest_backup']['created_at']).total_seconds() / 3600, 1)
             }
         
         return formatted

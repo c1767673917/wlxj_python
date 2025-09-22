@@ -297,6 +297,75 @@ def pow_filter(value, exponent=2):
         logging.error(f"Error in pow filter: {e}, value: {value}, exponent: {exponent}")
         return 0
 
+@app.template_filter('beijing_time')
+def beijing_time_filter(dt, format_str='%Y-%m-%d %H:%M'):
+    """将时间格式化为北京时间显示格式
+    
+    Args:
+        dt: datetime对象
+        format_str: 格式化字符串，默认为 '%Y-%m-%d %H:%M'
+        
+    Returns:
+        格式化后的时间字符串
+    """
+    try:
+        from utils.beijing_time_helper import BeijingTimeHelper
+        return BeijingTimeHelper.format_datetime(dt, format_str)
+    except Exception as e:
+        logging.error(f"Error in beijing_time filter: {e}, dt: {dt}")
+        return str(dt) if dt else ''
+
+@app.template_filter('beijing_date')
+def beijing_date_filter(dt):
+    """将时间格式化为北京时间日期显示格式 (YYYY-MM-DD)
+    
+    Args:
+        dt: datetime对象
+        
+    Returns:
+        格式化后的日期字符串
+    """
+    try:
+        from utils.beijing_time_helper import BeijingTimeHelper
+        return BeijingTimeHelper.format_date(dt)
+    except Exception as e:
+        logging.error(f"Error in beijing_date filter: {e}, dt: {dt}")
+        return str(dt.date()) if dt else ''
+
+@app.template_filter('beijing_time_short')
+def beijing_time_short_filter(dt):
+    """将时间格式化为北京时间短格式显示 (HH:MM)
+    
+    Args:
+        dt: datetime对象
+        
+    Returns:
+        格式化后的时间字符串
+    """
+    try:
+        from utils.beijing_time_helper import BeijingTimeHelper
+        return BeijingTimeHelper.format_time(dt)
+    except Exception as e:
+        logging.error(f"Error in beijing_time_short filter: {e}, dt: {dt}")
+        return str(dt.time()) if dt else ''
+
+@app.template_filter('beijing_full')
+def beijing_full_filter(dt):
+    """将时间格式化为北京时间完整格式显示 (YYYY-MM-DD HH:MM:SS)
+    
+    Args:
+        dt: datetime对象
+        
+    Returns:
+        格式化后的完整时间字符串
+    """
+    try:
+        from utils.beijing_time_helper import BeijingTimeHelper
+        return BeijingTimeHelper.format_full(dt)
+    except Exception as e:
+        logging.error(f"Error in beijing_full filter: {e}, dt: {dt}")
+        return str(dt) if dt else ''
+
 # 添加日志配置
 logging.basicConfig(
     level=logging.INFO,

@@ -175,8 +175,8 @@
                         </td>
                         <td>
                             <div class="text-center lh-1">
-                                <div class="text-muted mb-0">{{ order.created_at.strftime('%Y-%m-%d') }}</div>
-                                <small class="text-muted">{{ order.created_at.strftime('%H:%M') }}</small>
+                                <div class="text-muted mb-0">{{ order.created_at | beijing_date }}</div>
+                                <small class="text-muted">{{ order.created_at | beijing_time_short }}</small>
                             </div>
                         </td>
                         <td>

@@ -8,10 +8,11 @@ import sys
 import os
 from datetime import datetime
 from .backup_manager import BackupManager
+from utils.beijing_time_helper import BeijingTimeHelper
 
 def scheduled_backup():
     """执行定时备份任务"""
-    print(f"开始执行定时备份任务 - {datetime.now()}")
+    print(f"开始执行定时备份任务 - {BeijingTimeHelper.get_log_timestamp()}")
     
     try:
         # 创建备份管理器

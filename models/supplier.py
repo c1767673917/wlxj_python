@@ -2,6 +2,7 @@ from datetime import datetime
 import secrets
 from typing import List, Optional, Dict, Any
 from . import db
+from utils.beijing_time_helper import BeijingTimeHelper
 
 class Supplier(db.Model):
     __tablename__ = 'suppliers'
@@ -12,7 +13,7 @@ class Supplier(db.Model):
     webhook_url = db.Column(db.Text, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)  # 创建者
     business_type = db.Column(db.String(20), nullable=False, default='oil')  # 业务类型
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=BeijingTimeHelper.now)
     
     # 关联关系 - 添加级联删除
     quotes = db.relationship('Quote', backref='supplier', lazy=True, cascade='all, delete-orphan')

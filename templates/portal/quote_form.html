@@ -128,7 +128,7 @@
                 </div>
                 <div class="mb-0">
                     <strong>发布时间：</strong>
-                    <br>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}
+                    <br>{{ order.created_at | beijing_time }}
                 </div>
             </div>
         </div>
@@ -157,7 +157,7 @@
                     </div>
                     <div class="mb-0">
                         <strong>提交时间：</strong>
-                        {{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}
+                        {{ quote.created_at | beijing_time }}
                     </div>
                 </div>
                 <p class="small text-muted mb-0">

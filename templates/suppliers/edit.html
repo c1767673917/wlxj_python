@@ -109,7 +109,7 @@
                     </li>
                     <li class="d-flex justify-content-between">
                         <span>创建时间：</span>
-                        <small>{{ supplier.created_at.strftime('%Y-%m-%d') }}</small>
+                        <small>{{ supplier.created_at | beijing_date }}</small>
                     </li>
                     <li class="d-flex justify-content-between">
                         <span>微信通知：</span>

@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from models import db, Supplier, Order, Quote
 from datetime import datetime, date
 from sqlalchemy import or_, func
+from utils.beijing_time_helper import BeijingTimeHelper
 # Excel导出相关导入
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
@@ -140,7 +141,7 @@ def submit_quote(order_id):
             existing_quote.price = price
             existing_quote.delivery_time = delivery_time if delivery_time else None
             existing_quote.remarks = remarks if remarks else None
-            existing_quote.created_at = datetime.utcnow()  # 更新时间
+            existing_quote.created_at = BeijingTimeHelper.now()  # 更新时间为北京时间
             
             # 显示价格警告和成功消息
             if price_warnings:
@@ -524,7 +525,7 @@ def finalize_quotes_export(wb, supplier, total_records):
     temp_file_path = None
     try:
         # 生成安全的文件名
-        current_date = datetime.now().strftime('%Y%m%d_%H%M%S')
+        current_date = BeijingTimeHelper.get_backup_timestamp()
         raw_filename = f"{supplier.name}报价导出_{current_date}.xlsx"
         filename = FileSecurity.get_safe_filename(raw_filename)
         

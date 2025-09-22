@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 import logging
 from typing import Optional, Dict, List, Tuple, Union
+from utils.beijing_time_helper import BeijingTimeHelper
 
 # 导入配置和异常类
 try:
@@ -173,7 +174,7 @@ class BackupHealthMonitor:
             self._check_recent_backups()
             self._check_disk_space()
             
-            self._health_status['last_check'] = datetime.now().isoformat()
+            self._health_status['last_check'] = BeijingTimeHelper.now().isoformat()
             self._health_status['overall_status'] = self._calculate_overall_status()
             
             return self._health_status
@@ -183,7 +184,7 @@ class BackupHealthMonitor:
             return {
                 'overall_status': 'error',
                 'error': str(e),
-                'last_check': datetime.now().isoformat()
+                'last_check': BeijingTimeHelper.now().isoformat()
             }
     
     def _check_database_health(self):
@@ -266,7 +267,7 @@ class BackupHealthMonitor:
                 return
             
             latest_backup = max(backups, key=lambda x: x['created_at'])
-            hours_since_last = (datetime.now() - latest_backup['created_at']).total_seconds() / 3600
+            hours_since_last = (BeijingTimeHelper.now() - latest_backup['created_at']).total_seconds() / 3600
             
             status = 'healthy'
             if hours_since_last > 48:  # 超过48小时
@@ -471,7 +472,7 @@ class BackupManager:
                 self.logger.info(f"开始备份数据库: {self.db_path} (大小: {file_size} 字节)")
                 
                 # 生成备份文件名
-                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                timestamp = BeijingTimeHelper.get_backup_timestamp()
                 backup_filename = f'database_backup_{timestamp}.db'
                 
                 if compress:
@@ -578,7 +579,7 @@ class BackupManager:
                 'filename': backup_path.name,
                 'size': backup_path.stat().st_size,
                 'original_size': Path(self.db_path).stat().st_size,
-                'created_at': datetime.now().isoformat(),
+                'created_at': BeijingTimeHelper.now().isoformat(),
                 'compression_ratio': None
             }
             
@@ -620,7 +621,7 @@ class BackupManager:
             keep_days = self.config.keep_days
         
         try:
-            cutoff_date = datetime.now() - timedelta(days=keep_days)
+            cutoff_date = BeijingTimeHelper.now() - timedelta(days=keep_days)
             deleted_count = 0
             failed_files = []
             
@@ -700,7 +701,7 @@ class BackupManager:
                 
                 # 创建当前数据库的备份
                 if os.path.exists(target_path):
-                    current_backup = f"{target_path}.before_restore_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                    current_backup = f"{target_path}.before_restore_{BeijingTimeHelper.get_backup_timestamp()}"
                     shutil.copy2(target_path, current_backup)
                     self.logger.info(f"当前数据库已备份到: {current_backup}")
                 

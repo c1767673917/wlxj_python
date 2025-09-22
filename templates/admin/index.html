@@ -126,7 +126,7 @@
                         <li><strong>总大小:</strong> {{ "%.2f"|format(backup_stats.total_size_mb) }} MB</li>
                         <li><strong>最近备份:</strong> 
                             {% if backup_stats.latest_backup %}
-                                {{ backup_stats.latest_backup.strftime('%Y-%m-%d %H:%M') }}
+                                {{ backup_stats.latest_backup | beijing_time }}
                             {% else %}
                                 无
                             {% endif %}

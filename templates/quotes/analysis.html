@@ -225,7 +225,7 @@
                                         <strong class="text-primary">¥{{ quote.price }}</strong>
                                     </p>
                                     <small class="text-muted">
-                                        {{ quote.created_at.strftime('%m-%d %H:%M') }}
+                                        {{ quote.created_at | beijing_time('%m-%d %H:%M') }}
                                     </small>
                                 </div>
                                 {% if quote.order.selected_supplier_id == quote.supplier_id %}

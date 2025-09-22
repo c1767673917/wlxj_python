@@ -9,6 +9,7 @@ from sqlalchemy.orm.exc import StaleDataError
 import logging
 import threading
 from datetime import datetime
+from utils.beijing_time_helper import BeijingTimeHelper
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +32,7 @@ def safe_delete_user(user_id):
     with _deletion_lock:
         if user_id in _deletion_locks:
             return False, "该用户正在被删除中，请稍后再试", {}
-        _deletion_locks[user_id] = datetime.now()
+        _deletion_locks[user_id] = BeijingTimeHelper.now()
     
     try:
         # 验证用户存在性
@@ -40,7 +41,7 @@ def safe_delete_user(user_id):
             return False, "用户不存在", {}
             
         username = user.username
-        deletion_start_time = datetime.now()
+        deletion_start_time = BeijingTimeHelper.now()
         
         logger.info(f"开始删除用户: {username} (ID: {user_id}) - 开始时间: {deletion_start_time}")
         
@@ -64,7 +65,7 @@ def safe_delete_user(user_id):
             # 提交所有更改
             db.session.commit()
             
-            deletion_end_time = datetime.now()
+            deletion_end_time = BeijingTimeHelper.now()
             deletion_duration = (deletion_end_time - deletion_start_time).total_seconds()
             
             # 构建删除结果数据
@@ -211,7 +212,7 @@ def cleanup_stale_deletion_locks(max_age_minutes=5):
         int: 清理的锁数量
     """
     try:
-        current_time = datetime.now()
+        current_time = BeijingTimeHelper.now()
         cleaned_count = 0
         
         with _deletion_lock:

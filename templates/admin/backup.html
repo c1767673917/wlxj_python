@@ -49,7 +49,7 @@
                 <i class="fas fa-clock fa-2x text-warning mb-2"></i>
                 <h4 class="card-title text-warning">
                     {% if stats.newest_backup %}
-                        {{ stats.newest_backup.created_at.strftime('%m-%d') }}
+                        {{ stats.newest_backup.created_at | beijing_time('%m-%d') }}
                     {% else %}
                         -
                     {% endif %}
@@ -136,7 +136,7 @@
                                 <span class="badge bg-secondary">普通</span>
                             {% endif %}
                         </td>
-                        <td>{{ backup.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ backup.created_at | beijing_time }}</td>
                         <td>
                             <div class="btn-group btn-group-sm" role="group">
                                 <a href="{{ url_for('admin.download_backup', filename=backup.filename) }}" 

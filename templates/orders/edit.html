@@ -70,7 +70,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">创建时间</label>
-                    <input type="text" class="form-control" value="{{ order.created_at.strftime('%Y-%m-%d %H:%M:%S') }}" readonly>
+                    <input type="text" class="form-control" value="{{ order.created_at | beijing_time }}" readonly>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">当前状态</label>

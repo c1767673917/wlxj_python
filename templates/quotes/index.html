@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-6">
                             <small class="text-muted">创建时间：</small>
-                            <br>{{ order.created_at.strftime('%Y-%m-%d') }}
+                            <br>{{ order.created_at | beijing_date }}
                         </div>
                     </div>
                 </div>

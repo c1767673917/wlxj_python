@@ -6,6 +6,7 @@ import uuid
 from typing import List, Optional, Dict, Any, Tuple
 from decimal import Decimal
 from . import db
+from utils.beijing_time_helper import BeijingTimeHelper
 
 # 订单供应商关联表 - 添加级联删除
 order_suppliers = db.Table('order_suppliers',
@@ -32,7 +33,7 @@ class Order(db.Model):
     selected_price = db.Column(db.Numeric(10, 2), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)  # 创建者
     business_type = db.Column(db.String(20), nullable=False, default='oil')  # 业务类型
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=BeijingTimeHelper.now)
     
     # 关联关系 - 添加级联删除
     quotes = db.relationship('Quote', backref='order', lazy=True, cascade='all, delete-orphan')
@@ -108,8 +109,8 @@ class Order(db.Model):
         from datetime import datetime
         from sqlalchemy import func, and_
         
-        # 获取当前日期
-        now = datetime.now()
+        # 获取当前北京时间日期
+        now = BeijingTimeHelper.now()
         date_str = now.strftime('%y%m%d')
         
         # 查询当天的所有订单号，使用LIKE模式匹配
@@ -147,7 +148,7 @@ class Order(db.Model):
         from datetime import datetime
         import uuid
         
-        timestamp = datetime.now().strftime('%y%m%d')
+        timestamp = BeijingTimeHelper.now().strftime('%y%m%d')
         # 使用UUID确保唯一性，但保持格式一致性
         unique_suffix = str(uuid.uuid4())[:3].upper()
         return f'TEMP{timestamp}{unique_suffix}'
@@ -229,8 +230,8 @@ class Order(db.Model):
         
         for attempt in range(max_retries):
             try:
-                # 获取当前日期
-                now = datetime.now()
+                # 获取当前北京时间日期
+                now = BeijingTimeHelper.now()
                 date_str = now.strftime('%y%m%d')
                 
                 # 查询当天的所有订单号，使用LIKE模式匹配

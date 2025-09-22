@@ -39,7 +39,7 @@
                         <strong>创建时间：</strong>
                     </div>
                     <div class="col-sm-9">
-                        {{ order.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+                        {{ order.created_at | beijing_time }}
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -123,7 +123,7 @@
                         </div>
                         <div class="col-md-4">
                             <strong>提交时间：</strong>
-                            <div class="fs-6">{{ quote.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                            <div class="fs-6">{{ quote.created_at | beijing_time }}</div>
                         </div>
                     </div>
                     {% if quote.remarks %}
