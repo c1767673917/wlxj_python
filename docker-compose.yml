@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./logs:/app/logs
+      - ./instance:/app/instance
+      - ./backup:/app/backup
+      - ./temp:/app/temp
+    environment:
+      - FLASK_ENV=development
+      - SECRET_KEY=trade-inquiry-system-secret-key-2025-docker
+      - DATABASE_URL=sqlite:////app/instance/database.db
+    restart: unless-stopped
